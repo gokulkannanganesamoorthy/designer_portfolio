@@ -77,8 +77,37 @@ export default function BusinessCard() {
             }}
             style={{ cursor: 'pointer' }}
           >
+            {isDeconstructed && (
+              <motion.button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  sessionStorage.removeItem("hasSeenIntro");
+                  window.location.reload();
+                }}
+                className="mono"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.3 }}
+                whileHover={{ opacity: 1 }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: "1.5rem",
+                  background: "transparent",
+                  border: "none",
+                  color: "var(--text-secondary)",
+                  fontSize: "0.55rem",
+                  letterSpacing: "0.2em",
+                  cursor: "pointer",
+                  padding: 0,
+                  margin: 0,
+                  whiteSpace: "nowrap"
+                }}
+              >
+                [ REPLAY ]
+              </motion.button>
+            )}
+            
             <motion.div
-              style={{ transform: 'rotate(180deg)' }}
               className={`${styles.lookCloserText} mono`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -108,36 +137,6 @@ export default function BusinessCard() {
             <Navigation delay={0.4} />
             <Signature />
             <ObserverOverlay />
-            
-            {/* Replay Option */}
-            <motion.button
-              onClick={() => {
-                sessionStorage.removeItem("hasSeenIntro");
-                window.location.reload();
-              }}
-              className="mono"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              style={{
-                position: "absolute",
-                top: "50%",
-                right: "calc(var(--page-margin) + 2.5rem)",
-                transform: "translateY(-50%)",
-                background: "transparent",
-                border: "none",
-                color: "var(--text-secondary)",
-                fontSize: "0.55rem",
-                letterSpacing: "0.2em",
-                cursor: "pointer",
-                zIndex: 50,
-                writingMode: "vertical-rl",
-                textOrientation: "mixed",
-              }}
-            >
-              [ REPLAY ]
-            </motion.button>
           </>
         )}
       </div>
