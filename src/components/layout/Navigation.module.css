@@ -9,19 +9,28 @@
 }
 
 .navItem {
-  font-size: var(--text-small);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  opacity: 0.6;
-  transition: opacity 0.4s var(--ease-restrained);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
 }
 
 .navItem:hover {
   opacity: 1;
+  color: var(--text-primary);
+}
+
+.navItem .dash::after {
+  content: "—";
+  margin-left: 0.5rem;
+}
+
+.navItem:hover .dash::after {
+  content: "———";
 }
 
 .dash {

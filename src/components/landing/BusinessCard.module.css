@@ -24,34 +24,34 @@
 
 .scene[data-state="card"] .cardLayout {
   position: relative;
-  width: 100%;
+  width: 90vw;
   max-width: 400px;
-  height: 90vh;
-  max-height: 800px;
+  aspect-ratio: 2 / 3.5;
+  background: transparent;
 }
 
 .scene[data-state="card"] .nameBlock {
   position: absolute;
-  top: 25%;
-  left: var(--spacing-4);
+  top: 15%;
+  left: 10%;
 }
 
 .scene[data-state="card"] .title {
   position: absolute;
-  top: 45%;
-  left: var(--spacing-4);
+  top: 38%;
+  left: 10%;
 }
 
 .scene[data-state="card"] .lookCloser {
   position: absolute;
-  top: 35%;
-  right: var(--spacing-4);
+  top: 25%;
+  right: 10%;
 }
 
 .scene[data-state="card"] .dash {
   position: absolute;
-  bottom: 25%;
-  left: var(--spacing-4);
+  bottom: 15%;
+  left: 10%;
 }
 
 /* 
@@ -93,6 +93,16 @@
 
 /* Typography styles remain the same regardless of state, 
    but framer-motion layout will animate their position. */
+@keyframes subtleHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+
 .name {
   font-size: var(--text-2xl);
   font-weight: 400;
@@ -108,13 +118,17 @@
 }
 
 .lookCloserText {
-  letter-spacing: 0.4em;
-  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  opacity: 0.6;
   white-space: nowrap;
   writing-mode: vertical-rl;
   text-orientation: mixed;
+  animation: subtleFloat 3s ease-in-out infinite;
 }
 
 .dashText {
   font-size: var(--text-xl);
+  animation: subtleHint 2s ease-in-out 2.5s infinite;
 }

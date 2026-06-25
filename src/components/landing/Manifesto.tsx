@@ -12,8 +12,8 @@ export default function Manifesto() {
         transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
       >
         <p className={styles.manifestoText}>
-          I intentionally don’t introduce myself as a web developer, UI designer, or frontend engineer. 
-          Those titles describe tools. They don’t describe what I actually do. <br /><br />
+          Titles describe tools. <br />
+          Experiences describe people. <br /><br />
           <span className={styles.highlight}>I design experiences.</span>
         </p>
       </motion.div>

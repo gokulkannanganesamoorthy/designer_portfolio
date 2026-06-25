@@ -9,15 +9,17 @@ import Telemetry from "./Telemetry";
 import Manifesto from "./Manifesto";
 import MicroscopicText from "./MicroscopicText";
 import AudioToggle from "./AudioToggle";
+import Signature from "./Signature";
 
 export default function BusinessCard() {
   const [isDeconstructed, setIsDeconstructed] = useState(false);
+  const [isGridVisible, setIsGridVisible] = useState(false);
 
   useEffect(() => {
-    // Wait 2 seconds before deconstructing
+    // Wait 2.2 seconds before deconstructing
     const timer = setTimeout(() => {
       setIsDeconstructed(true);
-    }, 2000);
+    }, 2200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -58,8 +60,10 @@ export default function BusinessCard() {
           {/* Look Closer */}
           <motion.div 
             layout 
-            transition={transitionConfig}
+            transition={{ ...transitionConfig, delay: 0.2 }}
             className={`${styles.lookCloser}`}
+            onDoubleClick={() => setIsGridVisible(prev => !prev)}
+            style={{ cursor: "pointer" }}
           >
             <motion.div 
               style={{ transform: "rotate(180deg)" }}
@@ -85,12 +89,13 @@ export default function BusinessCard() {
         {/* Navigation fades in after scattering */}
         {isDeconstructed && (
           <>
-            <GridBackground />
+            {isGridVisible && <GridBackground />}
             <Telemetry />
             <Manifesto />
             <MicroscopicText />
             <AudioToggle />
-            <Navigation delay={1} />
+            <Navigation delay={0.4} />
+            <Signature />
           </>
         )}
       </div>

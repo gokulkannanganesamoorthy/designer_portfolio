@@ -37,7 +37,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
+        {children}
+      </body>
     </html>
   );
 }

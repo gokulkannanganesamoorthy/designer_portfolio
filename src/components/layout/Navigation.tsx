@@ -26,7 +26,7 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
       {links.map((link) => (
         <Link key={link.name} href={link.href} className={styles.navItem}>
           <span>{link.name}</span>
-          <span className={styles.dash}>—</span>
+          <span className={styles.dash}></span>
         </Link>
       ))}
     </motion.nav>

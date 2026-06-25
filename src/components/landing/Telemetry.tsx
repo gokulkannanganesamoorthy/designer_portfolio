@@ -16,7 +16,7 @@ export default function Telemetry() {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
-        }) + ' LOCAL',
+        })
       );
     };
 
@@ -30,10 +30,13 @@ export default function Telemetry() {
       className={`${styles.telemetry} mono`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.5 }}
-      transition={{ duration: 1.5, delay: 1, ease: 'easeOut' }}
+      transition={{ duration: 1.5, delay: 0.8, ease: 'easeOut' }}
     >
       <div className={styles.dataRow}>
-        <span>{time}</span>
+        <span style={{ textAlign: "right", lineHeight: 1.2 }}>
+          {time} <br />
+          LOCAL
+        </span>
       </div>
     </motion.div>
   );
