@@ -100,7 +100,9 @@ export default function BusinessCard() {
                   cursor: "pointer",
                   padding: 0,
                   margin: 0,
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
+                  writingMode: "vertical-rl",
+                  textOrientation: "mixed"
                 }}
               >
                 [ REPLAY ]
