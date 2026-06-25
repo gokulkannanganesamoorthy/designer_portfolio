@@ -7,11 +7,13 @@ export default function Signature() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Reveal after 30 seconds
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 30000);
-    return () => clearTimeout(timer);
+    if (localStorage.getItem("visitedAbout") === "true") {
+      // Small delay for cinematic reveal even when earned
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (

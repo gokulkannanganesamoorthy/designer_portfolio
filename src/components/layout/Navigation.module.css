@@ -8,25 +8,37 @@
   z-index: 50;
 }
 
+@keyframes typographyBreathe {
+  0%, 100% { letter-spacing: 0.1em; }
+  50% { letter-spacing: 0.15em; }
+}
+
 .navItem {
   display: flex;
   align-items: center;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: var(--text-sm);
-  letter-spacing: 0.1em;
   opacity: 0.7;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease 0.12s, color 0.3s ease 0.12s;
+}
+
+.navItem span:first-child {
+  letter-spacing: 0.1em;
+  animation: typographyBreathe 8s ease-in-out infinite;
+  transition: letter-spacing 0.3s ease 0.12s;
 }
 
 .navItem:hover {
   opacity: 1;
   color: var(--text-primary);
+  transition-delay: 0.12s;
 }
 
 .navItem .dash::after {
   content: "—";
   margin-left: 0.5rem;
+  transition: all 0.3s ease 0.12s;
 }
 
 .navItem:hover .dash::after {

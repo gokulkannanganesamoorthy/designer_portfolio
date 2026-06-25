@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import DevToolsLogger from "../components/layout/DevToolsLogger";
+import Footer from "../components/layout/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,9 +39,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
+      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
+        <DevToolsLogger />
         {children}
+        <Footer />
       </body>
     </html>
   );
