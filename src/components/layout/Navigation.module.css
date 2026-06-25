@@ -35,6 +35,11 @@
   transition-delay: 0.12s;
 }
 
+.navItem .dash {
+  display: inline-block;
+  width: 2.5rem; /* Fixed width prevents layout shift on hover */
+}
+
 .navItem .dash::after {
   content: "—";
   margin-left: 0.5rem;

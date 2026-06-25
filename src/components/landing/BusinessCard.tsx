@@ -78,13 +78,43 @@ export default function BusinessCard() {
             style={{ cursor: 'pointer' }}
           >
             <motion.div
-              style={{ transform: 'rotate(180deg)' }}
+              style={{ 
+                transform: 'rotate(180deg)', 
+                display: 'flex', 
+                gap: 'var(--spacing-6)', 
+                alignItems: 'center' 
+              }}
               className={`${styles.lookCloserText} mono`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.5, ease: 'easeOut' }}
             >
-              Look Closer
+              {isDeconstructed && (
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    sessionStorage.removeItem("hasSeenIntro");
+                    window.location.reload();
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.3 }}
+                  whileHover={{ opacity: 1 }}
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "var(--text-secondary)",
+                    fontSize: "0.6rem",
+                    letterSpacing: "0.2em",
+                    cursor: "pointer",
+                    padding: 0,
+                    margin: 0,
+                  }}
+                  className="mono"
+                >
+                  [ REPLAY ]
+                </motion.button>
+              )}
+              <span>Look Closer</span>
             </motion.div>
           </motion.div>
 
@@ -108,33 +138,6 @@ export default function BusinessCard() {
             <Navigation delay={0.4} />
             <Signature />
             <ObserverOverlay />
-            
-            {/* Replay Option */}
-            <motion.button
-              onClick={() => {
-                sessionStorage.removeItem("hasSeenIntro");
-                window.location.reload();
-              }}
-              className="mono"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              style={{
-                position: "absolute",
-                top: "var(--page-margin)",
-                right: "var(--page-margin)",
-                background: "transparent",
-                border: "none",
-                color: "var(--text-secondary)",
-                fontSize: "0.5rem",
-                letterSpacing: "0.1em",
-                cursor: "pointer",
-                zIndex: 50,
-              }}
-            >
-              [ REPLAY ]
-            </motion.button>
           </>
         )}
       </div>
