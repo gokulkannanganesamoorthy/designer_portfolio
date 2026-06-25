@@ -1,0 +1,120 @@
+.container {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.scene {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  /* Ensure we can click through the empty space to the nav if needed, though nav will have higher z-index */
+}
+
+/* 
+  Card State (Flexbox Container)
+*/
+.scene[data-state="card"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scene[data-state="card"] .cardLayout {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 90vh;
+  max-height: 800px;
+}
+
+.scene[data-state="card"] .nameBlock {
+  position: absolute;
+  top: 25%;
+  left: var(--spacing-4);
+}
+
+.scene[data-state="card"] .title {
+  position: absolute;
+  top: 45%;
+  left: var(--spacing-4);
+}
+
+.scene[data-state="card"] .lookCloser {
+  position: absolute;
+  top: 35%;
+  right: var(--spacing-4);
+}
+
+.scene[data-state="card"] .dash {
+  position: absolute;
+  bottom: 25%;
+  left: var(--spacing-4);
+}
+
+/* 
+  Scattered State (Viewport Corners)
+*/
+.scene[data-state="scattered"] .cardLayout {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+.scene[data-state="scattered"] .nameBlock {
+  position: absolute;
+  top: var(--page-margin);
+  left: var(--page-margin);
+}
+
+.scene[data-state="scattered"] .title {
+  position: absolute;
+  bottom: var(--page-margin);
+  left: var(--page-margin);
+}
+
+.scene[data-state="scattered"] .lookCloser {
+  position: absolute;
+  top: calc(var(--page-margin) + 200px); /* Safely below the navbar */
+  right: var(--page-margin);
+}
+
+.scene[data-state="scattered"] .dash {
+  position: absolute;
+  bottom: var(--page-margin);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Typography styles remain the same regardless of state, 
+   but framer-motion layout will animate their position. */
+.name {
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.titleText {
+  font-size: var(--text-base);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.lookCloserText {
+  letter-spacing: 0.4em;
+  font-weight: 400;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.dashText {
+  font-size: var(--text-xl);
+}

@@ -1,0 +1,29 @@
+.nav {
+  position: fixed;
+  top: var(--page-margin);
+  right: var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  z-index: 50;
+}
+
+.navItem {
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  opacity: 0.6;
+  transition: opacity 0.4s var(--ease-restrained);
+}
+
+.navItem:hover {
+  opacity: 1;
+}
+
+.dash {
+  font-weight: 300;
+}

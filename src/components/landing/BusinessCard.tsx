@@ -1,0 +1,87 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import styles from "./BusinessCard.module.css";
+import Navigation from "../layout/Navigation";
+
+export default function BusinessCard() {
+  const [isDeconstructed, setIsDeconstructed] = useState(false);
+
+  useEffect(() => {
+    // Wait 2 seconds before deconstructing
+    const timer = setTimeout(() => {
+      setIsDeconstructed(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const transitionConfig = {
+    duration: 1.5,
+    ease: [0.2, 0, 0, 1]
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.scene} data-state={isDeconstructed ? "scattered" : "card"}>
+        <div className={styles.cardLayout}>
+          {/* Name Block */}
+          <motion.div 
+            layout 
+            transition={transitionConfig}
+            className={styles.nameBlock}
+          >
+            <div className={styles.name}>
+              <div>Gokul</div>
+              <div>Kannan</div>
+              <div>Ganesamoorthy</div>
+            </div>
+          </motion.div>
+
+          {/* Title / Slogan */}
+          <motion.div 
+            layout 
+            transition={transitionConfig}
+            className={styles.title}
+          >
+            <div className={styles.titleText}>
+              <div>Digital Experience</div>
+              <div>Designer</div>
+            </div>
+          </motion.div>
+
+          {/* Look Closer */}
+          <motion.div 
+            layout 
+            transition={transitionConfig}
+            className={`${styles.lookCloser}`}
+          >
+            <motion.div 
+              style={{ transform: "rotate(180deg)" }}
+              className={`${styles.lookCloserText} mono`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+            >
+              Look Closer
+            </motion.div>
+          </motion.div>
+
+          {/* Dash */}
+          <motion.div 
+            layout 
+            transition={transitionConfig}
+            className={styles.dash}
+          >
+            <div className={styles.dashText}>—</div>
+          </motion.div>
+        </div>
+
+        {/* Navigation fades in after scattering */}
+        {isDeconstructed && (
+          <Navigation delay={1} />
+        )}
+      </div>
+    </div>
+  );
+}
