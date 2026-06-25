@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./BusinessCard.module.css";
 import Navigation from "../layout/Navigation";
+import GridBackground from "./GridBackground";
+import Telemetry from "./Telemetry";
+import Manifesto from "./Manifesto";
+import MicroscopicText from "./MicroscopicText";
+import AudioToggle from "./AudioToggle";
 
 export default function BusinessCard() {
   const [isDeconstructed, setIsDeconstructed] = useState(false);
@@ -79,7 +84,14 @@ export default function BusinessCard() {
 
         {/* Navigation fades in after scattering */}
         {isDeconstructed && (
-          <Navigation delay={1} />
+          <>
+            <GridBackground />
+            <Telemetry />
+            <Manifesto />
+            <MicroscopicText />
+            <AudioToggle />
+            <Navigation delay={1} />
+          </>
         )}
       </div>
     </div>

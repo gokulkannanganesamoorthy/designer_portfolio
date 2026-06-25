@@ -1,0 +1,17 @@
+.toggle {
+  position: absolute;
+  top: var(--page-margin);
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  cursor: pointer;
+  z-index: 20;
+  transition: color 0.3s var(--ease-restrained);
+}
+
+.toggle:hover {
+  color: var(--text-primary);
+}

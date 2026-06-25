@@ -1,0 +1,18 @@
+.telemetry {
+  position: absolute;
+  bottom: var(--page-margin);
+  right: var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-1);
+  font-size: 0.65rem;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.dataRow {
+  display: flex;
+  gap: var(--spacing-3);
+}
