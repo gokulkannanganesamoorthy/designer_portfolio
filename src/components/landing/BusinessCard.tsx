@@ -124,7 +124,7 @@ export default function BusinessCard() {
                 position: "absolute",
                 top: "50%",
                 right: "calc(var(--page-margin) + 2.5rem)",
-                transform: "translateY(-50%) rotate(180deg)",
+                transform: "translateY(-50%)",
                 background: "transparent",
                 border: "none",
                 color: "var(--text-secondary)",
