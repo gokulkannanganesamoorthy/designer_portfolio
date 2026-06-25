@@ -35,9 +35,6 @@ export default function Telemetry() {
       <div className={styles.dataRow}>
         <span>{time}</span>
       </div>
-      <div className={styles.dataRow}>
-        <span>[ ACCEPTING SELECT PROJECTS ]</span>
-      </div>
     </motion.div>
   );
 }
