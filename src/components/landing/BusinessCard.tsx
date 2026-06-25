@@ -122,8 +122,8 @@ export default function BusinessCard() {
               transition={{ delay: 1 }}
               style={{
                 position: "absolute",
-                top: "calc(50% + 120px)",
-                right: "var(--page-margin)",
+                top: "50%",
+                right: "calc(var(--page-margin) + 2.5rem)",
                 transform: "translateY(-50%) rotate(180deg)",
                 background: "transparent",
                 border: "none",
