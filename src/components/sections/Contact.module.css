@@ -10,10 +10,104 @@
   position: relative;
 }
 
-.content {
-  max-width: 1000px;
-  width: 100%;
+/* --- DESIGN CONTROLS (TEMP) --- */
+.designControls {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 100;
+  border: 1px solid rgba(0,0,0,0.1);
 }
+
+.controlGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.controlLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  width: 80px;
+}
+
+.designControls button {
+  background: none;
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.designControls button.activeControl {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+/* ------------------------------ */
+
+
+.content {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s ease;
+}
+
+/* LAYOUT MODES */
+.layout-center {
+  align-items: center;
+  text-align: center;
+}
+.layout-center .form {
+  align-items: center;
+}
+.layout-center .paragraph {
+  text-align: center;
+}
+
+.layout-left {
+  align-items: flex-start;
+  text-align: left;
+}
+.layout-left .form {
+  align-items: flex-start;
+}
+.layout-left .paragraph {
+  text-align: left;
+}
+.layout-left .line1, .layout-left .line2, .layout-left .line3, .layout-left .line4 {
+  display: block; /* force stacking */
+  margin-bottom: 0.5rem;
+}
+
+.layout-stagger {
+  align-items: flex-start;
+  text-align: left;
+}
+.layout-stagger .form {
+  align-items: flex-start;
+}
+.layout-stagger .paragraph {
+  text-align: left;
+}
+.layout-stagger .line1 { display: block; margin-left: 0; }
+.layout-stagger .line2 { display: block; margin-left: 15%; margin-top: 1rem; }
+.layout-stagger .line3 { display: block; margin-left: 5%; margin-top: 1rem; }
+.layout-stagger .line4 { display: block; margin-left: 20%; margin-top: 1rem; }
+/* ----------- */
+
 
 .title {
   font-size: var(--text-sm);
@@ -27,25 +121,18 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 3rem;
   font-size: var(--text-2xl);
   font-weight: 400;
-  line-height: 1.8;
+  line-height: 2;
   color: var(--text-primary);
 }
 
 @media (min-width: 768px) {
   .form {
-    font-size: var(--text-4xl);
-    line-height: 1.6;
+    font-size: var(--text-3xl);
+    line-height: 1.8;
   }
-}
-
-.sentence {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline; /* ensures text and inputs line up nicely */
-  column-gap: 1rem;
 }
 
 .inputWrapper {
@@ -61,14 +148,11 @@
   min-width: 2ch;
   grid-area: 1 / 1;
   font: inherit;
-  padding: 0.1em 0.3em;
   margin: 0 0.2em;
   resize: none;
   appearance: none;
-  border: none;
-  background: rgba(0,0,0,0.03);
-  border-bottom: 2px dashed rgba(0,0,0,0.3);
-  border-radius: 4px 4px 0 0;
+  outline: none;
+  text-align: center;
 }
 
 .inputWrapper::after {
@@ -77,27 +161,66 @@
   white-space: pre-wrap;
 }
 
-.input {
-  color: var(--text-primary);
-  transition: all 0.3s ease;
-  outline: none;
-  text-align: center;
-}
-
 .input::placeholder {
   color: var(--text-secondary);
   opacity: 0.6;
   font-style: italic;
 }
 
-.input:focus, .input:not(:placeholder-shown) {
-  background: rgba(0,0,0,0.06);
+
+/* INPUT STYLES */
+
+/* 1. Minimal (Clean underline that expands) */
+.input-minimal::after,
+.input-minimal .input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(0,0,0,0.1);
+  padding: 0 0.1em;
+  border-radius: 0;
+}
+.input-minimal .input {
+  transition: border-color 0.3s ease;
+}
+.input-minimal .input:focus, .input-minimal .input:not(:placeholder-shown) {
   border-bottom: 2px solid var(--text-primary);
 }
 
+/* 2. Highlight (Pill shaped background) */
+.input-highlight::after,
+.input-highlight .input {
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 40px;
+  padding: 0 1rem;
+}
+.input-highlight .input {
+  transition: background-color 0.3s ease;
+}
+.input-highlight .input:focus, .input-highlight .input:not(:placeholder-shown) {
+  background: rgba(0,0,0,0.08);
+}
+
+/* 3. Ghost (Invisible, just text) */
+.input-ghost::after,
+.input-ghost .input {
+  background: transparent;
+  border: none;
+  padding: 0 0.1em;
+}
+.input-ghost .input {
+  color: var(--text-primary);
+  opacity: 0.8;
+}
+.input-ghost .input:focus, .input-ghost .input:not(:placeholder-shown) {
+  opacity: 1;
+  font-weight: 500;
+}
+/* ----------- */
+
+
 .submitBtn {
-  margin-top: 4rem;
-  align-self: flex-start;
+  align-self: flex-start; /* Default, overridden by layout */
   background: none;
   border: none;
   font-family: inherit;
@@ -105,15 +228,27 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-primary);
-  cursor: pointer;
-  padding: 1rem 2rem;
-  border: 1px solid var(--text-primary);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  padding: 1rem 3rem;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 40px;
   transition: all 0.3s ease;
+  opacity: 0.5;
 }
 
-.submitBtn:hover {
+.layout-center .submitBtn {
+  align-self: center;
+}
+
+.submitBtn.ready {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+  cursor: pointer;
+  opacity: 1;
+}
+
+.submitBtn.ready:hover {
   background-color: var(--text-primary);
   color: var(--bg-primary);
 }
