@@ -5,10 +5,10 @@ import Link from "next/link";
 import styles from "./Navigation.module.css";
 
 const links = [
-  { name: "Work", href: "/work" },
-  { name: "About", href: "/about" },
-  { name: "Process", href: "/process" },
-  { name: "Contact", href: "/contact" },
+  { name: "About", href: "#about" },
+  { name: "Projects", href: "#projects" },
+  { name: "Testimonials", href: "#testimonials" },
+  { name: "Contact", href: "#contact" },
 ];
 
 interface NavigationProps {
