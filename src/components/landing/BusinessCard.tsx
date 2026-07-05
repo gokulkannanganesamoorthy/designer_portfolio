@@ -46,13 +46,11 @@ export default function BusinessCard() {
           <motion.div
             layout
             transition={transitionConfig}
-            className={styles.nameBlock}
+            className={`${styles.nameBlock} ${styles.name}`}
           >
-            <div className={styles.name}>
-              <div>Gokul</div>
-              <div>Kannan</div>
-              <div>Ganesamoorthy</div>
-            </div>
+            <div className={styles.primaryName}>GOKUL</div>
+            <div className={styles.primaryName}>KANNAN</div>
+            <div className={styles.surname}>GANESAMOORTHY</div>
           </motion.div>
 
           {/* Title / Slogan */}
@@ -115,7 +113,7 @@ export default function BusinessCard() {
               animate={{ opacity: 1 }}
               transition={{ duration: 1.5, ease: 'easeOut' }}
             >
-              Look Closer
+              FEEL FIRST
             </motion.div>
           </motion.div>
 
