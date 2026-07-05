@@ -1,0 +1,85 @@
+.container {
+  height: 400vh; /* Allow enough scrolling space for 4 items */
+  position: relative;
+  background-color: var(--bg-primary);
+  z-index: 10;
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--page-margin);
+}
+
+.perspective {
+  perspective: 1500px; /* 3D perspective distance */
+  width: 100%;
+  max-width: 800px;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cylinder {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  /* Will be controlled by framer-motion inline styles */
+}
+
+.testimonialItem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  backface-visibility: hidden; /* Hides items when they rotate away */
+}
+
+.quote {
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: 3rem;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .quote {
+    font-size: var(--text-3xl);
+  }
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.name {
+  font-size: var(--text-base);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.role {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
