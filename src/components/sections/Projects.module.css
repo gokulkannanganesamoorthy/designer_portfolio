@@ -1,63 +1,97 @@
-.carouselContainer {
-  height: 300vh; /* 3 screens worth of scrolling */
-  position: relative;
+.container {
+  min-height: 100vh;
+  width: 100%;
   background-color: var(--bg-primary);
   z-index: 10;
-}
-
-.stickyContainer {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative;
   display: flex;
   align-items: center;
-  overflow: hidden;
-}
-
-.carouselTrack {
-  display: flex;
-  /* width: 300vw because we have 3 projects, each taking 100vw */
-  width: 300vw; 
-}
-
-.cardContainer {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
   padding: var(--page-margin);
 }
 
-.projectInfo {
+.content {
   width: 100%;
-  max-width: 1000px;
-  margin-bottom: 2rem;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }
 
-.projectTitle {
-  font-size: var(--text-3xl);
-  font-weight: 500;
-  margin: 0;
-  letter-spacing: -0.02em;
+@media (min-width: 900px) {
+  .content {
+    flex-direction: row;
+    align-items: center;
+    gap: 6rem;
+  }
 }
 
-.projectCategory {
+.sidebar {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
   font-size: var(--text-sm);
-  color: var(--text-secondary);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-top: 0.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+}
+
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.projectLink {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  font-family: inherit;
+}
+
+.projectLink:hover {
+  color: var(--text-primary);
+}
+
+.projectLink.active {
+  color: var(--text-primary);
+}
+
+.projectNumber {
+  font-size: var(--text-xs);
+  font-family: var(--font-geist-mono), monospace;
+  opacity: 0.5;
+}
+
+.projectLink.active .projectNumber {
+  opacity: 1;
+}
+
+.projectTitleText {
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .browserMockup {
+  flex: 1;
   width: 100%;
-  max-width: 1000px;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 11;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   border: 1px solid rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
@@ -72,6 +106,7 @@
   align-items: center;
   padding: 0 1rem;
   position: relative;
+  z-index: 2;
 }
 
 .browserDots {
@@ -105,15 +140,70 @@
 
 .browserContent {
   flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  overflow: hidden; /* Hide the scrollbar of the container, inner will scroll */
 }
 
-.placeholderText {
-  color: rgba(0,0,0,0.2);
-  font-size: var(--text-xl);
+.scrollableInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* THIS allows scrolling inside the mockup! */
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Custom scrollbar for the inner screen */
+.scrollableInner::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollableInner::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollableInner::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.dummyHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dummyTitle {
+  font-size: var(--text-4xl);
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.dummyCategory {
+  font-size: var(--text-sm);
   text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.dummyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.dummyBlock {
+  aspect-ratio: 4 / 3;
+  background-color: rgba(0,0,0,0.03);
+  border-radius: 8px;
+}
+
+.dummyBlockFull {
+  grid-column: 1 / -1;
+  aspect-ratio: 21 / 9;
+  background-color: rgba(0,0,0,0.03);
+  border-radius: 8px;
 }
