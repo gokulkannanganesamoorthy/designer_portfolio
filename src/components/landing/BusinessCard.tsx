@@ -11,6 +11,8 @@ import MicroscopicText from './MicroscopicText';
 import Signature from './Signature';
 import ObserverOverlay from './ObserverOverlay';
 
+import { personalInfo } from '@/lib/data';
+
 export default function BusinessCard() {
   const [isDeconstructed, setIsDeconstructed] = useState(false);
   const [isGridVisible, setIsGridVisible] = useState(false);
@@ -35,6 +37,10 @@ export default function BusinessCard() {
     ease: [0.2, 0, 0, 1],
   };
 
+  const titleWords = personalInfo.role.split(' ');
+  const titleLine1 = titleWords.slice(0, 2).join(' '); // "Digital Experience"
+  const titleLine2 = titleWords.slice(2).join(' '); // "Designer"
+
   return (
     <div className={styles.container}>
       <div
@@ -48,9 +54,9 @@ export default function BusinessCard() {
             transition={transitionConfig}
             className={`${styles.nameBlock} ${styles.name}`}
           >
-            <div className={styles.primaryName}>GOKUL</div>
-            <div className={styles.primaryName}>KANNAN</div>
-            <div className={styles.surname}>GANESAMOORTHY</div>
+            <div className={styles.primaryName}>{personalInfo.firstName}</div>
+            <div className={styles.primaryName}>{personalInfo.lastName}</div>
+            <div className={styles.surname}>{personalInfo.title}</div>
           </motion.div>
 
           {/* Title / Slogan */}
@@ -60,8 +66,8 @@ export default function BusinessCard() {
             className={styles.title}
           >
             <div className={styles.titleText}>
-              <div>Digital Experience</div>
-              <div>Designer</div>
+              <div>{titleLine1}</div>
+              <div>{titleLine2}</div>
             </div>
           </motion.div>
 
@@ -113,7 +119,7 @@ export default function BusinessCard() {
               animate={{ opacity: 1 }}
               transition={{ duration: 1.5, ease: 'easeOut' }}
             >
-              FEEL FIRST
+              {personalInfo.manifestoText}
             </motion.div>
           </motion.div>
 

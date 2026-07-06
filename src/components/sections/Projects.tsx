@@ -3,36 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Projects.module.css";
 
-const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Reimagined",
-    category: "Web Application",
-    url: "shop.example.com",
-    bgColor: "#f4f4f5"
-  },
-  {
-    id: 2,
-    title: "Financial Dashboard",
-    category: "Product Design",
-    url: "app.finance.co",
-    bgColor: "#fafafa"
-  },
-  {
-    id: 3,
-    title: "Editorial Platform",
-    category: "Digital Experience",
-    url: "read.journal.net",
-    bgColor: "#fcfcfc"
-  },
-  {
-    id: 4,
-    title: "Invisible Interfaces",
-    category: "Interaction Design",
-    url: "invisible.ui",
-    bgColor: "#f9f9f9"
-  }
-];
+import { projects } from "@/lib/data";
 
 export default function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);

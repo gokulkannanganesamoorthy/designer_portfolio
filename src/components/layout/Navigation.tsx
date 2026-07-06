@@ -4,12 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
 
-const links = [
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
-  { name: "Testimonials", href: "#testimonials" },
-  { name: "Contact", href: "#contact" },
-];
+import { navigationLinks as links } from "@/lib/data";
 
 interface NavigationProps {
   delay?: number;

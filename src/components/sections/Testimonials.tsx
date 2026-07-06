@@ -3,32 +3,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import styles from "./Testimonials.module.css";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Alex Rivera",
-    role: "Design Director, Nexus",
-    text: "Gokul doesn't just design interfaces, he designs the feeling of using them. A rare talent."
-  },
-  {
-    id: 2,
-    name: "Sarah Chen",
-    role: "Founder, Aether",
-    text: "The invisible cylinder effect you're looking at right now? Yeah, that's exactly why we hired him."
-  },
-  {
-    id: 3,
-    name: "Marcus Thorne",
-    role: "VP Product, Horizon",
-    text: "He understands that the best design is the one you don't even realize you're using until it's gone."
-  },
-  {
-    id: 4,
-    name: "Elena Rostova",
-    role: "Creative Lead, Voda",
-    text: "Every interaction is considered. Every pixel has a purpose. Pure digital craftsmanship."
-  }
-];
+import { testimonials } from "@/lib/data";
 
 export default function Testimonials() {
   const targetRef = useRef<HTMLDivElement>(null);
