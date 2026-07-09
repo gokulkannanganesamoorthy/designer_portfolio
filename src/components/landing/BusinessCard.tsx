@@ -89,9 +89,10 @@ export default function BusinessCard() {
                   window.location.reload();
                 }}
                 className="mono"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.3 }}
-                whileHover={{ opacity: 1 }}
+                initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+                animate={{ clipPath: "inset(0 0 0 0)", opacity: 0.3 }}
+                transition={{ duration: 1.5, ease: 'easeOut', delay: 1 }}
+                whileHover={{ opacity: 1, transition: { duration: 0.2 } }}
                 style={{
                   position: "absolute",
                   top: 0,
