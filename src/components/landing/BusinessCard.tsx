@@ -89,16 +89,18 @@ export default function BusinessCard() {
                   window.location.reload();
                 }}
                 className="mono"
-                initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-                animate={{ clipPath: "inset(0 0 0 0)", opacity: 1 }}
-                transition={{ duration: 1.5, ease: 'easeOut', repeat: Infinity, repeatDelay: 1 }}
+                initial={{ backgroundPosition: "0% -100%" }}
+                animate={{ backgroundPosition: "0% 200%" }}
+                transition={{ duration: 2.5, ease: 'linear', repeat: Infinity }}
                 style={{
                   position: "absolute",
                   top: 0,
                   right: "1.5rem",
-                  background: "transparent",
+                  background: "linear-gradient(180deg, #b0b0b0 20%, #000 50%, #b0b0b0 80%)",
+                  backgroundSize: "100% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                   border: "none",
-                  color: "var(--text-primary)",
                   fontSize: "0.55rem",
                   letterSpacing: "0.2em",
                   cursor: "pointer",
