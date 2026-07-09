@@ -27,31 +27,24 @@ export const aboutContent = {
 export const projects = [
   {
     id: 1,
-    title: "E-Commerce Reimagined",
-    category: "Web Application",
-    url: "shop.example.com",
+    title: "Luminary Portfolio",
+    category: "Photography Portfolio",
+    url: "gokul-photography-site.vercel.app",
     bgColor: "#f4f4f5"
   },
   {
     id: 2,
-    title: "Financial Dashboard",
-    category: "Product Design",
-    url: "app.finance.co",
+    title: "Design Studio Portfolio",
+    category: "Design Studio",
+    url: "www.orrayson.com",
     bgColor: "#fafafa"
   },
   {
     id: 3,
-    title: "Editorial Platform",
-    category: "Digital Experience",
-    url: "read.journal.net",
+    title: "Neon Commerce",
+    category: "Brutalist Web Design",
+    url: "gokul-neon-commerce.vercel.app",
     bgColor: "#fcfcfc"
-  },
-  {
-    id: 4,
-    title: "Invisible Interfaces",
-    category: "Interaction Design",
-    url: "invisible.ui",
-    bgColor: "#f9f9f9"
   }
 ];
 
