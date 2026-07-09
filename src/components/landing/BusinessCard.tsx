@@ -90,16 +90,15 @@ export default function BusinessCard() {
                 }}
                 className="mono"
                 initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-                animate={{ clipPath: "inset(0 0 0 0)", opacity: 0.3 }}
-                transition={{ duration: 1.5, ease: 'easeOut', delay: 1 }}
-                whileHover={{ opacity: 1, transition: { duration: 0.2 } }}
+                animate={{ clipPath: "inset(0 0 0 0)", opacity: 1 }}
+                transition={{ duration: 1.5, ease: 'easeOut', repeat: Infinity, repeatDelay: 1 }}
                 style={{
                   position: "absolute",
                   top: 0,
                   right: "1.5rem",
                   background: "transparent",
                   border: "none",
-                  color: "var(--text-secondary)",
+                  color: "var(--text-primary)",
                   fontSize: "0.55rem",
                   letterSpacing: "0.2em",
                   cursor: "pointer",
@@ -116,10 +115,9 @@ export default function BusinessCard() {
             
             <motion.div
               className={`${styles.lookCloserText} mono`}
-              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-              animate={{ clipPath: "inset(0 0 0 0)", opacity: 1 }}
-              transition={{ duration: 1.5, ease: 'easeOut', repeat: Infinity, repeatDelay: 1 }}
-              style={{ color: "var(--text-primary)" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.5, ease: 'easeOut', delay: 0.5 }}
             >
               {personalInfo.manifestoText}
             </motion.div>
