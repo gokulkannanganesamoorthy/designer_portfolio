@@ -117,15 +117,16 @@ export default function BusinessCard() {
             
             <motion.div
               className={`${styles.lookCloserText} mono`}
-              initial={{ backgroundPosition: "0% -100%" }}
-              animate={{ backgroundPosition: "0% 200%" }}
+              initial={{ backgroundPosition: "-100% 0%" }}
+              animate={{ backgroundPosition: "200% 0%" }}
               transition={{ duration: 2.5, ease: 'linear', repeat: Infinity }}
               style={{
-                background: "linear-gradient(180deg, #b0b0b0 20%, #000 50%, #b0b0b0 80%)",
-                backgroundSize: "100% 200%",
+                background: "linear-gradient(90deg, #b0b0b0 20%, #000 50%, #b0b0b0 80%)",
+                backgroundSize: "200% 100%",
                 WebkitBackgroundClip: "text",
+                backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                color: "var(--text-primary)"
+                color: "transparent"
               }}
             >
               {personalInfo.manifestoText}
