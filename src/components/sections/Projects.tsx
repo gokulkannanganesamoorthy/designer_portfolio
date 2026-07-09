@@ -50,7 +50,7 @@ export default function Projects() {
         </div>
 
         {/* Screen in Screen wrapper */}
-        <div className={styles.browserMockup}>
+        <div className={`${styles.browserMockup} ${viewMode === "mobile" ? styles.browserMockupMobile : ""}`}>
           <div className={styles.browserHeader}>
             <div className={styles.browserDots}>
               <span />
