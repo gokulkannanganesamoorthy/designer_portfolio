@@ -27,14 +27,23 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
         layout
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
-        <motion.div layout className={styles.menuIcon}>
-          <div className={styles.hamburgerLine} />
-          <div className={styles.hamburgerLine} />
-        </motion.div>
-
-        <AnimatePresence>
-          {isHovered && (
+        <AnimatePresence mode="wait">
+          {!isHovered ? (
             <motion.div 
+              key="icon"
+              layout 
+              className={styles.menuIcon}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className={styles.hamburgerLine} />
+              <div className={styles.hamburgerLine} />
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="links"
               className={styles.linksWrapper}
               initial={{ opacity: 0, width: 0 }}
               animate={{ opacity: 1, width: "auto" }}
