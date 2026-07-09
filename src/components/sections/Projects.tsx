@@ -8,6 +8,7 @@ import { projects } from "@/lib/data";
 export default function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
   const activeProject = projects[activeIndex];
 
   // Reset loading state when changing projects
@@ -71,11 +72,26 @@ export default function Projects() {
             </AnimatePresence>
 
             <div className={styles.browserActions}>
+              <button 
+                onClick={() => setViewMode("mobile")} 
+                className={`${styles.actionBtn} ${viewMode === "mobile" ? styles.activeView : ""}`} 
+                title="Mobile View"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </button>
+              <button 
+                onClick={() => setViewMode("desktop")} 
+                className={`${styles.actionBtn} ${viewMode === "desktop" ? styles.activeView : ""}`} 
+                title="Desktop View"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </button>
+              <div className={styles.divider}></div>
               <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
-                ⎘
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               </button>
               <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
-                ↗
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
               </button>
             </div>
           </div>
@@ -103,7 +119,7 @@ export default function Projects() {
                   </div>
                 )}
                 
-                <div className={styles.iframeScaleContainer}>
+                <div className={`${styles.iframeScaleContainer} ${viewMode === "mobile" ? styles.mobileView : ""}`}>
                   <iframe
                     src={`https://${activeProject.url}`}
                     className={styles.iframeContent}

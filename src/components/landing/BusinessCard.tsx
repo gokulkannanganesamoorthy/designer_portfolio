@@ -116,9 +116,10 @@ export default function BusinessCard() {
             
             <motion.div
               className={`${styles.lookCloserText} mono`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, ease: 'easeOut', delay: 0.5 }}
+              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+              animate={{ clipPath: "inset(0 0 0 0)", opacity: 1 }}
+              transition={{ duration: 1.5, ease: 'easeOut', repeat: Infinity, repeatDelay: 1 }}
+              style={{ color: "var(--text-primary)" }}
             >
               {personalInfo.manifestoText}
             </motion.div>
