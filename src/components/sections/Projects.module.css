@@ -88,7 +88,7 @@
 .browserMockup {
   flex: 1;
   width: 100%;
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 9;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -228,9 +228,9 @@
 }
 
 .iframeScaleContainer.mobileView {
-  width: 320px;
-  height: 650px;
-  max-height: 90%;
+  width: auto;
+  height: 85%;
+  aspect-ratio: 9 / 16;
   transform: none;
   border-radius: 36px;
   border: 12px solid #222;
