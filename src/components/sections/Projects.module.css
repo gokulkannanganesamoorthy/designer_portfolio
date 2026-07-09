@@ -144,66 +144,16 @@
   overflow: hidden; /* Hide the scrollbar of the container, inner will scroll */
 }
 
-.scrollableInner {
+.iframeWrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-y: auto; /* THIS allows scrolling inside the mockup! */
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
 }
 
-/* Custom scrollbar for the inner screen */
-.scrollableInner::-webkit-scrollbar {
-  width: 8px;
-}
-.scrollableInner::-webkit-scrollbar-track {
-  background: transparent;
-}
-.scrollableInner::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.1);
-  border-radius: 4px;
-}
-
-.dummyHeader {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.dummyTitle {
-  font-size: var(--text-4xl);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-}
-
-.dummyCategory {
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-}
-
-.dummyGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.dummyBlock {
-  aspect-ratio: 4 / 3;
-  background-color: rgba(0,0,0,0.03);
-  border-radius: 8px;
-}
-
-.dummyBlockFull {
-  grid-column: 1 / -1;
-  aspect-ratio: 21 / 9;
-  background-color: rgba(0,0,0,0.03);
-  border-radius: 8px;
+.iframeContent {
+  width: 100%;
+  height: 100%;
+  border: none;
 }

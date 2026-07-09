@@ -1,55 +1,70 @@
-.nav {
+.navContainer {
   position: fixed;
-  top: var(--page-margin);
+  top: 2rem;
   right: var(--page-margin);
+  z-index: 100;
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  z-index: 50;
+  justify-content: flex-end;
+  pointer-events: none; /* Let clicks pass through container */
 }
 
-@keyframes typographyBreathe {
-  0%, 100% { letter-spacing: 0.1em; }
-  50% { letter-spacing: 0.15em; }
+.navPill {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 40px;
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  pointer-events: auto; /* Re-enable clicks for the pill */
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Dark mode fallback if they ever add one */
+@media (prefers-color-scheme: dark) {
+  .navPill {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding-right: 0.5rem; /* Space between icon and links if open */
+}
+
+.hamburgerLine {
+  width: 16px;
+  height: 1.5px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.linksWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .navItem {
-  display: flex;
-  align-items: center;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: var(--text-sm);
-  opacity: 0.7;
-  transition: opacity 0.3s ease 0.12s, color 0.3s ease 0.12s;
-}
-
-.navItem span:first-child {
-  letter-spacing: 0.1em;
-  animation: typographyBreathe 8s ease-in-out infinite;
-  transition: letter-spacing 0.3s ease 0.12s;
+  transition: color 0.3s ease;
+  padding: 0 0.25rem;
 }
 
 .navItem:hover {
-  opacity: 1;
   color: var(--text-primary);
-  transition-delay: 0.12s;
-}
-
-.navItem .dash {
-  display: inline-block;
-  width: 2.5rem; /* Fixed width prevents layout shift on hover */
-}
-
-.navItem .dash::after {
-  content: "—";
-  margin-left: 0.5rem;
-  transition: all 0.3s ease 0.12s;
-}
-
-.navItem:hover .dash::after {
-  content: "———";
-}
-
-.dash {
-  font-weight: 300;
 }

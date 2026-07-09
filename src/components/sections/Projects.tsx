@@ -62,23 +62,17 @@ export default function Projects() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className={styles.scrollableInner}
+                className={styles.iframeWrapper}
                 style={{ backgroundColor: activeProject.bgColor }}
               >
-                {/* Dummy long content to demonstrate scrolling */}
-                <div className={styles.dummyHeader}>
-                  <div className={styles.dummyTitle}>{activeProject.title}</div>
-                  <div className={styles.dummyCategory}>{activeProject.category}</div>
-                </div>
-                
-                <div className={styles.dummyGrid}>
-                  <div className={styles.dummyBlock}></div>
-                  <div className={styles.dummyBlock}></div>
-                  <div className={styles.dummyBlockFull}></div>
-                  <div className={styles.dummyBlock}></div>
-                  <div className={styles.dummyBlock}></div>
-                  <div className={styles.dummyBlockFull}></div>
-                </div>
+                <iframe
+                  src={`https://${activeProject.url}`}
+                  className={styles.iframeContent}
+                  title={activeProject.title}
+                  loading="lazy"
+                  allow="fullscreen"
+                  sandbox="allow-scripts allow-same-origin"
+                />
               </motion.div>
             </AnimatePresence>
           </div>
