@@ -104,8 +104,8 @@
   flex: none;
   width: 340px;
   aspect-ratio: 9 / 16;
-  border-radius: 44px;
-  border: 14px solid #222;
+  border-radius: 20px;
+  border: 10px solid #222;
   box-shadow: 0 30px 60px rgba(0,0,0,0.25);
 }
 
@@ -269,7 +269,7 @@
   }
   .browserMockup.browserMockupMobile {
     width: 280px;
-    border-radius: 32px;
+    border-radius: 16px;
     border: 8px solid #222;
   }
   .iframeScaleContainer {
