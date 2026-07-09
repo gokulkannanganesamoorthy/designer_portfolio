@@ -104,6 +104,7 @@
   border-bottom: 1px solid #ebebeb;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 1rem;
   position: relative;
   z-index: 2;
@@ -112,6 +113,7 @@
 .browserDots {
   display: flex;
   gap: 6px;
+  width: 60px; /* fixed width to balance actions */
 }
 
 .browserDots span {
@@ -136,6 +138,34 @@
   color: #888;
   letter-spacing: 0.05em;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  white-space: nowrap;
+}
+
+.browserActions {
+  display: flex;
+  gap: 8px;
+  width: 60px; /* balance dots */
+  justify-content: flex-end;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.actionBtn:hover {
+  background-color: rgba(0,0,0,0.05);
+  color: #333;
 }
 
 .browserContent {
@@ -150,6 +180,33 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit; /* Matches activeProject.bgColor */
+  z-index: 5;
+}
+
+.loadingText {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+.iframeScaleContainer {
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5);
+  transform-origin: 0 0;
 }
 
 .iframeContent {

@@ -7,7 +7,23 @@ import { projects } from "@/lib/data";
 
 export default function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const activeProject = projects[activeIndex];
+
+  // Reset loading state when changing projects
+  const handleProjectChange = (index: number) => {
+    setActiveIndex(index);
+    setIframeLoaded(false);
+  };
+
+  const handleOpenLink = () => {
+    window.open(`https://${activeProject.url}`, "_blank");
+  };
+
+  const handleShareLink = () => {
+    navigator.clipboard.writeText(`https://${activeProject.url}`);
+    alert("Link copied to clipboard!");
+  };
 
   return (
     <section className={styles.container} id="projects">
@@ -21,7 +37,7 @@ export default function Projects() {
               <button
                 key={project.id}
                 className={`${styles.projectLink} ${activeIndex === index ? styles.active : ""}`}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleProjectChange(index)}
               >
                 <span className={styles.projectNumber}>
                   {String(index + 1).padStart(2, "0")}
@@ -40,6 +56,7 @@ export default function Projects() {
               <span />
               <span />
             </div>
+            
             <AnimatePresence mode="wait">
               <motion.div 
                 key={activeProject.id}
@@ -52,6 +69,15 @@ export default function Projects() {
                 {activeProject.url}
               </motion.div>
             </AnimatePresence>
+
+            <div className={styles.browserActions}>
+              <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
+                ⎘
+              </button>
+              <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
+                ↗
+              </button>
+            </div>
           </div>
           
           <div className={styles.browserContent}>
@@ -65,14 +91,29 @@ export default function Projects() {
                 className={styles.iframeWrapper}
                 style={{ backgroundColor: activeProject.bgColor }}
               >
-                <iframe
-                  src={`https://${activeProject.url}`}
-                  className={styles.iframeContent}
-                  title={activeProject.title}
-                  loading="lazy"
-                  allow="fullscreen"
-                  sandbox="allow-scripts allow-same-origin"
-                />
+                {!iframeLoaded && (
+                  <div className={styles.loadingOverlay}>
+                    <motion.div 
+                      className={styles.loadingText}
+                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      Hold tight, we're fetching the experience...
+                    </motion.div>
+                  </div>
+                )}
+                
+                <div className={styles.iframeScaleContainer}>
+                  <iframe
+                    src={`https://${activeProject.url}`}
+                    className={styles.iframeContent}
+                    title={activeProject.title}
+                    loading="lazy"
+                    allow="fullscreen"
+                    sandbox="allow-scripts allow-same-origin"
+                    onLoad={() => setIframeLoaded(true)}
+                  />
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
