@@ -60,23 +60,10 @@ export default function Projects() {
             )}
 
             <div className={styles.browserHeader}>
-              <div className={styles.leftActions}>
-                {viewMode === "desktop" ? (
-                  <div className={styles.browserDots}>
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                ) : (
-                  <div className={styles.mobileLinkActions}>
-                    <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    </button>
-                    <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                    </button>
-                  </div>
-                )}
+              <div className={styles.browserDots} style={{ opacity: viewMode === "desktop" ? 1 : 0 }}>
+                <span />
+                <span />
+                <span />
               </div>
               
               <AnimatePresence mode="wait">
@@ -107,17 +94,13 @@ export default function Projects() {
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </button>
-                {viewMode === "desktop" && (
-                  <>
-                    <div className={styles.divider}></div>
-                    <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    </button>
-                    <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                    </button>
-                  </>
-                )}
+                <div className={styles.divider}></div>
+                <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+                <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </button>
               </div>
             </div>
             
