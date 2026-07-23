@@ -156,8 +156,7 @@
 }
 
 .browserMockupMobile .browserUrl {
-  opacity: 0;
-  pointer-events: none;
+  display: none !important;
 }
 
 /* Hide Share and Open links in Mobile view so they don't overlap the Dynamic Island */
