@@ -14,10 +14,10 @@ export default function Testimonials() {
   });
 
   // Calculate the rotation.
-  // 4 items, 90 degrees apart.
+  // 4 items, -90 degrees apart.
   // When scroll = 0, rotateX = 0.
-  // When scroll = 1, rotateX = -270deg (to show the 4th item which is at 270deg).
-  const rotateX = useTransform(scrollYProgress, [0, 1], ["0deg", `-${(testimonials.length - 1) * 90}deg`]);
+  // When scroll = 1, rotateX = 270deg
+  const rotateX = useTransform(scrollYProgress, [0, 1], ["0deg", `${(testimonials.length - 1) * 90}deg`]);
 
   return (
     <section ref={targetRef} className={styles.container} id="testimonials">
@@ -26,7 +26,7 @@ export default function Testimonials() {
           <motion.div style={{ rotateX }} className={styles.cylinder}>
             {testimonials.map((testimonial, index) => {
               // Calculate the angle for this item
-              const angle = index * 90;
+              const angle = -index * 90;
               return (
                 <div 
                   key={testimonial.id} 

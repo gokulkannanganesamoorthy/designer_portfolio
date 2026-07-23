@@ -52,11 +52,17 @@ export default function Projects() {
         {/* Screen in Screen wrapper */}
         <div className={`${styles.browserMockup} ${viewMode === "mobile" ? styles.browserMockupMobile : ""}`}>
           <div className={styles.browserHeader}>
-            <div className={styles.browserDots}>
-              <span />
-              <span />
-              <span />
-            </div>
+            {viewMode === "desktop" ? (
+              <div className={styles.browserDots}>
+                <span />
+                <span />
+                <span />
+              </div>
+            ) : (
+              <div className={styles.dynamicIsland}>
+                <div className={styles.cameraLens}></div>
+              </div>
+            )}
             
             <AnimatePresence mode="wait">
               <motion.div 
@@ -133,6 +139,11 @@ export default function Projects() {
               </motion.div>
             </AnimatePresence>
           </div>
+          {viewMode === "desktop" && (
+            <div className={styles.imacChin}>
+              <svg className={styles.appleLogo} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.1-44.6-35.9-2.8-74.3 22.7-93.1 22.7-18.9 0-46.5-21-78.2-20.5-40.9 .5-78.8 23.9-99.9 61.2-42.5 74.9-10.8 185.8 30.6 245 20.3 29.1 43.6 61.4 75.3 60.3 30.7-1.1 42.7-19.6 80.1-19.6 37.3 0 48.5 19.6 80.6 19.1 32.7-.5 53.6-30.4 73.7-59.5 23.2-33.8 32.7-66.5 33.3-68.2-1.7-.5-68.3-26.1-68.3-111.1zM275.6 116.4c17.2-20.7 28.7-49.5 25.5-78.4-23.9 1-52.9 15.9-70.6 36.6-14.9 17.4-28.1 46.9-24.4 75 26.6 2 52.3-13.3 69.5-33.2z"/></svg>
+            </div>
+          )}
         </div>
 
       </div>
