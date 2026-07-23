@@ -12,8 +12,6 @@ export default function Projects() {
   const activeProject = projects[activeIndex];
 
   // Reset loading state when changing projects
-  const [hasInteracted, setHasInteracted] = useState(false);
-
   const handleProjectChange = (index: number) => {
     setActiveIndex(index);
     setIframeLoaded(false);
@@ -53,11 +51,33 @@ export default function Projects() {
 
         {/* Screen in Screen wrapper */}
         <div className={styles.hardwareWrapper}>
-          <div 
-            className={`${styles.browserMockup} ${viewMode === "mobile" ? styles.browserMockupMobile : ""}`}
-            onMouseEnter={() => setHasInteracted(true)}
-            onTouchStart={() => setHasInteracted(true)}
-          >
+          
+          {/* Spinning Interactive Badge */}
+          <div className={styles.spinningBadge}>
+            <motion.svg 
+              viewBox="0 0 100 100" 
+              width="100%" 
+              height="100%"
+              className={styles.spinningText}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            >
+              <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="none" />
+              <text fill="currentColor" fontSize="10.5" fontWeight="600" letterSpacing="1.5">
+                <textPath href="#circlePath">
+                  SCROLL TO EXPLORE • LIVE PREVIEW • 
+                </textPath>
+              </text>
+            </motion.svg>
+            <div className={styles.badgeCenter}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div className={`${styles.browserMockup} ${viewMode === "mobile" ? styles.browserMockupMobile : ""}`}>
             
             {viewMode === "mobile" && (
               <div className={styles.dynamicIsland}>
@@ -128,28 +148,6 @@ export default function Projects() {
             </div>
             
             <div className={styles.browserContent}>
-              <AnimatePresence>
-                {!hasInteracted && iframeLoaded && (
-                  <motion.div 
-                    className={styles.scrollIndicator}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ delay: 2.5, duration: 0.8 }}
-                  >
-                    <span>Scroll to explore</span>
-                    <motion.svg 
-                      animate={{ y: [0, 4, 0] }} 
-                      transition={{ repeat: Infinity, duration: 1.5 }}
-                      width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                    >
-                      <rect x="5" y="2" width="14" height="20" rx="7" ry="7"></rect>
-                      <line x1="12" y1="6" x2="12" y2="10"></line>
-                    </motion.svg>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeProject.id}
