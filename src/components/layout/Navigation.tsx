@@ -27,16 +27,16 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
         layout
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {!isHovered ? (
             <motion.div 
               key="icon"
-              layout 
               className={styles.menuIcon}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              exit={{ opacity: 0, scaleX: 12 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              style={{ position: "absolute", originX: 0, left: 20 }}
             >
               <div className={styles.hamburgerLine} />
               <div className={styles.hamburgerLine} />
@@ -45,10 +45,10 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
             <motion.div 
               key="links"
               className={styles.linksWrapper}
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "auto" }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              initial={{ opacity: 0, width: 0, filter: "blur(4px)" }}
+              animate={{ opacity: 1, width: "auto", filter: "blur(0px)" }}
+              exit={{ opacity: 0, width: 0, filter: "blur(4px)" }}
+              transition={{ duration: 0.4, ease: "circOut" }}
             >
               {links.map((link) => (
                 <Link key={link.name} href={link.href} className={styles.navItem}>

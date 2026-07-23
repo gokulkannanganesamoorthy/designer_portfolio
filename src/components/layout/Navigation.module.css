@@ -16,6 +16,8 @@
   pointer-events: auto; /* Re-enable clicks for the pill */
   cursor: pointer;
   overflow: hidden;
+  min-width: 56px;
+  min-height: 44px;
 }
 
 /* Dark mode fallback removed since background is gone */
