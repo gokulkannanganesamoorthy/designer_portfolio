@@ -156,20 +156,24 @@
 }
 
 .browserMockupMobile .browserUrl {
-  display: none; /* Hide URL on phone view to save space */
-}
-
-/* Hide Share and Open links in Mobile view so they don't overlap the Dynamic Island */
-.browserMockupMobile .browserActions .divider,
-.browserMockupMobile .browserActions button:nth-child(4),
-.browserMockupMobile .browserActions button:nth-child(5) {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .browserMockupMobile .browserHeader {
   padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
+}
+
+.leftActions {
+  display: flex;
+  align-items: center;
+}
+
+.mobileLinkActions {
+  display: flex;
+  gap: 8px;
 }
 
 .browserDots {
