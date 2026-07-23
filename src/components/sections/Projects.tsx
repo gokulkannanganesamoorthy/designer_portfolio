@@ -12,6 +12,8 @@ export default function Projects() {
   const activeProject = projects[activeIndex];
 
   // Reset loading state when changing projects
+  const [hasInteracted, setHasInteracted] = useState(false);
+
   const handleProjectChange = (index: number) => {
     setActiveIndex(index);
     setIframeLoaded(false);
@@ -51,7 +53,11 @@ export default function Projects() {
 
         {/* Screen in Screen wrapper */}
         <div className={styles.hardwareWrapper}>
-          <div className={`${styles.browserMockup} ${viewMode === "mobile" ? styles.browserMockupMobile : ""}`}>
+          <div 
+            className={`${styles.browserMockup} ${viewMode === "mobile" ? styles.browserMockupMobile : ""}`}
+            onMouseEnter={() => setHasInteracted(true)}
+            onTouchStart={() => setHasInteracted(true)}
+          >
             
             {viewMode === "mobile" && (
               <div className={styles.dynamicIsland}>
@@ -60,10 +66,23 @@ export default function Projects() {
             )}
 
             <div className={styles.browserHeader}>
-              <div className={styles.browserDots} style={{ opacity: viewMode === "desktop" ? 1 : 0 }}>
-                <span />
-                <span />
-                <span />
+              <div className={styles.leftActions}>
+                {viewMode === "desktop" ? (
+                  <div className={styles.browserDots}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                ) : (
+                  <div className={styles.mobileLinkActions}>
+                    <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    </button>
+                    <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </button>
+                  </div>
+                )}
               </div>
               
               <AnimatePresence mode="wait">
@@ -94,17 +113,43 @@ export default function Projects() {
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </button>
-                <div className={styles.divider}></div>
-                <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                </button>
-                <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                </button>
+                {viewMode === "desktop" && (
+                  <>
+                    <div className={styles.divider}></div>
+                    <button onClick={handleShareLink} className={styles.actionBtn} title="Copy Link">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    </button>
+                    <button onClick={handleOpenLink} className={styles.actionBtn} title="Open in new tab">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             
             <div className={styles.browserContent}>
+              <AnimatePresence>
+                {!hasInteracted && iframeLoaded && (
+                  <motion.div 
+                    className={styles.scrollIndicator}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ delay: 2.5, duration: 0.8 }}
+                  >
+                    <span>Scroll to explore</span>
+                    <motion.svg 
+                      animate={{ y: [0, 4, 0] }} 
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                      width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    >
+                      <rect x="5" y="2" width="14" height="20" rx="7" ry="7"></rect>
+                      <line x1="12" y1="6" x2="12" y2="10"></line>
+                    </motion.svg>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeProject.id}
