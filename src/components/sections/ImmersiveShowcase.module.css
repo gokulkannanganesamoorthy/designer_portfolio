@@ -1,0 +1,156 @@
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #2b98d9; /* The sky blue background from image 1 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 4rem 2rem;
+}
+
+.headerTitle {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: serif;
+  font-size: 2.5rem;
+  color: white;
+  letter-spacing: 1rem;
+  z-index: 1;
+}
+
+.splitContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  height: 60vh;
+  gap: 0; /* They touch each other in the image */
+  z-index: 2;
+  margin-top: 4rem;
+}
+
+.pane {
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  transition: flex 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.paneHovered {
+  flex: 1.2;
+}
+
+.paneShrunk {
+  flex: 0.8;
+}
+
+/* Background image placeholders */
+.paneBgColor1 {
+  position: absolute;
+  inset: 0;
+  /* Dali placeholder */
+  background: linear-gradient(to bottom, #f5ebd5 50%, #4a2512 50%);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.paneBgColor2 {
+  position: absolute;
+  inset: 0;
+  /* Wanderer placeholder */
+  background: linear-gradient(to bottom, #d9e2e8 50%, #4f3b2b 50%);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.pane:hover .paneBgColor1,
+.pane:hover .paneBgColor2 {
+  transform: scale(1.05);
+}
+
+.paneOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pane:hover .paneOverlay {
+  opacity: 1;
+}
+
+.overlayTextContainer {
+  text-align: left;
+  width: 80%;
+}
+
+.paneTitleLarge {
+  font-family: serif;
+  font-size: 5rem;
+  line-height: 0.9;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 3rem;
+  margin-top: 4rem;
+  z-index: 2;
+}
+
+.footerLinks a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease;
+}
+
+.footerLinks a:hover {
+  opacity: 0.7;
+}
+
+/* Modal styles */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+}
+
+.modalContent {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000; /* Will be covered by 3D content */
+}
+
+.closeBtn {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background: transparent;
+  border: none;
+  color: #111;
+  cursor: pointer;
+  z-index: 1000;
+  padding: 10px;
+}

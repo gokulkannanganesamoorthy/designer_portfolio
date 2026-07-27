@@ -2,7 +2,7 @@ import BusinessCard from "@/components/landing/BusinessCard";
 import About from "@/components/sections/About";
 import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
-import InteractiveShowcase from "@/components/sections/InteractiveShowcase";
+import ImmersiveShowcase from "@/components/sections/ImmersiveShowcase";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
       <About />
       <Testimonials />
       
-      <InteractiveShowcase />
+      <ImmersiveShowcase />
       <Contact />
     </main>
   );
