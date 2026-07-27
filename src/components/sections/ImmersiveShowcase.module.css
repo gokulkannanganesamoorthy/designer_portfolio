@@ -80,7 +80,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
 }
 
 @media (max-width: 768px) {
@@ -91,12 +90,12 @@
 
 .modalContent {
   position: relative;
-  width: 100%;
-  max-width: 1400px;
-  height: 90vh;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
   background: #0a0a0a;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  border: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -112,24 +111,26 @@
 
 .closeBtn {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
+  top: 2rem;
+  right: 2rem;
+  background: #111;
   border: none;
   color: white;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 100;
-  transition: background 0.3s ease;
+  z-index: 1000;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .closeBtn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #000;
+  transform: scale(1.05);
 }
 
 .scrollableContent {
