@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ImmersiveShowcase.module.css";
 import Projects from "./Projects";
 
-import TunnelScroll from "react-3d-tunnel-scroll";
+import dynamic from "next/dynamic";
 import "react-3d-tunnel-scroll/style.css";
+
+const TunnelScroll = dynamic(() => import("react-3d-tunnel-scroll"), { ssr: false });
 
 const experienceData = [
   { year: "2024", role: "Senior UX Designer", company: "Studio X", description: "Led redesign of core digital products and established a new design system." },
