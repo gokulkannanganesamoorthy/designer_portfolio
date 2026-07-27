@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ImmersiveShowcase.module.css";
 import Projects from "./Projects";
 
-import ExperienceTunnel from "./showcase/ExperienceTunnel";
-import ExperienceReel from "./showcase/ExperienceReel";
-import ExperienceStarfield from "./showcase/ExperienceStarfield";
+import ExperienceTunnel from "../showcase/ExperienceTunnel";
+import ExperienceReel from "../showcase/ExperienceReel";
+import ExperienceStarfield from "../showcase/ExperienceStarfield";
 
 // Data is now inside the components
 
