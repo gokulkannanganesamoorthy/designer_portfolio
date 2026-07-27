@@ -5,7 +5,7 @@ import styles from "./Projects.module.css";
 
 import { projects } from "@/lib/data";
 
-export default function Projects() {
+export default function Projects({ isModal = false }: { isModal?: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
@@ -27,7 +27,7 @@ export default function Projects() {
   };
 
   return (
-    <section className={styles.container} id="projects">
+    <section className={`${styles.container} ${isModal ? styles.isModal : ""}`} id={!isModal ? "projects" : undefined}>
       <div className={styles.content}>
         
         {/* Navigation Sidebar */}

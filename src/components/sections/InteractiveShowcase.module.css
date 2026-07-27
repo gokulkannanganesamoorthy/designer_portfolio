@@ -1,0 +1,270 @@
+.container {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  background: #111;
+  color: white;
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cardContent {
+  z-index: 2;
+  position: relative;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardHeader h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cardHeader svg {
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover .cardHeader svg {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.cardContent p {
+  color: #aaa;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 80%;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modalContent {
+  background: #111;
+  color: white;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.scrollableContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Custom scrollbar for modal */
+.scrollableContent::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollableContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollableContent::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.scrollableContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.innerSection {
+  padding: 4rem 2rem;
+}
+
+/* Experience Timeline Styles */
+.experienceHeader {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.modalTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.experienceHeader p {
+  color: #888;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.timeline {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 120px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.timelineItem {
+  display: flex;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.year {
+  width: 100px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #888;
+  text-align: right;
+  padding-right: 2rem;
+  flex-shrink: 0;
+}
+
+.timelineDot {
+  position: absolute;
+  left: 115px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #111;
+}
+
+.details {
+  padding-left: 3rem;
+  flex: 1;
+}
+
+.details h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.details h4 {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+.details p {
+  color: #888;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 0;
+  }
+  .modalContent {
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .timeline::before {
+    left: 20px;
+  }
+  .timelineItem {
+    flex-direction: column;
+  }
+  .year {
+    text-align: left;
+    padding-right: 0;
+    margin-bottom: 1rem;
+    padding-left: 3rem;
+  }
+  .timelineDot {
+    left: 15px;
+    top: 40px;
+  }
+  .details {
+    padding-left: 3rem;
+  }
+}

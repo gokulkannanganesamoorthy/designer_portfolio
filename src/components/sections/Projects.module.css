@@ -10,6 +10,11 @@
   padding: var(--page-margin);
 }
 
+.container.isModal {
+  min-height: unset;
+  padding: 0;
+}
+
 .content {
   width: 100%;
   max-width: 1200px;
