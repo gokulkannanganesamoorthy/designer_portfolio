@@ -83,6 +83,7 @@ export default function ImmersiveShowcase() {
             <motion.div 
               layoutId={`pane-${activePane}`}
               className={styles.modalContent}
+              style={{ borderRadius: 0 }}
             >
               <button 
                 className={styles.closeBtn} 
