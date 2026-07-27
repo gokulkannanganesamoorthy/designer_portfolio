@@ -232,47 +232,7 @@
   overflow: hidden;
 }
 
-.expControls {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 16px;
-  background: rgba(20,20,20,0.8);
-  padding: 12px 24px;
-  border-radius: 40px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  z-index: 100;
-}
 
-.expBtn {
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-}
-
-.expBtn:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.05);
-}
-
-.expBtnActive {
-  color: #000;
-  background: #fff;
-}
-
-.expBtnActive:hover {
-  color: #000;
-  background: #eee;
-}
 
 .editorialList {
   display: flex;

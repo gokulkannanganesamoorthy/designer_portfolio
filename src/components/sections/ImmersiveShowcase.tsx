@@ -5,15 +5,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ImmersiveShowcase.module.css";
 import Projects from "./Projects";
 
-import ExperienceTunnel from "../showcase/ExperienceTunnel";
-import ExperienceReel from "../showcase/ExperienceReel";
-import ExperienceStarfield from "../showcase/ExperienceStarfield";
+import TunnelScroll from "react-3d-tunnel-scroll";
+import "react-3d-tunnel-scroll/style.css";
 
-// Data is now inside the components
+const experienceData = [
+  { year: "2024", role: "Senior UX Designer", company: "Studio X", description: "Led redesign of core digital products and established a new design system." },
+  { year: "2022", role: "Product Designer", company: "TechCorp", description: "Spearheaded UI/UX for the flagship mobile application." },
+  { year: "2020", role: "UI Designer", company: "Creative Agency", description: "Worked on various client projects, creating engaging landing pages." },
+  { year: "2018", role: "Junior Designer", company: "Startup Inc", description: "Assisted in branding and web design." },
+];
 
 export default function ImmersiveShowcase() {
   const [activePane, setActivePane] = useState<"works" | "experience" | null>(null);
-  const [expMode, setExpMode] = useState<"tunnel" | "reel" | "starfield">("tunnel");
 
   useEffect(() => {
     if (activePane) {
@@ -25,6 +28,12 @@ export default function ImmersiveShowcase() {
       document.body.style.overflow = "";
     };
   }, [activePane]);
+
+  const tunnelData = experienceData.map((exp) => ({
+    id: exp.year,
+    title: `${exp.role} @ ${exp.company}`,
+    img: `https://picsum.photos/seed/${exp.company}/800/1200`
+  }));
 
   return (
     <section className={styles.container}>
@@ -100,7 +109,7 @@ export default function ImmersiveShowcase() {
             <motion.div 
               layoutId={`pane-${activePane}`}
               className={styles.modalContent}
-              style={{ borderRadius: 0 }}
+              style={{ borderRadius: 0, backgroundColor: "#000" }}
             >
               <button 
                 className={styles.closeBtn} 
@@ -119,25 +128,13 @@ export default function ImmersiveShowcase() {
 
               {activePane === "experience" && (
                 <div className={styles.expPrototypeWrapper}>
-                  {expMode === "tunnel" && <ExperienceTunnel />}
-                  {expMode === "reel" && <ExperienceReel />}
-                  {expMode === "starfield" && <ExperienceStarfield />}
-                  
-                  {/* Floating Toggle Controls */}
-                  <div className={styles.expControls}>
-                    <button 
-                      className={`${styles.expBtn} ${expMode === "tunnel" ? styles.expBtnActive : ""}`}
-                      onClick={() => setExpMode("tunnel")}
-                    >Option A: Tunnel</button>
-                    <button 
-                      className={`${styles.expBtn} ${expMode === "reel" ? styles.expBtnActive : ""}`}
-                      onClick={() => setExpMode("reel")}
-                    >Option B: Film Reel</button>
-                    <button 
-                      className={`${styles.expBtn} ${expMode === "starfield" ? styles.expBtnActive : ""}`}
-                      onClick={() => setExpMode("starfield")}
-                    >Option C: Starfield</button>
-                  </div>
+                  <TunnelScroll 
+                    projects={tunnelData}
+                    zSpacing={2500}
+                    label="EXPERIENCE"
+                    backgroundColor="#000000"
+                    textColor="#ffffff"
+                  />
                 </div>
               )}
             </motion.div>
