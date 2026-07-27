@@ -1,12 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ImmersiveShowcase.module.css";
 import Projects from "./Projects";
 
 import dynamic from "next/dynamic";
 import "react-3d-tunnel-scroll/style.css";
+
+// Polyfill React 18 internals for older libraries (like react-3d-tunnel-scroll) on React 19
+if (!(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = {
+    ReactCurrentDispatcher: { current: null },
+    ReactCurrentOwner: { current: null },
+    ReactDebugCurrentFrame: { setExtraStackFrame: () => {} }
+  };
+}
 
 const TunnelScroll = dynamic(() => import("react-3d-tunnel-scroll"), { ssr: false });
 
