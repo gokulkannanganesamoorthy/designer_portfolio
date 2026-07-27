@@ -37,7 +37,7 @@
 .paneBg {
   position: absolute;
   inset: 0;
-  background: #1a1a1a;
+  background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.2) 100%);
   z-index: 1;
 }
 
@@ -46,7 +46,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 0;
   color: rgba(255, 255, 255, 0.05);
   transition: color 0.5s ease, transform 0.5s ease;
   pointer-events: none;
@@ -64,26 +64,23 @@
   transform: translate(-50%, -50%);
   width: 100vw;
   height: 100vh;
-  z-index: 2;
+  z-index: 0;
   pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Mask it so it only shows inside the card */
 }
 
 .miniatureWrapper {
   width: 100vw;
   height: 100vh;
-  transform: scale(0.25);
+  transform: scale(0.6);
   transform-origin: center center;
-  opacity: 0.5;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pane:hover .miniatureWrapper {
-  opacity: 0.8;
-  transform: scale(0.27);
+  transform: scale(0.65);
 }
 
 .paneContent {
