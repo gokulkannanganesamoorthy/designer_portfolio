@@ -35,12 +35,21 @@ export default function ImmersiveShowcase() {
           className={`${styles.pane} ${styles.paneLeft}`}
           onClick={() => setActivePane("works")}
           whileHover="hover"
+          transition={{ type: "spring", bounce: 0.1, duration: 0.7 }}
         >
           <motion.div 
             className={styles.paneBg} 
             variants={{ hover: { scale: 1.05 } }} 
             transition={{ duration: 0.5, ease: "easeOut" }}
           />
+          {/* Minimal Visual Preview for Works */}
+          <div className={styles.previewGraphic}>
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
           <div className={styles.paneContent}>
             <h2 className={styles.paneTitle}>Selected Works</h2>
             <div className={styles.arrowIcon}>
@@ -55,12 +64,21 @@ export default function ImmersiveShowcase() {
           className={`${styles.pane} ${styles.paneRight}`}
           onClick={() => setActivePane("experience")}
           whileHover="hover"
+          transition={{ type: "spring", bounce: 0.1, duration: 0.7 }}
         >
           <motion.div 
             className={styles.paneBg} 
             variants={{ hover: { scale: 1.05 } }} 
             transition={{ duration: 0.5, ease: "easeOut" }}
           />
+          {/* Minimal Visual Preview for Experience */}
+          <div className={styles.previewGraphic}>
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4v16a2 2 0 0 0 2 2h14"></path>
+              <path d="M4 14l4-4a3 3 0 0 1 4 0l3 3 4-4"></path>
+              <circle cx="19" cy="9" r="2"></circle>
+            </svg>
+          </div>
           <div className={styles.paneContent}>
             <h2 className={styles.paneTitle}>Experience</h2>
             <div className={styles.arrowIcon}>
