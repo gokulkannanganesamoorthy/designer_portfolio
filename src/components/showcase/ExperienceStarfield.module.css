@@ -1,0 +1,91 @@
+.viewport {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: #020202;
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+.viewport {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollHint {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 100;
+  pointer-events: none;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.8; }
+}
+
+.canvasContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+/* @react-three/drei Html passes its styles through this */
+.htmlNode {
+  pointer-events: auto;
+}
+
+.nodeCard {
+  width: 350px;
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  color: white;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  /* The Html component automatically scales it, so we don't need complex 3D transforms here */
+}
+
+.yearCol {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.roleText {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 6px 0;
+  letter-spacing: -1px;
+}
+
+.companyText {
+  font-size: 16px;
+  color: #ccc;
+  font-weight: 400;
+  margin: 0 0 16px 0;
+}
+
+.descText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #999;
+  margin: 0;
+}

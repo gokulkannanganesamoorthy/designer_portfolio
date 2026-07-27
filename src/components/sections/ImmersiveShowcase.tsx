@@ -5,14 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ImmersiveShowcase.module.css";
 import Projects from "./Projects";
 
-const experienceData = [
-  { year: "2024", role: "Senior UX Designer", company: "Studio X", description: "Led redesign of core digital products and established a new design system." },
-  { year: "2022", role: "Product Designer", company: "TechCorp", description: "Spearheaded UI/UX for the flagship mobile application." },
-  { year: "2020", role: "UI Designer", company: "Creative Agency", description: "Worked on various client projects, creating engaging landing pages." },
-];
+import ExperienceTunnel from "./showcase/ExperienceTunnel";
+import ExperienceReel from "./showcase/ExperienceReel";
+import ExperienceStarfield from "./showcase/ExperienceStarfield";
+
+// Data is now inside the components
 
 export default function ImmersiveShowcase() {
   const [activePane, setActivePane] = useState<"works" | "experience" | null>(null);
+  const [expMode, setExpMode] = useState<"tunnel" | "reel" | "starfield">("tunnel");
 
   useEffect(() => {
     if (activePane) {
@@ -108,46 +109,37 @@ export default function ImmersiveShowcase() {
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
 
-              <div className={styles.scrollableContent}>
-                {activePane === "works" && (
+              {activePane === "works" && (
+                <div className={styles.scrollableContent}>
                   <div className={styles.projectsWrapper}>
                     <Projects isModal={true} />
                   </div>
-                )}
+                </div>
+              )}
 
-                {activePane === "experience" && (
-                  <div className={styles.experienceSection}>
-                    <div className={styles.experienceHeader}>
-                      <h2>Experience</h2>
-                    </div>
-                    
-                    <div className={styles.editorialList}>
-                      {experienceData.map((exp, i) => (
-                        <motion.div 
-                          key={i} 
-                          className={styles.editorialRow}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, margin: "-100px" }}
-                          transition={{ duration: 0.6, delay: i * 0.1 }}
-                        >
-                          <div className={styles.yearCol}>
-                            {exp.year}
-                          </div>
-                          <div className={styles.dividerCol}>
-                            <div className={styles.verticalLine}></div>
-                          </div>
-                          <div className={styles.detailsCol}>
-                            <h3>{exp.role}</h3>
-                            <h4>{exp.company}</h4>
-                            <p>{exp.description}</p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
+              {activePane === "experience" && (
+                <div className={styles.expPrototypeWrapper}>
+                  {expMode === "tunnel" && <ExperienceTunnel />}
+                  {expMode === "reel" && <ExperienceReel />}
+                  {expMode === "starfield" && <ExperienceStarfield />}
+                  
+                  {/* Floating Toggle Controls */}
+                  <div className={styles.expControls}>
+                    <button 
+                      className={`${styles.expBtn} ${expMode === "tunnel" ? styles.expBtnActive : ""}`}
+                      onClick={() => setExpMode("tunnel")}
+                    >Option A: Tunnel</button>
+                    <button 
+                      className={`${styles.expBtn} ${expMode === "reel" ? styles.expBtnActive : ""}`}
+                      onClick={() => setExpMode("reel")}
+                    >Option B: Film Reel</button>
+                    <button 
+                      className={`${styles.expBtn} ${expMode === "starfield" ? styles.expBtnActive : ""}`}
+                      onClick={() => setExpMode("starfield")}
+                    >Option C: Starfield</button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}
