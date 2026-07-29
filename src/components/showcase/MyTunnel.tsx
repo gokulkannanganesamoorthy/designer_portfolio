@@ -4,28 +4,28 @@ import React from 'react';
 import TunnelScroll from 'react-3d-tunnel-scroll';
 import 'react-3d-tunnel-scroll/style.css'; // Import the CSS!
 
+const experienceData = [
+  { year: '2024', role: 'Senior UX Designer', company: 'Studio X', description: 'Led redesign of core digital products and established a new design system.' },
+  { year: '2022', role: 'Product Designer', company: 'TechCorp', description: 'Spearheaded UI/UX for the flagship mobile application.' },
+  { year: '2020', role: 'UI Designer', company: 'Creative Agency', description: 'Worked on various client projects, creating engaging landing pages.' },
+  { year: '2018', role: 'Junior Designer', company: 'Startup Inc', description: 'Assisted in branding and web design.' },
+];
+
 const MyTunnel = () => {
-  const myProjects = [
-    {
-      id: '01',
-      title: 'NIKE AIR',
-      img: 'https://images.unsplash.com/photo-1552346154-21d32810baa3?q=80&w=2000'
-    },
-    {
-      id: '02',
-      title: 'RED BULL',
-      img: 'https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=2000'
-    }
-  ];
+  const tunnelData = experienceData.map((exp) => ({
+    id: exp.year,
+    title: `${exp.role} @ ${exp.company}`,
+    img: `https://picsum.photos/seed/${exp.company}/800/1200`,
+  }));
 
   return (
     <div>
       <TunnelScroll 
-        projects={myProjects}
-        zSpacing={3000}
-        label="PORTFOLIO"
-        backgroundColor="#040404"
-        textColor="#f7f4ed"
+        projects={tunnelData}
+        zSpacing={2500}
+        label="EXPERIENCE"
+        backgroundColor="#000000"
+        textColor="#ffffff"
       />
     </div>
   );
