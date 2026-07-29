@@ -5,17 +5,17 @@ import TunnelScroll from 'react-3d-tunnel-scroll';
 import 'react-3d-tunnel-scroll/style.css'; // Import the CSS!
 
 const experienceData = [
-  { year: '2024', role: 'Senior UX Designer', company: 'Studio X', description: 'Led redesign of core digital products and established a new design system.' },
-  { year: '2022', role: 'Product Designer', company: 'TechCorp', description: 'Spearheaded UI/UX for the flagship mobile application.' },
-  { year: '2020', role: 'UI Designer', company: 'Creative Agency', description: 'Worked on various client projects, creating engaging landing pages.' },
-  { year: '2018', role: 'Junior Designer', company: 'Startup Inc', description: 'Assisted in branding and web design.' },
+  { year: 'Jun 2026 - Present', role: 'Digital Experience Designer', company: 'Independent' },
+  { year: 'Jun 2026 - Present', role: 'Founding Member & Tech Head', company: 'TAT (The Ads Tag)' },
+  { year: 'Jan 2026 - Jul 2026', role: 'Tech & Operations Associate', company: 'Orrayson Studio' },
+  { year: 'Feb 2025 - Dec 2025', role: 'Founder', company: 'Luno Tech' }
 ];
 
 const MyTunnel = () => {
   const tunnelData = experienceData.map((exp) => ({
     id: exp.year,
-    title: `${exp.role} @ ${exp.company}`,
-    img: `https://picsum.photos/seed/${exp.company}/800/1200`,
+    title: exp.company === 'Independent' ? exp.role : `${exp.role} @ ${exp.company}`,
+    img: `https://picsum.photos/seed/${exp.company.replace(/\s+/g, '')}/800/1200`,
   }));
 
   return (
