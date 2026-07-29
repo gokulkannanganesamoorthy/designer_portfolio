@@ -195,29 +195,13 @@ export default function ImmersiveShowcase() {
 
               {activePane === 'experience' && (
                 <div className={styles.expPrototypeWrapper}>
-                  {(() => {
-                    const myProjects = [
-                      {
-                        id: '01',
-                        title: 'NIKE AIR',
-                        img: 'https://images.unsplash.com/photo-1552346154-21d32810baa3?q=80&w=2000'
-                      },
-                      {
-                        id: '02',
-                        title: 'RED BULL',
-                        img: 'https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=2000'
-                      }
-                    ];
-                    return (
-                      <TunnelScroll 
-                        projects={myProjects}
-                        zSpacing={3000}
-                        label="PORTFOLIO"
-                        backgroundColor="#040404"
-                        textColor="#f7f4ed"
-                      />
-                    );
-                  })()}
+                  <TunnelScroll
+                    projects={tunnelData}
+                    zSpacing={2500}
+                    label="EXPERIENCE"
+                    backgroundColor="#000000"
+                    textColor="#ffffff"
+                  />
                 </div>
               )}
             </motion.div>
