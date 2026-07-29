@@ -3,7 +3,6 @@ import About from '@/components/sections/About';
 import Testimonials from '@/components/sections/Testimonials';
 import Contact from '@/components/sections/Contact';
 import ImmersiveShowcase from '@/components/sections/ImmersiveShowcase';
-import MyTunnel from '@/components/showcase/MyTunnel';
 
 export default function Home() {
   return (
@@ -13,7 +12,6 @@ export default function Home() {
       {/* Sections appear after the Hero / scattered state */}
       <About />
       <Testimonials />
-      <MyTunnel />
       <ImmersiveShowcase />
       <Contact />
     </main>
