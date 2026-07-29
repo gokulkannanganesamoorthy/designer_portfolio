@@ -32,7 +32,7 @@ export default function BusinessCard() {
     return () => clearTimeout(timer);
   }, []);
 
-  const transitionConfig = {
+  const transitionConfig: any = {
     duration: 1.5,
     ease: [0.2, 0, 0, 1],
   };
