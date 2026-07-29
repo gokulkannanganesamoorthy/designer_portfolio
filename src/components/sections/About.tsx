@@ -12,7 +12,7 @@ export default function About() {
       <div className={styles.header}>
         <h2 className={styles.title}>About</h2>
         
-        <div className={styles.toggleContainer}>
+        <div className={styles.toggle}>
           <button 
             className={`${styles.toggleBtn} ${mode === "text" ? styles.active : ""}`}
             onClick={() => setMode("text")}
