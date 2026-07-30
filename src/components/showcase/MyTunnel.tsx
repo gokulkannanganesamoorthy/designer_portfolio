@@ -36,7 +36,7 @@ const MyTunnel = () => {
       <TunnelScroll
         projects={tunnelData}
         zSpacing={2500}
-        initialZ={1500}
+        initialZ={2500}
         label="EXPERIENCE"
         backgroundColor="#000000"
         textColor="#ffffff"
