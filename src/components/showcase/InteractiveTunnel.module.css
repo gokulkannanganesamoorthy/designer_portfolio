@@ -1,0 +1,125 @@
+.tunnelSection {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #030303; /* Very dark off-black */
+  color: #fff;
+  overflow: hidden;
+}
+
+.tunnelOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(circle at center, transparent 0%, #030303 90%);
+}
+
+.tunnelLabel {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-family: monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 2px;
+  z-index: 20;
+}
+
+.tunnelViewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  perspective: 1200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tunnelScene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.cardContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 768px) {
+  .cardContainer {
+    width: 90vw;
+  }
+}
+
+.card {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 4rem;
+  background-color: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle grid inside the card */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(#111 1px, transparent 1px),
+                    linear-gradient(90deg, #111 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cardYear {
+  font-family: monospace;
+  font-size: 14px;
+  color: #666;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.cardCompany {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0;
+}
+
+.cardRole {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.25rem;
+  color: #888;
+  font-weight: 400;
+}
