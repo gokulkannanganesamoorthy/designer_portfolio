@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './ImmersiveShowcase.module.css';
 import Projects from './Projects';
@@ -172,16 +173,49 @@ export default function ImmersiveShowcase() {
                   </div>
                 </div>
               )}
-
-              {activePane === 'experience' && (
-                <div className={styles.expPrototypeWrapper}>
-                  <MyTunnel />
-                </div>
-              )}
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Render Experience Tunnel at the root of the document to avoid layout conflicts with GSAP */}
+      {activePane === 'experience' &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              minHeight: '100vh',
+              zIndex: 99999,
+              background: '#000',
+            }}
+          >
+            <button
+              className={styles.closeBtn}
+              onClick={() => setActivePane(null)}
+              style={{ position: 'fixed', zIndex: 100000 }}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <MyTunnel />
+          </div>,
+          document.body
+        )}
     </section>
   );
 }
