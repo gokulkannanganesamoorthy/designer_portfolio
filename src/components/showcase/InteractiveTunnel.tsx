@@ -33,7 +33,11 @@ const Typewriter = ({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive) {
+      setDisplayedText('');
+      setCurrentIndex(0);
+      return;
+    }
 
     if (currentIndex < text.length) {
       const timeout = setTimeout(() => {
@@ -80,23 +84,33 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   const playTick = () => {
     if (!audioCtxRef.current) return;
     const ctx = audioCtxRef.current;
+    if (ctx.state === 'suspended') ctx.resume();
     
-    const osc = ctx.createOscillator();
+    // Create a burst of white noise to simulate a mechanical keyboard click
+    const bufferSize = ctx.sampleRate * 0.05; // 50ms buffer
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+    
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = buffer;
+    
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 1000 + Math.random() * 500; // Randomize slightly for organic feel
+    
     const gainNode = ctx.createGain();
-    
-    osc.type = 'sine';
-    const baseFreq = 800;
-    osc.frequency.setValueAtTime(baseFreq + Math.random() * 200, ctx.currentTime);
-    
     gainNode.gain.setValueAtTime(0, ctx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.01);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.002);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
     
-    osc.connect(gainNode);
+    noiseSource.connect(filter);
+    filter.connect(gainNode);
     gainNode.connect(ctx.destination);
     
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.1);
+    noiseSource.start(ctx.currentTime);
   };
 
   useEffect(() => {
@@ -162,14 +176,17 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
               
               projects.forEach((_, i) => {
                 const cardZ = i * zSpacing + initialZ;
-                if (currentZ > cardZ - 3000) {
+                // Active if the camera is approaching it, and deactivate if it's far behind the camera
+                if (currentZ > cardZ - 3000 && currentZ < cardZ + 1500) {
                   newActive[i] = true;
+                } else {
+                  newActive[i] = false;
                 }
               });
 
               setActiveIndices(prev => {
                 for (const key in newActive) {
-                  if (!prev[key]) changed = true;
+                  if (prev[key] !== newActive[key]) changed = true;
                 }
                 return changed ? { ...prev, ...newActive } : prev;
               });
@@ -204,9 +221,9 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
         const x = (e.clientX / innerWidth) * 2 - 1;
         const y = (e.clientY / innerHeight) * 2 - 1;
 
-        // Apply subtle rotation
-        rotateXTo(y * -5);
-        rotateYTo(x * 5);
+        // Apply very subtle rotation
+        rotateXTo(y * -2);
+        rotateYTo(x * 2);
       };
 
       window.addEventListener('mousemove', handleMouseMove);
