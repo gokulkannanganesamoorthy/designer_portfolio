@@ -64,7 +64,7 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
 }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
-  const [activeIndices, setActiveIndices] = useState<Record<number, boolean>>({});
+  const [activeIndices, setActiveIndices] = useState<Record<number, boolean>>({ 0: true });
 
   const audioCtxRef = useRef<AudioContext | null>(null);
 
@@ -133,12 +133,22 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
         }
       );
 
-      // Fade out cards as they pass the camera
+      // Fade out cards and trigger typing
       gsap.utils.toArray('.interactive-card').forEach((card: any, i) => {
+        // Trigger typing when the card is 3000px away from the camera
+        const typeStart = Math.max(0, i * zSpacing + initialZ - 3000);
+        
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: () => `top+=${typeStart} top`,
+          onEnter: () => setActiveIndices(prev => ({ ...prev, [i]: true })),
+          onEnterBack: () => setActiveIndices(prev => ({ ...prev, [i]: true })),
+        });
+
         const triggerStart = i * zSpacing + initialZ - 800;
         const triggerEnd = i * zSpacing + initialZ + 500;
         
-        // We only fade out opacity when it passes the camera (Z > 0 relative to camera)
+        // Fade out opacity when it passes the camera
         gsap.to(card, {
           opacity: 0,
           ease: 'none',
@@ -147,16 +157,13 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             start: () => `top+=${triggerStart} top`,
             end: () => `top+=${triggerEnd} top`,
             scrub: true,
-            onEnter: () => {
-              setActiveIndices(prev => ({ ...prev, [i]: true }));
-            },
           },
         });
       });
 
       // 2. Mouse Parallax Tilt
-      const rotateXTo = gsap.quickTo(sceneRef.current, "rotateX", { duration: 0.8, ease: "power3" });
-      const rotateYTo = gsap.quickTo(sceneRef.current, "rotateY", { duration: 0.8, ease: "power3" });
+      const rotateXTo = gsap.quickTo(sceneRef.current, "rotationX", { duration: 0.8, ease: "power3" });
+      const rotateYTo = gsap.quickTo(sceneRef.current, "rotationY", { duration: 0.8, ease: "power3" });
 
       const handleMouseMove = (e: MouseEvent) => {
         const { innerWidth, innerHeight } = window;
