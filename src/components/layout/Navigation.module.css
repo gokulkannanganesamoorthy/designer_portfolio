@@ -37,7 +37,7 @@
   stroke: var(--text-primary);
   stroke-width: 1.5px;
   stroke-linecap: round;
-  stroke-dasharray: 12 6 12 70; /* Two dashes of length 12 separated by 6 */
+  stroke-dasharray: 15 35; /* Two lines spaced perfectly evenly on opposite sides */
   opacity: 0;
   transition: opacity 0.3s ease;
 }
