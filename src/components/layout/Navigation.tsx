@@ -48,9 +48,9 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
             <motion.div 
               key="links"
               className={styles.linksWrapper}
-              initial={{ opacity: 0, width: 0, filter: "blur(4px)" }}
-              animate={{ opacity: 1, width: "auto", filter: "blur(0px)" }}
-              exit={{ opacity: 0, width: 0, filter: "blur(4px)" }}
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: "auto" }}
+              exit={{ opacity: 0, width: 0 }}
               transition={{ duration: 0.4, ease: "circOut" }}
             >
               {links.map((link) => (

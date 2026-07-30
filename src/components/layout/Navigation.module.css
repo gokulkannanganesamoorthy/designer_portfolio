@@ -30,9 +30,8 @@
   height: 600px;
   /* Smooth black/dark gradient with no hard edges */
   background: conic-gradient(from 0deg, 
-    rgba(17, 17, 17, 1) 0%, 
-    transparent 25%, 
-    transparent 75%, 
+    transparent 0%, 
+    transparent 85%, 
     rgba(17, 17, 17, 1) 100%
   );
   transform-origin: center;
