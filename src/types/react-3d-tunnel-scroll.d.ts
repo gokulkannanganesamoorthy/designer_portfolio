@@ -4,6 +4,7 @@ declare module 'react-3d-tunnel-scroll' {
   export interface TunnelScrollProps {
     projects: { id: string; title: string; img: string }[];
     zSpacing?: number;
+    initialZ?: number;
     label?: string | null;
     backgroundColor?: string;
     textColor?: string;
