@@ -86,31 +86,27 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     const ctx = audioCtxRef.current;
     if (ctx.state === 'suspended') ctx.resume();
     
-    // Create a burst of white noise to simulate a mechanical keyboard click
-    const bufferSize = ctx.sampleRate * 0.05; // 50ms buffer
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-    }
-    
-    const noiseSource = ctx.createBufferSource();
-    noiseSource.buffer = buffer;
-    
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 1000 + Math.random() * 500; // Randomize slightly for organic feel
-    
+    const osc = ctx.createOscillator();
     const gainNode = ctx.createGain();
+    
+    // Clean sine wave for a crisp "cling/click" sound
+    osc.type = 'sine';
+    
+    // High frequency that drops very slightly gives it a percussive "tink" sound
+    const baseFreq = 1200 + Math.random() * 100;
+    osc.frequency.setValueAtTime(baseFreq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, ctx.currentTime + 0.03);
+    
     gainNode.gain.setValueAtTime(0, ctx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.002);
+    gainNode.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.002);
+    // Fast decay so it doesn't ring out too long
     gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
     
-    noiseSource.connect(filter);
-    filter.connect(gainNode);
+    osc.connect(gainNode);
     gainNode.connect(ctx.destination);
     
-    noiseSource.start(ctx.currentTime);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.05);
   };
 
   useEffect(() => {
