@@ -121,26 +121,43 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   }, []);
 
   const totalDepth = projects.length * zSpacing + initialZ;
+  
+  // Track card width dynamically to keep perfect 3D corner alignment on mobile
+  const [cardWidth, setCardWidth] = useState(500);
+  useEffect(() => {
+    const handleResize = () => {
+      setCardWidth(window.innerWidth <= 768 ? window.innerWidth * 0.9 : 500);
+    };
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Generate SVG Path for Timeline using EXACT pixel coordinates relative to center
   const generatePath = () => {
+    const getCornerX = (index: number) => {
+      const isLeft = index % 2 === 0;
+      const center = isLeft ? -350 : 350;
+      // Connect to the inner bottom corner (Right corner for Left cards, Left corner for Right cards)
+      return isLeft ? center + (cardWidth / 2) : center - (cardWidth / 2);
+    };
+
     let d = `M 0,0 `;
     projects.forEach((_, i) => {
-      const isLeft = i % 2 === 0;
-      const targetX = isLeft ? -350 : 350; // EXACT 350px offset
+      const targetX = getCornerX(i);
       const targetZ = initialZ + i * zSpacing;
       
       if (i === 0) {
         d += `C 0,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
       } else {
         const prevZ = initialZ + (i - 1) * zSpacing;
-        const prevX = isLeft ? 350 : -350;
+        const prevX = getCornerX(i - 1);
         const midZ = prevZ + zSpacing / 2;
         d += `C ${prevX},${midZ} ${targetX},${midZ} ${targetX},${targetZ} `;
       }
     });
     // Continue the line into the abyss
-    const lastX = (projects.length - 1) % 2 === 0 ? -350 : 350;
+    const lastX = getCornerX(projects.length - 1);
     d += `L ${lastX},${totalDepth}`;
     return d;
   };
@@ -247,7 +264,8 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
               left: '50%', // ANCHOR EXACTLY TO CENTER
               width: 0,
               height: 0,
-              transform: 'rotateX(90deg)', // No translateY, it rotates directly from center
+              // Move the "floor" down exactly to the bottom edge of the cards
+              transform: `translateY(${cardWidth / 2}px) rotateX(90deg)`,
               pointerEvents: 'none',
               zIndex: 0,
             }}
@@ -256,9 +274,9 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
               <path
                 d={generatePath()}
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.15)"
+                stroke="#ffffff"
                 strokeWidth="2"
-                strokeDasharray="10 10"
+                /* Removed strokeDasharray to make it a solid line as requested */
               />
             </svg>
           </div>
