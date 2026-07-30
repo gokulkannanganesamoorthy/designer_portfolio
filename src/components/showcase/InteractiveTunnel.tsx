@@ -122,25 +122,25 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
 
   const totalDepth = projects.length * zSpacing + initialZ;
 
-  // Generate SVG Path for Timeline
+  // Generate SVG Path for Timeline using EXACT pixel coordinates relative to center
   const generatePath = () => {
-    let d = `M 500,0 `;
+    let d = `M 0,0 `;
     projects.forEach((_, i) => {
       const isLeft = i % 2 === 0;
-      const targetX = isLeft ? 250 : 750;
+      const targetX = isLeft ? -350 : 350; // EXACT 350px offset
       const targetZ = initialZ + i * zSpacing;
       
       if (i === 0) {
-        d += `C 500,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
+        d += `C 0,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
       } else {
         const prevZ = initialZ + (i - 1) * zSpacing;
-        const prevX = isLeft ? 750 : 250;
+        const prevX = isLeft ? 350 : -350;
         const midZ = prevZ + zSpacing / 2;
         d += `C ${prevX},${midZ} ${targetX},${midZ} ${targetX},${targetZ} `;
       }
     });
     // Continue the line into the abyss
-    const lastX = (projects.length - 1) % 2 === 0 ? 250 : 750;
+    const lastX = (projects.length - 1) % 2 === 0 ? -350 : 350;
     d += `L ${lastX},${totalDepth}`;
     return d;
   };
@@ -244,16 +244,15 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             style={{
               position: 'absolute',
               top: '50%',
-              left: 0,
-              width: '100%',
-              height: `${totalDepth}px`,
-              transformOrigin: 'top center',
-              transform: 'rotateX(90deg) translateY(0)',
+              left: '50%', // ANCHOR EXACTLY TO CENTER
+              width: 0,
+              height: 0,
+              transform: 'rotateX(90deg)', // No translateY, it rotates directly from center
               pointerEvents: 'none',
               zIndex: 0,
             }}
           >
-            <svg width="100%" height="100%" viewBox={`0 0 1000 ${totalDepth}`} preserveAspectRatio="none">
+            <svg style={{ overflow: 'visible' }}>
               <path
                 d={generatePath()}
                 fill="none"
@@ -267,8 +266,8 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
           {projects.map((project, i) => {
               const zPos = -(i * zSpacing) - initialZ;
               
-              // Alternate left/right and give initial slight rotation to make it look like a tunnel
-              const xPos = i % 2 === 0 ? '-25vw' : '25vw';
+              // Use EXACT same pixels as the SVG path
+              const xOffset = i % 2 === 0 ? -350 : 350;
               const initRotateY = i % 2 === 0 ? '15deg' : '-15deg';
 
               return (
@@ -276,7 +275,7 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
                   key={project.id || i}
                   className={`${styles.cardContainer} interactive-card`}
                   style={{
-                    transform: `translate3d(calc(-50% + ${xPos}), -50%, ${zPos}px) rotateY(${initRotateY})`,
+                    transform: `translate3d(calc(-50% + ${xOffset}px), -50%, ${zPos}px) rotateY(${initRotateY})`,
                   }}
                 >
                   <div className={styles.card}>
