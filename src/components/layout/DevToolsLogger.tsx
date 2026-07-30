@@ -8,8 +8,8 @@ export default function DevToolsLogger() {
     if (sessionStorage.getItem("hasLoggedDevTools")) return;
     
     console.log(
-      "%cYou looked closer.\nWelcome.",
-      "font-family: monospace; font-size: 14px; color: #a1a1aa;"
+      "%cWelcome to my portfolio! Let's build something great together.",
+      "font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif; font-size: 14px; color: #a1a1aa;"
     );
     
     sessionStorage.setItem("hasLoggedDevTools", "true");

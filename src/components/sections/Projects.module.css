@@ -117,7 +117,6 @@
 
 .projectNumber {
   font-size: var(--text-xs);
-  font-family: var(--font-geist-mono), monospace;
   opacity: 0.5;
 }
 
@@ -255,7 +254,6 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-family: monospace;
 }
 
 .glitchText {

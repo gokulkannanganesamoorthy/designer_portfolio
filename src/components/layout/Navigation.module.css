@@ -46,7 +46,6 @@
 }
 
 .navItem {
-  font-family: var(--font-geist-mono), monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
