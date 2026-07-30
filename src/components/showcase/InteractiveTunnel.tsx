@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './InteractiveTunnel.module.css';
@@ -18,6 +18,45 @@ export interface InteractiveTunnelProps {
   initialZ?: number;
 }
 
+const Typewriter = ({
+  text,
+  isActive,
+  playTick,
+  speed = 40,
+}: {
+  text: string;
+  isActive: boolean;
+  playTick: () => void;
+  speed?: number;
+}) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        if (text[currentIndex] !== ' ') {
+          playTick();
+        }
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, isActive, text, playTick, speed]);
+
+  return (
+    <>
+      {displayedText}
+      {isActive && currentIndex < text.length && (
+        <span className="blinking-cursor" style={{ opacity: 0.7 }}>█</span>
+      )}
+    </>
+  );
+};
+
 const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   projects = [],
   zSpacing = 2500,
@@ -25,6 +64,50 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
 }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const [activeIndices, setActiveIndices] = useState<Record<number, boolean>>({});
+
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const initAudio = () => {
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    if (audioCtxRef.current.state === 'suspended') {
+      audioCtxRef.current.resume();
+    }
+  };
+
+  const playTick = () => {
+    if (!audioCtxRef.current) return;
+    const ctx = audioCtxRef.current;
+    
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    
+    osc.type = 'sine';
+    
+    const baseFreq = 800;
+    osc.frequency.setValueAtTime(baseFreq + Math.random() * 200, ctx.currentTime);
+    
+    gainNode.gain.setValueAtTime(0, ctx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    
+    osc.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.05);
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', initAudio);
+    window.addEventListener('wheel', initAudio);
+    return () => {
+      window.removeEventListener('click', initAudio);
+      window.removeEventListener('wheel', initAudio);
+    };
+  }, []);
 
   useEffect(() => {
     if (!projects.length) return;
@@ -64,6 +147,9 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             start: () => `top+=${triggerStart} top`,
             end: () => `top+=${triggerEnd} top`,
             scrub: true,
+            onEnter: () => {
+              setActiveIndices(prev => ({ ...prev, [i]: true }));
+            },
           },
         });
       });
@@ -115,9 +201,15 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
                 }}
               >
                 <div className={styles.card}>
-                  <div className={styles.cardYear}>[{project.year}]</div>
-                  <h3 className={styles.cardCompany}>{project.company}</h3>
-                  <div className={styles.cardRole}>{project.role}</div>
+                  <div className={styles.cardYear}>
+                    [<Typewriter text={project.year} isActive={activeIndices[i]} playTick={playTick} speed={50} />]
+                  </div>
+                  <h3 className={styles.cardCompany}>
+                    <Typewriter text={project.company} isActive={activeIndices[i]} playTick={playTick} speed={40} />
+                  </h3>
+                  <div className={styles.cardRole}>
+                    <Typewriter text={project.role} isActive={activeIndices[i]} playTick={playTick} speed={30} />
+                  </div>
                 </div>
               </div>
             );

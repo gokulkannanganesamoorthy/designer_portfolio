@@ -7,7 +7,6 @@ import Projects from './Projects';
 
 import InteractiveTunnel from '../showcase/InteractiveTunnel';
 
-
 export default function ImmersiveShowcase() {
   const [activePane, setActivePane] = useState<'works' | 'experience' | null>(
     null,
@@ -37,7 +36,6 @@ export default function ImmersiveShowcase() {
       }
     };
   }, [activePane]);
-
 
   return (
     <section className={styles.container}>
@@ -214,16 +212,40 @@ export default function ImmersiveShowcase() {
             </button>
             <InteractiveTunnel
               projects={[
-                { id: 'luno', year: 'Feb 2025 - Dec 2025', role: 'Founder', title: 'Founder', company: 'Luno Tech' },
-                { id: 'orrayson', year: 'Jan 2026 - Jul 2026', role: 'Tech & Operations Associate', title: 'Tech & Operations Associate', company: 'Orrayson Studio' },
-                { id: 'tat', year: 'Jun 2026 - Present', role: 'Founding Member & Tech Head', title: 'Founding Member & Tech Head', company: 'TAT (The Ads Tag)' },
-                { id: 'indie', year: 'Jun 2026 - Present', role: 'Digital Experience Designer', title: 'Digital Experience Designer', company: 'Independent' },
+                {
+                  id: 'luno',
+                  year: 'Feb 2025 - Dec 2025',
+                  role: 'Founder',
+                  title: 'Founder',
+                  company: 'Luno Tech',
+                },
+                {
+                  id: 'orrayson',
+                  year: 'Jan 2026 - Jul 2026',
+                  role: 'Tech & Operations Associate',
+                  title: 'Tech & Operations Associate',
+                  company: 'Orrayson Studio',
+                },
+                {
+                  id: 'tat',
+                  year: 'Jun 2026 - Present',
+                  role: 'Founding Member & Tech Head',
+                  title: 'Founding Member & Tech Head',
+                  company: 'TAT (The Ads Tag)',
+                },
+                {
+                  id: 'indie',
+                  year: 'Jun 2026 - Present',
+                  role: 'Digital Experience Designer',
+                  title: 'Digital Experience Designer',
+                  company: 'Independent',
+                },
               ]}
               zSpacing={2500}
-              initialZ={2500}
+              initialZ={4000}
             />
           </div>,
-          document.body
+          document.body,
         )}
     </section>
   );
