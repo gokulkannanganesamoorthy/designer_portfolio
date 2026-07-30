@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './ImmersiveShowcase.module.css';
 import Projects from './Projects';
 
-import MyTunnel from '../showcase/MyTunnel';
+import CinematicTunnel from '../showcase/CinematicTunnel';
 
 
 export default function ImmersiveShowcase() {
@@ -212,7 +212,16 @@ export default function ImmersiveShowcase() {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            <MyTunnel />
+            <CinematicTunnel
+              projects={[
+                { id: 'luno', year: 'Feb 2025 - Dec 2025', role: 'Founder', company: 'Luno Tech' },
+                { id: 'orrayson', year: 'Jan 2026 - Jul 2026', role: 'Tech & Operations Associate', company: 'Orrayson Studio' },
+                { id: 'tat', year: 'Jun 2026 - Present', role: 'Founding Member & Tech Head', company: 'TAT (The Ads Tag)' },
+                { id: 'indie', year: 'Jun 2026 - Present', role: 'Digital Experience Designer', company: 'Independent' },
+              ]}
+              zSpacing={2500}
+              initialZ={2500}
+            />
           </div>,
           document.body
         )}
