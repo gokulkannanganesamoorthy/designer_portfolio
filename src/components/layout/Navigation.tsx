@@ -27,6 +27,9 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
         layout
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
+        <div className={`${styles.glowBorder} ${isHovered ? styles.glowActive : ""}`} />
+        <div className={styles.navInner} />
+        
         <AnimatePresence>
           {!isHovered ? (
             <motion.div 

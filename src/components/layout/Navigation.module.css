@@ -18,6 +18,44 @@
   overflow: hidden;
   min-width: 56px;
   min-height: 44px;
+  position: relative;
+  border-radius: 40px;
+}
+
+.glowBorder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: conic-gradient(from 0deg, transparent 60%, #4285f4, #9b72cb, #d96570, #f8bc44, #4285f4);
+  transform-origin: center;
+  animation: spin 2.5s linear infinite;
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.glowActive {
+  opacity: 1;
+}
+
+.navInner {
+  position: absolute;
+  top: 1.5px;
+  left: 1.5px;
+  right: 1.5px;
+  bottom: 1.5px;
+  background-color: var(--bg-primary);
+  border-radius: 40px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* Dark mode fallback removed since background is gone */
