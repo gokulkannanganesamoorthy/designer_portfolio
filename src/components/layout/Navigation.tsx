@@ -10,6 +10,31 @@ interface NavigationProps {
   delay?: number;
 }
 
+const containerVariants = {
+  hidden: { width: 0, opacity: 0 },
+  show: {
+    width: "auto",
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1], // Custom smooth ease
+      staggerChildren: 0.05,
+      delayChildren: 0.1
+    }
+  },
+  exit: {
+    width: 0,
+    opacity: 0,
+    transition: { duration: 0.4, ease: "circOut" }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: 10 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.3 } },
+  exit: { opacity: 0, x: 10, transition: { duration: 0.2 } }
+};
+
 export default function Navigation({ delay = 0 }: NavigationProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -27,36 +52,51 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
         layout
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
-        <div className={`${styles.glowBorder} ${isHovered ? styles.glowActive : ""}`} />
-        <div className={styles.navInner} />
+        <svg className={styles.svgBorder}>
+          <rect 
+            className={`${styles.animatedRect} ${isHovered ? styles.rectActive : ""}`}
+            x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="21.25" 
+            pathLength="100"
+          />
+        </svg>
         
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {!isHovered ? (
             <motion.div 
               key="icon"
               className={styles.menuIcon}
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              exit={{ opacity: 0, scaleX: 12 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.3 }}
               style={{ position: "absolute", originX: 0, left: 20 }}
             >
-              <div className={styles.hamburgerLine} />
-              <div className={styles.hamburgerLine} />
+              <motion.div 
+                className={styles.hamburgerLine} 
+                animate={{ x: isHovered ? 20 : 0, opacity: isHovered ? 0 : 1 }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div 
+                className={styles.hamburgerLine} 
+                animate={{ x: isHovered ? -20 : 0, opacity: isHovered ? 0 : 1 }}
+                transition={{ duration: 0.3 }}
+              />
             </motion.div>
           ) : (
             <motion.div 
               key="links"
               className={styles.linksWrapper}
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "auto" }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.4, ease: "circOut" }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              exit="exit"
             >
               {links.map((link) => (
-                <Link key={link.name} href={link.href} className={styles.navItem}>
-                  <span>{link.name}</span>
-                </Link>
+                <motion.div key={link.name} variants={itemVariants}>
+                  <Link href={link.href} className={styles.navItem}>
+                    <span>{link.name}</span>
+                  </Link>
+                </motion.div>
               ))}
             </motion.div>
           )}
