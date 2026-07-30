@@ -179,44 +179,46 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   }, [projects.length, zSpacing, initialZ]);
 
   return (
-    <section className={styles.tunnelSection} ref={sectionRef}>
-      <div className={styles.tunnelOverlay} />
-      <h2 className={styles.tunnelLabel}>[ INTERACTIVE ARCHIVE ]</h2>
+    <div>
+      <section className={styles.tunnelSection} ref={sectionRef}>
+        <div className={styles.tunnelOverlay} />
+        <h2 className={styles.tunnelLabel}>[ INTERACTIVE ARCHIVE ]</h2>
 
-      <div className={styles.tunnelViewport}>
-        <div className={styles.tunnelScene} ref={sceneRef}>
-          {projects.map((project, i) => {
-            const zPos = -(i * zSpacing) - initialZ;
-            
-            // Alternate left/right and give initial slight rotation to make it look like a tunnel
-            const xPos = i % 2 === 0 ? '-25vw' : '25vw';
-            const initRotateY = i % 2 === 0 ? '15deg' : '-15deg';
+        <div className={styles.tunnelViewport}>
+          <div className={styles.tunnelScene} ref={sceneRef}>
+            {projects.map((project, i) => {
+              const zPos = -(i * zSpacing) - initialZ;
+              
+              // Alternate left/right and give initial slight rotation to make it look like a tunnel
+              const xPos = i % 2 === 0 ? '-25vw' : '25vw';
+              const initRotateY = i % 2 === 0 ? '15deg' : '-15deg';
 
-            return (
-              <div
-                key={project.id || i}
-                className={`${styles.cardContainer} interactive-card`}
-                style={{
-                  transform: `translate3d(calc(-50% + ${xPos}), -50%, ${zPos}px) rotateY(${initRotateY})`,
-                }}
-              >
-                <div className={styles.card}>
-                  <div className={styles.cardYear}>
-                    [<Typewriter text={project.year} isActive={activeIndices[i]} playTick={playTick} speed={50} />]
-                  </div>
-                  <h3 className={styles.cardCompany}>
-                    <Typewriter text={project.company} isActive={activeIndices[i]} playTick={playTick} speed={40} />
-                  </h3>
-                  <div className={styles.cardRole}>
-                    <Typewriter text={project.role} isActive={activeIndices[i]} playTick={playTick} speed={30} />
+              return (
+                <div
+                  key={project.id || i}
+                  className={`${styles.cardContainer} interactive-card`}
+                  style={{
+                    transform: `translate3d(calc(-50% + ${xPos}), -50%, ${zPos}px) rotateY(${initRotateY})`,
+                  }}
+                >
+                  <div className={styles.card}>
+                    <div className={styles.cardYear}>
+                      [<Typewriter text={project.year} isActive={activeIndices[i]} playTick={playTick} speed={50} />]
+                    </div>
+                    <h3 className={styles.cardCompany}>
+                      <Typewriter text={project.company} isActive={activeIndices[i]} playTick={playTick} speed={40} />
+                    </h3>
+                    <div className={styles.cardRole}>
+                      <Typewriter text={project.role} isActive={activeIndices[i]} playTick={playTick} speed={30} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
