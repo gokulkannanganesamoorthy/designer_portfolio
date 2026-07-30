@@ -120,9 +120,8 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     };
   }, []);
 
-  // Add "Nothing" cards at start and end
+  // Only add a "Nothing" card at the end. The user wants the first card to literally be the first project.
   const extendedProjects = [
-    { id: 'start', year: '', company: 'Nothing', role: '' },
     ...projects,
     { id: 'end', year: '', company: 'Nothing', role: '' }
   ];
@@ -141,7 +140,8 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   }, []);
 
   const getCornerX = (index: number) => {
-    const isLeft = index % 2 === 0;
+    // Use Math.abs to safely handle negative indices for the infinite forward/backward lines
+    const isLeft = Math.abs(index % 2) === 0;
     const center = isLeft ? -350 : 350;
     return isLeft ? center + (cardWidth / 2) : center - (cardWidth / 2);
   };
@@ -239,9 +239,8 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
         <div className={styles.tunnelScene} ref={sceneRef}>
           
           {/* Render individual curve segments to bypass browser 3D culling bugs */}
-          {extendedProjects.map((_, i) => {
-            if (i === extendedProjects.length - 1) return null; // No line after the last card
-            
+          {/* Array goes from i = -3 to i = extendedProjects.length + 2 to create infinite forward and backward lines */}
+          {Array.from({ length: extendedProjects.length + 6 }, (_, idx) => idx - 3).map((i) => {
             const zPos = -(i * zSpacing) - initialZ;
             const startX = 500 + getCornerX(i);
             const endX = 500 + getCornerX(i + 1);
