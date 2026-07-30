@@ -3,14 +3,6 @@ import DevToolsLogger from "../components/layout/DevToolsLogger";
 import Footer from "../components/layout/Footer";
 import "./globals.css";
 
-import localFont from "next/font/local";
-
-const kadavulFont = localFont({
-  src: "./fonts/kadavul.ttf",
-  variable: "--font-kadavul",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Gokul Kannan Ganesamoorthy | Digital Experience Designer",
   description: "Designing the Invisible. Building things people remember. Digital Experience Designer portfolio of Gokul Kannan Ganesamoorthy.",
@@ -35,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={kadavulFont.variable}>
+    <html lang="en">
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
         <DevToolsLogger />
