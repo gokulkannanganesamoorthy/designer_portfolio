@@ -1,103 +1,92 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import styles from "./Navigation.module.css";
-import { navigationLinks as links } from "@/lib/data";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import styles from './Navigation.module.css';
+import { navigationLinks as links } from '@/lib/data';
 
 interface NavigationProps {
   delay?: number;
 }
 
-const containerVariants = {
-  hidden: { width: 0, opacity: 0 },
-  show: {
-    width: "auto",
-    opacity: 1,
-    transition: {
-      duration: 1.0,
-      ease: [0.16, 1, 0.3, 1],
-      staggerChildren: 0.15,
-      delayChildren: 0.2
-    }
-  },
-  exit: {
-    width: 0,
-    opacity: 0,
-    transition: { duration: 0.6, ease: [0.2, 0, 0, 1] }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: 15 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.2, 0, 0, 1] } },
-  exit: { opacity: 0, x: 15, transition: { duration: 0.4, ease: [0.2, 0, 0, 1] } }
-};
-
 export default function Navigation({ delay = 0 }: NavigationProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div 
+    <motion.div
       className={styles.navContainer}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.5, delay, ease: [0.2, 0, 0, 1] }}
     >
-      <motion.nav 
+      <motion.nav
         className={styles.navPill}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
         layout
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       >
         <svg className={styles.svgBorder}>
-          <rect 
-            className={`${styles.animatedRect} ${isHovered ? styles.rectActive : ""}`}
-            x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="21.25" 
+          <rect
+            className={`${styles.animatedRect} ${isHovered ? styles.rectActive : ''}`}
+            x="0.75"
+            y="0.75"
+            width="calc(100% - 1.5px)"
+            height="calc(100% - 1.5px)"
+            rx="21.25"
             pathLength="100"
           />
         </svg>
-        
+
         <AnimatePresence mode="wait">
           {!isHovered ? (
-            <motion.div 
+            <motion.div
               key="icon"
               className={styles.menuIcon}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.3 }}
-              style={{ position: "absolute", originX: 0, left: 20 }}
+              style={{ position: 'absolute', originX: 0, left: 20 }}
             >
-              <motion.div 
-                className={styles.hamburgerLine} 
+              <motion.div
+                className={styles.hamburgerLine}
                 animate={{ x: isHovered ? 20 : 0, opacity: isHovered ? 0 : 1 }}
                 transition={{ duration: 0.3 }}
               />
-              <motion.div 
-                className={styles.hamburgerLine} 
+              <motion.div
+                className={styles.hamburgerLine}
                 animate={{ x: isHovered ? -20 : 0, opacity: isHovered ? 0 : 1 }}
                 transition={{ duration: 0.3 }}
               />
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="links"
               className={styles.linksWrapper}
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              exit="exit"
+              initial={{ width: 0 }}
+              animate={{ width: 'auto' }}
+              exit={{ width: 0 }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
             >
-              {links.map((link) => (
-                <motion.div key={link.name} variants={itemVariants}>
-                  <Link href={link.href} className={styles.navItem}>
+              <motion.div
+                style={{ display: 'flex', gap: '1.5rem' }}
+                initial={{ x: 100 }}
+                animate={{ x: 0 }}
+                exit={{ x: 100 }}
+                transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {links.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={styles.navItem}
+                  >
                     <span>{link.name}</span>
                   </Link>
-                </motion.div>
-              ))}
+                ))}
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
