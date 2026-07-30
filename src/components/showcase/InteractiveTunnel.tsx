@@ -89,18 +89,18 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     const osc = ctx.createOscillator();
     const gainNode = ctx.createGain();
     
-    // Clean sine wave for a crisp "cling/click" sound
-    osc.type = 'sine';
+    // Use a triangle wave for a very clean, neat digital "blip"
+    osc.type = 'triangle';
     
-    // High frequency that drops very slightly gives it a percussive "tink" sound
-    const baseFreq = 1200 + Math.random() * 100;
+    // High frequency for a neat sound
+    const baseFreq = 2000 + Math.random() * 50;
     osc.frequency.setValueAtTime(baseFreq, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, ctx.currentTime + 0.03);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, ctx.currentTime + 0.03);
     
     gainNode.gain.setValueAtTime(0, ctx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 0.002);
-    // Fast decay so it doesn't ring out too long
-    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+    // CRITICAL: Lower the volume to 0.05 to prevent clipping/crackling when multiple keys type at once
+    gainNode.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.002);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03);
     
     osc.connect(gainNode);
     gainNode.connect(ctx.destination);
