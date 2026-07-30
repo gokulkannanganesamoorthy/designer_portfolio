@@ -120,7 +120,14 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     };
   }, []);
 
-  const totalDepth = projects.length * zSpacing + initialZ;
+  // Add "Nothing" cards at start and end
+  const extendedProjects = [
+    { id: 'start', year: '', company: 'Nothing', role: '' },
+    ...projects,
+    { id: 'end', year: '', company: 'Nothing', role: '' }
+  ];
+
+  const totalDepth = extendedProjects.length * zSpacing + initialZ;
   
   // Track card width dynamically to keep perfect 3D corner alignment on mobile
   const [cardWidth, setCardWidth] = useState(500);
@@ -128,43 +135,19 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     const handleResize = () => {
       setCardWidth(window.innerWidth <= 768 ? window.innerWidth * 0.9 : 500);
     };
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Generate SVG Path for Timeline using strictly positive pixel coordinates to prevent browser 3D culling bugs
-  const generatePath = () => {
-    const getCornerX = (index: number) => {
-      const isLeft = index % 2 === 0;
-      // SVG width is 2000, center is 1000
-      const center = isLeft ? 1000 - 350 : 1000 + 350;
-      // Connect to the inner bottom corner (Right corner for Left cards, Left corner for Right cards)
-      return isLeft ? center + (cardWidth / 2) : center - (cardWidth / 2);
-    };
-
-    let d = `M 1000,0 `; // Start exactly at the top-center of the 2000px wide viewBox
-    projects.forEach((_, i) => {
-      const targetX = getCornerX(i);
-      const targetZ = initialZ + i * zSpacing;
-      
-      if (i === 0) {
-        d += `C 1000,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
-      } else {
-        const prevZ = initialZ + (i - 1) * zSpacing;
-        const prevX = getCornerX(i - 1);
-        const midZ = prevZ + zSpacing / 2;
-        d += `C ${prevX},${midZ} ${targetX},${midZ} ${targetX},${targetZ} `;
-      }
-    });
-    // Continue the line into the abyss
-    const lastX = getCornerX(projects.length - 1);
-    d += `L ${lastX},${totalDepth}`;
-    return d;
+  const getCornerX = (index: number) => {
+    const isLeft = index % 2 === 0;
+    const center = isLeft ? -350 : 350;
+    return isLeft ? center + (cardWidth / 2) : center - (cardWidth / 2);
   };
 
   useEffect(() => {
-    if (!projects.length) return;
+    if (!extendedProjects.length) return;
 
     let ctx = gsap.context(() => {
       // 1. Main Scroll Z Physics
@@ -184,13 +167,11 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             onUpdate: (self) => {
               const currentZ = self.progress * totalDepth;
               
-              // Trigger typing when card is within 3000px
               const newActive: Record<number, boolean> = {};
               let changed = false;
               
-              projects.forEach((_, i) => {
+              extendedProjects.forEach((_, i) => {
                 const cardZ = i * zSpacing + initialZ;
-                // Active if the camera is approaching it, and deactivate if it's far behind the camera
                 if (currentZ > cardZ - 3000 && currentZ < cardZ + 1500) {
                   newActive[i] = true;
                 } else {
@@ -235,7 +216,6 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
         const x = (e.clientX / innerWidth) * 2 - 1;
         const y = (e.clientY / innerHeight) * 2 - 1;
 
-        // Apply very subtle rotation
         rotateXTo(y * -2);
         rotateYTo(x * 2);
       };
@@ -247,7 +227,7 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [projects.length, zSpacing, initialZ, totalDepth]);
+  }, [extendedProjects.length, zSpacing, initialZ, totalDepth]);
 
   return (
     <div>
@@ -257,41 +237,46 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
 
         <div className={styles.tunnelViewport}>
         <div className={styles.tunnelScene} ref={sceneRef}>
-          {/* Timeline Curve */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '2000px', // Explicit width to prevent 3D rendering culling
-              height: `${totalDepth}px`,
-              marginLeft: '-1000px', // Center perfectly horizontally
-              transformOrigin: 'top center',
-              // Move the "floor" down exactly to the bottom edge of the cards
-              transform: `translateY(${cardWidth / 2}px) rotateX(90deg)`,
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          >
-            <svg 
-              width="100%" 
-              height="100%" 
-              viewBox={`0 0 2000 ${totalDepth}`} 
-              style={{ overflow: 'visible' }}
-            >
-              <path
-                d={generatePath()}
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="4" // Slightly thicker for better visibility in 3D
-              />
-            </svg>
-          </div>
+          
+          {/* Render individual curve segments to bypass browser 3D culling bugs */}
+          {extendedProjects.map((_, i) => {
+            if (i === extendedProjects.length - 1) return null; // No line after the last card
+            
+            const zPos = -(i * zSpacing) - initialZ;
+            const startX = 500 + getCornerX(i);
+            const endX = 500 + getCornerX(i + 1);
+            const d = `M ${startX},0 C ${startX},${zSpacing / 2} ${endX},${zSpacing / 2} ${endX},${zSpacing}`;
 
-          {projects.map((project, i) => {
+            return (
+              <div
+                key={`line-${i}`}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '1000px',
+                  height: `${zSpacing}px`,
+                  marginLeft: '-500px',
+                  transformOrigin: 'top center',
+                  transform: `translate3d(0, ${cardWidth / 2}px, ${zPos}px) rotateX(90deg)`,
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              >
+                <svg width="100%" height="100%" viewBox={`0 0 1000 ${zSpacing}`} style={{ overflow: 'visible' }}>
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeWidth="4"
+                  />
+                </svg>
+              </div>
+            );
+          })}
+
+          {extendedProjects.map((project, i) => {
               const zPos = -(i * zSpacing) - initialZ;
-              
-              // Use EXACT same pixels as the SVG path
               const xOffset = i % 2 === 0 ? -350 : 350;
               const initRotateY = i % 2 === 0 ? '15deg' : '-15deg';
 
@@ -304,15 +289,19 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
                   }}
                 >
                   <div className={styles.card}>
-                    <div className={styles.cardYear}>
-                      [<Typewriter text={project.year} isActive={activeIndices[i]} playTick={playTick} speed={50} />]
-                    </div>
+                    {project.year && (
+                      <div className={styles.cardYear}>
+                        [<Typewriter text={project.year} isActive={activeIndices[i]} playTick={playTick} speed={50} />]
+                      </div>
+                    )}
                     <h3 className={styles.cardCompany}>
                       <Typewriter text={project.company} isActive={activeIndices[i]} playTick={playTick} speed={40} />
                     </h3>
-                    <div className={styles.cardRole}>
-                      <Typewriter text={project.role} isActive={activeIndices[i]} playTick={playTick} speed={30} />
-                    </div>
+                    {project.role && (
+                      <div className={styles.cardRole}>
+                        <Typewriter text={project.role} isActive={activeIndices[i]} playTick={playTick} speed={30} />
+                      </div>
+                    )}
                   </div>
                 </div>
               );
