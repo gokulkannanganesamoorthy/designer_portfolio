@@ -16,23 +16,23 @@ const containerVariants = {
     width: "auto",
     opacity: 1,
     transition: {
-      duration: 0.5,
-      ease: [0.16, 1, 0.3, 1], // Custom smooth ease
-      staggerChildren: 0.05,
-      delayChildren: 0.1
+      duration: 1.0,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.15,
+      delayChildren: 0.2
     }
   },
   exit: {
     width: 0,
     opacity: 0,
-    transition: { duration: 0.4, ease: "circOut" }
+    transition: { duration: 0.6, ease: [0.2, 0, 0, 1] }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: 10 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.3 } },
-  exit: { opacity: 0, x: 10, transition: { duration: 0.2 } }
+  hidden: { opacity: 0, x: 15 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.2, 0, 0, 1] } },
+  exit: { opacity: 0, x: 15, transition: { duration: 0.4, ease: [0.2, 0, 0, 1] } }
 };
 
 export default function Navigation({ delay = 0 }: NavigationProps) {
