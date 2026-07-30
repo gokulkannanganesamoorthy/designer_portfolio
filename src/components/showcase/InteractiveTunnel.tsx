@@ -60,7 +60,7 @@ const Typewriter = ({
 const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   projects = [],
   zSpacing = 2500,
-  initialZ = 2500,
+  initialZ = 4000,
 }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -85,37 +85,61 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     const gainNode = ctx.createGain();
     
     osc.type = 'sine';
-    
     const baseFreq = 800;
     osc.frequency.setValueAtTime(baseFreq + Math.random() * 200, ctx.currentTime);
     
     gainNode.gain.setValueAtTime(0, ctx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.01);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    gainNode.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
     
     osc.connect(gainNode);
     gainNode.connect(ctx.destination);
     
     osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.05);
+    osc.stop(ctx.currentTime + 0.1);
   };
 
   useEffect(() => {
-    window.addEventListener('click', initAudio);
+    window.addEventListener('pointerdown', initAudio);
+    window.addEventListener('keydown', initAudio);
     window.addEventListener('wheel', initAudio);
     return () => {
-      window.removeEventListener('click', initAudio);
+      window.removeEventListener('pointerdown', initAudio);
+      window.removeEventListener('keydown', initAudio);
       window.removeEventListener('wheel', initAudio);
     };
   }, []);
+
+  const totalDepth = projects.length * zSpacing + initialZ;
+
+  // Generate SVG Path for Timeline
+  const generatePath = () => {
+    let d = `M 500,0 `;
+    projects.forEach((_, i) => {
+      const isLeft = i % 2 === 0;
+      const targetX = isLeft ? 250 : 750;
+      const targetZ = initialZ + i * zSpacing;
+      
+      if (i === 0) {
+        d += `C 500,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
+      } else {
+        const prevZ = initialZ + (i - 1) * zSpacing;
+        const prevX = isLeft ? 750 : 250;
+        const midZ = prevZ + zSpacing / 2;
+        d += `C ${prevX},${midZ} ${targetX},${midZ} ${targetX},${targetZ} `;
+      }
+    });
+    // Continue the line into the abyss
+    const lastX = (projects.length - 1) % 2 === 0 ? 250 : 750;
+    d += `L ${lastX},${totalDepth}`;
+    return d;
+  };
 
   useEffect(() => {
     if (!projects.length) return;
 
     let ctx = gsap.context(() => {
-      const totalDepth = projects.length * zSpacing + initialZ;
-
-      // 1. Scroll Z Physics
+      // 1. Main Scroll Z Physics
       gsap.fromTo(
         sceneRef.current,
         { z: 0 },
@@ -129,26 +153,36 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             pin: true,
             scrub: 1,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const currentZ = self.progress * totalDepth;
+              
+              // Trigger typing when card is within 3000px
+              const newActive: Record<number, boolean> = {};
+              let changed = false;
+              
+              projects.forEach((_, i) => {
+                const cardZ = i * zSpacing + initialZ;
+                if (currentZ > cardZ - 3000) {
+                  newActive[i] = true;
+                }
+              });
+
+              setActiveIndices(prev => {
+                for (const key in newActive) {
+                  if (!prev[key]) changed = true;
+                }
+                return changed ? { ...prev, ...newActive } : prev;
+              });
+            }
           },
         }
       );
 
-      // Fade out cards and trigger typing
+      // Fade out cards as they pass the camera
       gsap.utils.toArray('.interactive-card').forEach((card: any, i) => {
-        // Trigger typing when the card is 3000px away from the camera
-        const typeStart = Math.max(0, i * zSpacing + initialZ - 3000);
-        
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: () => `top+=${typeStart} top`,
-          onEnter: () => setActiveIndices(prev => ({ ...prev, [i]: true })),
-          onEnterBack: () => setActiveIndices(prev => ({ ...prev, [i]: true })),
-        });
-
         const triggerStart = i * zSpacing + initialZ - 800;
         const triggerEnd = i * zSpacing + initialZ + 500;
         
-        // Fade out opacity when it passes the camera
         gsap.to(card, {
           opacity: 0,
           ease: 'none',
@@ -161,19 +195,18 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
         });
       });
 
-      // 2. Mouse Parallax Tilt
+      // 2. Mouse Parallax Tilt (Subtle)
       const rotateXTo = gsap.quickTo(sceneRef.current, "rotationX", { duration: 0.8, ease: "power3" });
       const rotateYTo = gsap.quickTo(sceneRef.current, "rotationY", { duration: 0.8, ease: "power3" });
 
       const handleMouseMove = (e: MouseEvent) => {
         const { innerWidth, innerHeight } = window;
-        // Normalize mouse coordinates from -1 to 1
         const x = (e.clientX / innerWidth) * 2 - 1;
         const y = (e.clientY / innerHeight) * 2 - 1;
 
-        // Apply rotation (invert Y for natural tilt)
-        rotateXTo(y * -15); // Max 15 degrees tilt
-        rotateYTo(x * 15);
+        // Apply subtle rotation
+        rotateXTo(y * -5);
+        rotateYTo(x * 5);
       };
 
       window.addEventListener('mousemove', handleMouseMove);
@@ -183,7 +216,7 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [projects.length, zSpacing, initialZ]);
+  }, [projects.length, zSpacing, initialZ, totalDepth]);
 
   return (
     <div>
@@ -192,8 +225,33 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
         <h2 className={styles.tunnelLabel}>[ INTERACTIVE ARCHIVE ]</h2>
 
         <div className={styles.tunnelViewport}>
-          <div className={styles.tunnelScene} ref={sceneRef}>
-            {projects.map((project, i) => {
+        <div className={styles.tunnelScene} ref={sceneRef}>
+          {/* Timeline Curve */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: 0,
+              width: '100%',
+              height: `${totalDepth}px`,
+              transformOrigin: 'top center',
+              transform: 'rotateX(90deg) translateY(0)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          >
+            <svg width="100%" height="100%" viewBox={`0 0 1000 ${totalDepth}`} preserveAspectRatio="none">
+              <path
+                d={generatePath()}
+                fill="none"
+                stroke="rgba(255, 255, 255, 0.15)"
+                strokeWidth="2"
+                strokeDasharray="10 10"
+              />
+            </svg>
+          </div>
+
+          {projects.map((project, i) => {
               const zPos = -(i * zSpacing) - initialZ;
               
               // Alternate left/right and give initial slight rotation to make it look like a tunnel
