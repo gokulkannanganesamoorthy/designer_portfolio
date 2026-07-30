@@ -2,8 +2,7 @@ import BusinessCard from '@/components/landing/BusinessCard';
 import About from '@/components/sections/About';
 import Testimonials from '@/components/sections/Testimonials';
 import Contact from '@/components/sections/Contact';
-import Projects from '@/components/sections/Projects';
-import MyTunnel from '@/components/showcase/MyTunnel';
+import ImmersiveShowcase from '@/components/sections/ImmersiveShowcase';
 
 export default function Home() {
   return (
@@ -13,8 +12,7 @@ export default function Home() {
       {/* Sections appear after the Hero / scattered state */}
       <About />
       <Testimonials />
-      <Projects />
-      <MyTunnel />
+      <ImmersiveShowcase />
       <Contact />
     </main>
   );
