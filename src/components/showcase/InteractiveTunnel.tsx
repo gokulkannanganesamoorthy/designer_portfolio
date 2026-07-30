@@ -133,22 +133,23 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Generate SVG Path for Timeline using EXACT pixel coordinates relative to center
+  // Generate SVG Path for Timeline using strictly positive pixel coordinates to prevent browser 3D culling bugs
   const generatePath = () => {
     const getCornerX = (index: number) => {
       const isLeft = index % 2 === 0;
-      const center = isLeft ? -350 : 350;
+      // SVG width is 2000, center is 1000
+      const center = isLeft ? 1000 - 350 : 1000 + 350;
       // Connect to the inner bottom corner (Right corner for Left cards, Left corner for Right cards)
       return isLeft ? center + (cardWidth / 2) : center - (cardWidth / 2);
     };
 
-    let d = `M 0,0 `;
+    let d = `M 1000,0 `; // Start exactly at the top-center of the 2000px wide viewBox
     projects.forEach((_, i) => {
       const targetX = getCornerX(i);
       const targetZ = initialZ + i * zSpacing;
       
       if (i === 0) {
-        d += `C 0,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
+        d += `C 1000,${targetZ / 2} ${targetX},${targetZ / 2} ${targetX},${targetZ} `;
       } else {
         const prevZ = initialZ + (i - 1) * zSpacing;
         const prevX = getCornerX(i - 1);
@@ -275,7 +276,7 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             <svg 
               width="100%" 
               height="100%" 
-              viewBox={`-1000 0 2000 ${totalDepth}`} 
+              viewBox={`0 0 2000 ${totalDepth}`} 
               style={{ overflow: 'visible' }}
             >
               <path
