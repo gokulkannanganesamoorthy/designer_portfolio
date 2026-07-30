@@ -92,22 +92,21 @@ export default function ImmersiveShowcase() {
             variants={{ hover: { scale: 1.05 } }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           />
-          {/* Minimal Visual Preview for Experience */}
+          {/* iMac Visual Preview for Experience */}
           <div className={styles.previewGraphic}>
-            <svg
-              width="120"
-              height="120"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M4 4v16a2 2 0 0 0 2 2h14"></path>
-              <path d="M4 14l4-4a3 3 0 0 1 4 0l3 3 4-4"></path>
-              <circle cx="19" cy="9" r="2"></circle>
-            </svg>
+            <div className={styles.imacContainer}>
+              <div className={styles.imacBody}>
+                <div className={styles.imacScreenBezel}>
+                  <div className={styles.imacCamera}></div>
+                  <div className={styles.imacScreen}>
+                    <div className={styles.imacScreenContent}></div>
+                  </div>
+                </div>
+                <div className={styles.imacChin}></div>
+              </div>
+              <div className={styles.imacStand}></div>
+              <div className={styles.imacFoot}></div>
+            </div>
           </div>
           <div className={styles.paneContent}>
             <h2 className={styles.paneTitle}>Experience</h2>
