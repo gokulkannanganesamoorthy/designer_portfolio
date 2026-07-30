@@ -13,13 +13,27 @@ export default function ImmersiveShowcase() {
   );
 
   useEffect(() => {
-    if (activePane) {
+    let savedScroll = window.scrollY;
+
+    if (activePane === 'experience') {
+      // The TunnelScroll relies on GSAP ScrollTrigger against the window.
+      // We must reset scroll to 0 so the timeline starts at the first item,
+      // and allow body scrolling so the user can scrub the timeline.
+      savedScroll = window.scrollY;
+      window.scrollTo(0, 0);
+      document.body.style.overflow = '';
+    } else if (activePane === 'works') {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
+
     return () => {
       document.body.style.overflow = '';
+      if (activePane === 'experience') {
+        // Restore the scroll position when the modal closes
+        window.scrollTo(0, savedScroll);
+      }
     };
   }, [activePane]);
 
