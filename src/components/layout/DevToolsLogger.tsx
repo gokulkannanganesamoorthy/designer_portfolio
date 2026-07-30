@@ -9,7 +9,7 @@ export default function DevToolsLogger() {
     
     console.log(
       "%cWelcome to my portfolio! Let's build something great together.",
-      "font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif; font-size: 14px; color: #a1a1aa;"
+      "font-family: var(--font-kadavul), -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif; font-size: 14px; color: #a1a1aa;"
     );
     
     sessionStorage.setItem("hasLoggedDevTools", "true");
