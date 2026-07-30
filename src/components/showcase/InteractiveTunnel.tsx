@@ -261,22 +261,28 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
             style={{
               position: 'absolute',
               top: '50%',
-              left: '50%', // ANCHOR EXACTLY TO CENTER
-              width: 0,
-              height: 0,
+              left: '50%',
+              width: '2000px', // Explicit width to prevent 3D rendering culling
+              height: `${totalDepth}px`,
+              marginLeft: '-1000px', // Center perfectly horizontally
+              transformOrigin: 'top center',
               // Move the "floor" down exactly to the bottom edge of the cards
               transform: `translateY(${cardWidth / 2}px) rotateX(90deg)`,
               pointerEvents: 'none',
               zIndex: 0,
             }}
           >
-            <svg style={{ overflow: 'visible' }}>
+            <svg 
+              width="100%" 
+              height="100%" 
+              viewBox={`-1000 0 2000 ${totalDepth}`} 
+              style={{ overflow: 'visible' }}
+            >
               <path
                 d={generatePath()}
                 fill="none"
                 stroke="#ffffff"
-                strokeWidth="2"
-                /* Removed strokeDasharray to make it a solid line as requested */
+                strokeWidth="4" // Slightly thicker for better visibility in 3D
               />
             </svg>
           </div>
