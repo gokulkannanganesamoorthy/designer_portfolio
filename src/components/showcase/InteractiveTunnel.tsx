@@ -130,6 +130,8 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
   
   // Track card width dynamically to keep perfect 3D corner alignment on mobile
   const [cardWidth, setCardWidth] = useState(500);
+  const [showFrontNothing, setShowFrontNothing] = useState(false);
+
   useEffect(() => {
     const handleResize = () => {
       setCardWidth(window.innerWidth <= 768 ? window.innerWidth * 0.9 : 500);
@@ -178,6 +180,13 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
                   newActive[i] = false;
                 }
               });
+
+              // Toggle front 'Nothing' card when scrolling backward from start
+              if (self.direction === -1 && self.progress < 0.1) {
+                setShowFrontNothing(true);
+              } else if (self.direction === 1) {
+                setShowFrontNothing(false);
+              }
 
               setActiveIndices(prev => {
                 for (const key in newActive) {
@@ -273,6 +282,23 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
               </div>
             );
           })}
+
+          {/* Front Nothing Card (Hidden initially, appears on scroll back) */}
+          <div
+            className={`${styles.cardContainer} interactive-card front-nothing-card`}
+            style={{
+              // Position it perfectly at i = -1
+              transform: `translate3d(calc(-50% + 350px), -50%, ${-(-1 * zSpacing) - initialZ}px) rotateY(-15deg)`,
+              opacity: showFrontNothing ? 1 : 0,
+              transition: 'opacity 0.5s ease',
+            }}
+          >
+            <div className={styles.card}>
+              <h3 className={styles.cardCompany}>
+                <Typewriter text="Nothing" isActive={showFrontNothing} playTick={playTick} speed={40} />
+              </h3>
+            </div>
+          </div>
 
           {extendedProjects.map((project, i) => {
               const zPos = -(i * zSpacing) - initialZ;
