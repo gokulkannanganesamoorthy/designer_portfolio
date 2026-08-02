@@ -70,23 +70,27 @@ export default function Navigation({ delay = 0 }: NavigationProps) {
               exit={{ width: 0 }}
               transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
             >
-              <motion.div
-                style={{ display: 'flex', gap: '1.5rem' }}
+              <motion.ul
+                style={{ display: 'flex', gap: '1.5rem', listStyle: 'none', margin: 0, padding: 0 }}
                 initial={{ x: 100 }}
                 animate={{ x: 0 }}
                 exit={{ x: 100 }}
                 transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+                itemScope 
+                itemType="http://schema.org/SiteNavigationElement"
               >
                 {links.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className={styles.navItem}
-                  >
-                    <span>{link.name}</span>
-                  </Link>
+                  <li key={link.name} itemProp="name">
+                    <Link
+                      href={link.href}
+                      className={styles.navItem}
+                      itemProp="url"
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
                 ))}
-              </motion.div>
+              </motion.ul>
             </motion.div>
           )}
         </AnimatePresence>

@@ -52,17 +52,55 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Gokul Kannan Ganesamoorthy",
-  jobTitle: "Digital Experience Designer",
-  url: "https://gokulmakes.in",
-  sameAs: [
-    "https://twitter.com/gokulkannan",
-    "https://linkedin.com/in/gokulkannan",
-  ],
-};
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Gokul Kannan Ganesamoorthy",
+    jobTitle: "Digital Experience Designer",
+    url: "https://gokulmakes.in",
+    sameAs: [
+      "https://twitter.com/gokulkannan",
+      "https://linkedin.com/in/gokulkannan",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Gokul Kannan Ganesamoorthy",
+    url: "https://gokulmakes.in"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: [
+      {
+        "@type": "SiteNavigationElement",
+        position: 1,
+        name: "About",
+        url: "https://gokulmakes.in/#about"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        position: 2,
+        name: "Projects",
+        url: "https://gokulmakes.in/#projects"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        position: 3,
+        name: "Testimonials",
+        url: "https://gokulmakes.in/#testimonials"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        position: 4,
+        name: "Contact",
+        url: "https://gokulmakes.in/#contact"
+      }
+    ]
+  }
+];
 
 export default function RootLayout({
   children,
