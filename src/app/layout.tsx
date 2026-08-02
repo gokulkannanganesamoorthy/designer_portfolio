@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: "Gokul Kannan Ganesamoorthy | Digital Experience Designer",
     template: "%s | Gokul Kannan Ganesamoorthy",
   },
-  description: "Designing the Invisible. Building things people remember. Digital Experience Designer portfolio of Gokul Kannan Ganesamoorthy.",
+  description: "Designing the Invisible. Building things people remember.",
   keywords: [
     "Digital Experience Designer",
     "UI/UX Designer",
