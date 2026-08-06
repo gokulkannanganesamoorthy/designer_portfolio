@@ -49,15 +49,16 @@ export default function BusinessCard() {
       >
         <div className={styles.cardLayout}>
           {/* Name Block */}
-          <motion.div
+          <motion.h1
             layout
             transition={transitionConfig}
             className={`${styles.nameBlock} ${styles.name}`}
+            style={{ margin: 0, fontWeight: "normal" }}
           >
             <div className={styles.primaryName}>{personalInfo.firstName}</div>
             <div className={styles.primaryName}>{personalInfo.lastName}</div>
             <div className={styles.surname}>{personalInfo.title}</div>
-          </motion.div>
+          </motion.h1>
 
           {/* Title / Slogan */}
           <motion.div

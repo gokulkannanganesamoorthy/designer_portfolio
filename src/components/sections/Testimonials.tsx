@@ -28,7 +28,7 @@ export default function Testimonials() {
               // Calculate the angle for this item
               const angle = -index * 90;
               return (
-                <div 
+                <blockquote 
                   key={testimonial.id} 
                   className={styles.testimonialItem}
                   style={{
@@ -36,11 +36,11 @@ export default function Testimonials() {
                   }}
                 >
                   <p className={styles.quote}>"{testimonial.text}"</p>
-                  <div className={styles.author}>
+                  <cite className={styles.author}>
                     <span className={styles.name}>{testimonial.name}</span>
                     <span className={styles.role}>{testimonial.role}</span>
-                  </div>
-                </div>
+                  </cite>
+                </blockquote>
               );
             })}
           </motion.div>

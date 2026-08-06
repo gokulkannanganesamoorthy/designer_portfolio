@@ -70,7 +70,21 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.emailLink {
+  display: inline-block;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
   margin-bottom: 4rem;
+  transition: opacity 0.2s ease;
+}
+
+.emailLink:hover {
+  opacity: 0.6;
 }
 
 .form {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import DevToolsLogger from "../components/layout/DevToolsLogger";
 import Footer from "../components/layout/Footer";
 import "./globals.css";
@@ -117,6 +118,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
         <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
         <DevToolsLogger />
         {children}

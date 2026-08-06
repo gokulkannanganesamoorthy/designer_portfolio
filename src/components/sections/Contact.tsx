@@ -18,6 +18,7 @@ export default function Contact() {
     <section className={styles.container} id="contact">
       <div className={`${styles.content} ${styles['layout-center']}`}>
         <h2 className={styles.title}>Start a Conversation</h2>
+        <a href="mailto:hello@gokulmakes.in" className={styles.emailLink}>hello@gokulmakes.in</a>
         
         <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
           <div className={styles.paragraph}>

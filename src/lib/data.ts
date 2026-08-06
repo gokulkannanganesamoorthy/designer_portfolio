@@ -18,8 +18,9 @@ export const personalInfo = {
 
 export const aboutContent = {
   paragraphs: [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "I am Gokul Kannan Ganesamoorthy, a Digital Experience Designer specializing in crafting immersive, invisible interfaces that feel entirely natural.",
+    "By blending deep psychological design principles with cutting-edge web technologies, I build digital environments that people remember rather than just use.",
+    "Every interaction is considered, every pixel has a purpose, and my goal is to transform standard applications into memorable experiences."
   ],
   videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
 };
