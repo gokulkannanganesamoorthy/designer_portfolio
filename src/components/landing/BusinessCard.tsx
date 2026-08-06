@@ -42,7 +42,7 @@ export default function BusinessCard() {
   const titleLine2 = titleWords.slice(2).join(' '); // "Designer"
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="home">
       <div
         className={styles.scene}
         data-state={isDeconstructed ? 'scattered' : 'card'}
