@@ -56,7 +56,7 @@ export default function ImmersiveShowcase() {
           {/* Live Miniature Preview for Works */}
           <div className={styles.previewGraphicWorks}>
             <div className={styles.miniatureWrapper}>
-              <Projects isModal={true} />
+              <Projects isModal={true} isPreview={true} />
             </div>
           </div>
           <div className={styles.paneContent}>

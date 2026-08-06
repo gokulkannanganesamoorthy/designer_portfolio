@@ -5,7 +5,7 @@ import styles from "./Projects.module.css";
 
 import { projects } from "@/lib/data";
 
-export default function Projects({ isModal = false }: { isModal?: boolean }) {
+export default function Projects({ isModal = false, isPreview = false }: { isModal?: boolean, isPreview?: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
@@ -173,15 +173,23 @@ export default function Projects({ isModal = false }: { isModal?: boolean }) {
                   )}
                   
                   <div className={`${styles.iframeScaleContainer} ${viewMode === "mobile" ? styles.mobileView : ""}`}>
-                    <iframe
-                      src={`https://${activeProject.url}`}
-                      className={styles.iframeContent}
-                      title={activeProject.title}
-                      loading="lazy"
-                      allow="fullscreen"
-                      sandbox="allow-scripts allow-same-origin"
-                      onLoad={() => setIframeLoaded(true)}
-                    />
+                    {isPreview ? (
+                      <div className={styles.previewFallback}>
+                        <div className={styles.previewFallbackText}>
+                          Preview Mode
+                        </div>
+                      </div>
+                    ) : (
+                      <iframe
+                        src={`https://${activeProject.url}`}
+                        className={styles.iframeContent}
+                        title={activeProject.title}
+                        loading="lazy"
+                        allow="fullscreen"
+                        sandbox="allow-scripts allow-same-origin"
+                        onLoad={() => setIframeLoaded(true)}
+                      />
+                    )}
                   </div>
                 </motion.div>
               </AnimatePresence>

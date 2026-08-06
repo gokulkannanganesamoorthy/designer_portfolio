@@ -41,7 +41,7 @@
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('/fonts/SF-Pro-Display-Regular.otf') format('opentype');
+  src: url('/fonts/SF-Pro-Display-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -49,7 +49,7 @@
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('/fonts/SF-Pro-Display-Bold.otf') format('opentype');
+  src: url('/fonts/SF-Pro-Display-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
