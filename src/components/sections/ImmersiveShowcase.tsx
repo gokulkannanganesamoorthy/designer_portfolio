@@ -240,8 +240,6 @@ export default function ImmersiveShowcase() {
                   company: 'Independent',
                 },
               ]}
-              zSpacing={2500}
-              initialZ={4000}
             />
           </div>,
           document.body,

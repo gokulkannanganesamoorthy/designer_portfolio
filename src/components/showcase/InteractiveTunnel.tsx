@@ -1,7 +1,9 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import styles from './InteractiveTunnel.module.css';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ExperienceStack from './ExperienceStack';
+import ExperienceFilmstrip from './ExperienceFilmstrip';
+import ExperienceOrbital from './ExperienceOrbital';
 
 interface Project {
   id: string;
@@ -13,141 +15,72 @@ interface Project {
 
 interface InteractiveTunnelProps {
   projects: Project[];
-  zSpacing?: number;
-  initialZ?: number;
 }
 
+type ThemeMode = 'stack' | 'filmstrip' | 'orbital';
+
 const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({ projects }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-
-  useEffect(() => {
-    // Reset active index on mount
-    setActiveIndex(0);
-
-    const handleScroll = () => {
-      const viewportHeight = window.innerHeight;
-      let newActiveIndex = activeIndex;
-
-      sectionRefs.current.forEach((section, index) => {
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          // If the section's top is in the top 50% of the viewport, or it covers the middle
-          if (rect.top <= viewportHeight * 0.6 && rect.bottom >= viewportHeight * 0.4) {
-            newActiveIndex = index;
-          }
-        }
-      });
-
-      if (newActiveIndex !== activeIndex) {
-        setActiveIndex(newActiveIndex);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeIndex]);
-
-  const scrollToSection = (index: number) => {
-    sectionRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [theme, setTheme] = useState<ThemeMode>('stack');
 
   return (
-    <div className={styles.canvasLayout}>
-      {/* Mobile Sticky Tabs */}
-      <div className={styles.mobileWidget}>
-        {projects.map((project, i) => (
+    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
+      {/* Theme Switcher */}
+      <div 
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 999999, // Ensure it sits above the modal
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          padding: '0.5rem',
+          borderRadius: '50px',
+          display: 'flex',
+          gap: '0.5rem',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+          border: '1px solid rgba(0,0,0,0.1)'
+        }}
+      >
+        {(['stack', 'filmstrip', 'orbital'] as ThemeMode[]).map((mode) => (
           <button
-            key={`mobile-tab-${i}`}
-            className={`${styles.mobileTab} ${activeIndex === i ? styles.mobileTabActive : ''}`}
-            onClick={() => scrollToSection(i)}
+            key={mode}
+            onClick={() => setTheme(mode)}
+            style={{
+              padding: '0.75rem 1.5rem',
+              borderRadius: '40px',
+              border: 'none',
+              background: theme === mode ? 'var(--text-primary)' : 'transparent',
+              color: theme === mode ? 'var(--bg-primary)' : 'var(--text-primary)',
+              fontWeight: 500,
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textTransform: 'capitalize',
+              transition: 'all 0.3s ease'
+            }}
           >
-            {project.company}
+            {mode}
           </button>
         ))}
       </div>
 
-      {/* LEFT COLUMN - Sticky Widget */}
-      <div className={styles.leftColumn}>
-        <div className={styles.widgetContainer}>
-          <div className={styles.widgetHeader}>Experience Timeline</div>
-          {projects.map((project, i) => (
-            <div
-              key={`tab-${i}`}
-              className={`${styles.widgetTab} ${activeIndex === i ? styles.widgetTabActive : ''}`}
-              onClick={() => scrollToSection(i)}
-            >
-              <span>{project.company}</span>
-              {activeIndex === i && (
-                <motion.div
-                  layoutId="activeTabIndicator"
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    width: '3px',
-                    height: '100%',
-                    background: 'var(--color-orange, #ff6b00)',
-                  }}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* RIGHT COLUMN - Scrollable Canvas */}
-      <div className={styles.rightColumn}>
-        {projects.map((project, i) => (
-          <section
-            key={`section-${i}`}
-            ref={(el) => { sectionRefs.current[i] = el; }}
-            className={styles.canvasSection}
-          >
-            <div className={styles.canvasBox}>
-              {/* SVG Connections (Using percentage viewBox 0 0 100 100 for responsive scaling) */}
-              <svg className={styles.connections} viewBox="0 0 100 100" preserveAspectRatio="none">
-                {/* Node 1 to Node 2 */}
-                <path 
-                  d="M 25 35 C 35 35, 35 65, 45 65" 
-                  className={styles.connectionPath} 
-                  vectorEffect="non-scaling-stroke" 
-                />
-                {/* Node 2 to Node 3 */}
-                <path 
-                  d="M 60 65 C 70 65, 65 25, 75 25" 
-                  className={styles.connectionPath} 
-                  vectorEffect="non-scaling-stroke" 
-                />
-                
-                <circle cx="25" cy="35" r="0.8" className={styles.connectionDot} vectorEffect="non-scaling-stroke" />
-                <circle cx="45" cy="65" r="0.8" className={styles.connectionDot} vectorEffect="non-scaling-stroke" />
-                <circle cx="60" cy="65" r="0.8" className={styles.connectionDot} vectorEffect="non-scaling-stroke" />
-                <circle cx="75" cy="25" r="0.8" className={styles.connectionDot} vectorEffect="non-scaling-stroke" />
-              </svg>
-
-              {/* Node 1: Role */}
-              <div className={styles.node} style={{ left: '5%', top: '25%' }}>
-                <div className={styles.nodeTag}>Role</div>
-                <div className={styles.nodeContent}>{project.role}</div>
-              </div>
-
-              {/* Node 2: Company */}
-              <div className={styles.node} style={{ left: '40%', top: '60%' }}>
-                <div className={styles.nodeTag}>Organization</div>
-                <div className={styles.nodeContent}>{project.company}</div>
-              </div>
-
-              {/* Node 3: Year */}
-              <div className={styles.node} style={{ left: '70%', top: '15%' }}>
-                <div className={styles.nodeTag}>Duration</div>
-                <div className={styles.nodeContent}>{project.year}</div>
-              </div>
-
-            </div>
-          </section>
-        ))}
-      </div>
+      <AnimatePresence mode="wait">
+        {theme === 'stack' && (
+          <motion.div key="stack" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+            <ExperienceStack projects={projects} />
+          </motion.div>
+        )}
+        {theme === 'filmstrip' && (
+          <motion.div key="filmstrip" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+            <ExperienceFilmstrip projects={projects} />
+          </motion.div>
+        )}
+        {theme === 'orbital' && (
+          <motion.div key="orbital" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+            <ExperienceOrbital projects={projects} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
