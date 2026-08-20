@@ -275,7 +275,7 @@ const InteractiveTunnel: React.FC<InteractiveTunnelProps> = ({
                   <path
                     d={d}
                     fill="none"
-                    stroke="#ffffff"
+                    stroke="#eaeaea"
                     strokeWidth="4"
                   />
                 </svg>

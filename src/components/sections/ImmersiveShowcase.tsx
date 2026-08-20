@@ -142,7 +142,7 @@ export default function ImmersiveShowcase() {
             <motion.div
               layoutId={`pane-${activePane}`}
               className={styles.modalContent}
-              style={{ borderRadius: 0, backgroundColor: '#000' }}
+              style={{ borderRadius: 0, backgroundColor: 'var(--bg-primary)' }}
             >
               <button
                 className={styles.closeBtn}
@@ -187,7 +187,7 @@ export default function ImmersiveShowcase() {
               width: '100%',
               minHeight: '100vh',
               zIndex: 99999,
-              background: '#000',
+              background: 'var(--bg-primary)',
             }}
           >
             <button
