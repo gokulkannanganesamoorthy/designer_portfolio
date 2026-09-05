@@ -1,0 +1,100 @@
+.capabilities {
+  padding: var(--space-xl) var(--page-pad);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px; /* Creates the border effect */
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.card {
+  position: relative;
+  background: var(--bg);
+  min-height: 350px;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-lg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-subhead);
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.cardDesc {
+  font-size: var(--text-body);
+  color: var(--fg-dim);
+  line-height: 1.5;
+  max-width: 90%;
+}
+
+/* ─── Hover Glow ─── */
+.cardGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.card:hover .cardGlow {
+  opacity: 1;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    min-height: 250px;
+  }
+  
+  .cardContent {
+    padding: var(--space-md);
+  }
+}

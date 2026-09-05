@@ -1,25 +1,46 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import DevToolsLogger from "../components/layout/DevToolsLogger";
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import Footer from "../components/layout/Footer";
 import SmoothScroll from "../components/layout/SmoothScroll";
-import CustomCursor from "../components/ui/CustomCursor";
+import TopNav from "../components/layout/TopNav";
 import "./globals.css";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+  weight: ['400', '500'],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gokulmakes.in"),
   title: {
-    default: "Digital Experience Designer portfolio of Gokul Kannan Ganesamoorthy",
-    template: "%s | Gokul Kannan Ganesamoorthy",
+    default: "Gokul Kannan — Digital Experience Designer",
+    template: "%s | Gokul Kannan",
   },
-  description: "Digital Experience Designer portfolio of Gokul Kannan Ganesamoorthy. Designing the Invisible. Building things people remember.",
+  description: "Digital Experience Designer. Designing the Invisible. Building things people remember. Founder, Luno Tech.",
   keywords: [
     "Digital Experience Designer",
     "UI/UX Designer",
     "Product Designer",
     "Gokul Kannan Ganesamoorthy",
-    "Web Designer",
-    "Portfolio",
+    "Creative Director",
+    "Brand Strategist",
+    "Gokul Makes",
   ],
   authors: [{ name: "Gokul Kannan Ganesamoorthy", url: "https://gokulmakes.in" }],
   creator: "Gokul Kannan Ganesamoorthy",
@@ -47,16 +68,16 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Gokul Kannan Ganesamoorthy",
-    description: "Digital Experience Designer",
+    title: "Gokul Kannan — Digital Experience Designer",
+    description: "Designing the Invisible. Building things people remember.",
     url: "https://gokulmakes.in",
-    siteName: "Gokul Kannan Ganesamoorthy",
+    siteName: "Gokul Makes",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gokul Kannan Ganesamoorthy | Digital Experience Designer",
+    title: "Gokul Kannan — Digital Experience Designer",
     description: "Designing the Invisible. Building things people remember.",
   },
 };
@@ -76,73 +97,10 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Gokul Kannan Ganesamoorthy",
+    name: "Gokul Makes",
     url: "https://gokulmakes.in"
   },
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: [
-      {
-        "@type": "SiteNavigationElement",
-        position: 1,
-        name: "About",
-        url: "https://gokulmakes.in/#about"
-      },
-      {
-        "@type": "SiteNavigationElement",
-        position: 2,
-        name: "Projects",
-        url: "https://gokulmakes.in/#projects"
-      },
-      {
-        "@type": "SiteNavigationElement",
-        position: 3,
-        name: "Testimonials",
-        url: "https://gokulmakes.in/#testimonials"
-      },
-      {
-        "@type": "SiteNavigationElement",
-        position: 4,
-        name: "Contact",
-        url: "https://gokulmakes.in/#contact"
-      }
-    ]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://gokulmakes.in/"
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Selected Works",
-        item: "https://gokulmakes.in/#projects"
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Contact",
-        item: "https://gokulmakes.in/#contact"
-      }
-    ]
-  }
 ];
-
-import { Cormorant_Garamond } from 'next/font/google';
-
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-cormorant',
-  display: 'swap',
-});
 
 export default function RootLayout({
   children,
@@ -151,15 +109,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cormorant.variable} style={{ minHeight: "100vh", display: "flex", flexDirection: "column", cursor: "none" }}>
+      <body
+        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+        style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <GoogleAnalytics gaId="G-LGV6KYWDH1" />
-        <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
-        <DevToolsLogger />
-        <CustomCursor />
+        <div dangerouslySetInnerHTML={{ __html: "<!-- Designing the Invisible. -->" }} />
+        <TopNav />
         <SmoothScroll>
           {children}
           <Footer />

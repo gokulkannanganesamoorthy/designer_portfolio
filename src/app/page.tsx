@@ -1,21 +1,18 @@
-import BusinessCard from '@/components/landing/BusinessCard';
-import ScrollStory from '@/components/sections/ScrollStory';
-import Projects from '@/components/sections/Projects';
-import TheInvisible from '@/components/sections/TheInvisible';
-import Thinking from '@/components/sections/Thinking';
-import Process from '@/components/sections/Process';
-import Testimonials from '@/components/sections/Testimonials';
+import Hero from '@/components/sections/Hero';
+import Manifesto from '@/components/sections/Manifesto';
+import Work from '@/components/sections/Work';
+import Capabilities from '@/components/sections/Capabilities';
+import Clients from '@/components/sections/Clients';
 import Contact from '@/components/sections/Contact';
 
 export default function Home() {
   return (
     <main>
-      <BusinessCard />
-      <ScrollStory />
-      <Projects />
-      <TheInvisible />
-      <Process />
-      <Testimonials />
+      <Hero />
+      <Manifesto />
+      <Work />
+      <Capabilities />
+      <Clients />
       <Contact />
     </main>
   );

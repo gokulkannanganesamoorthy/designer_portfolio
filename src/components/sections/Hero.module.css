@@ -1,0 +1,87 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--page-pad);
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(245, 242, 237, 0.03) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.topInfo {
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--space-md);
+}
+
+.centerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleLine {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-subhead);
+  color: var(--fg-dim);
+  line-height: 1.5;
+  max-width: 600px;
+}
+
+.scrollIndicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 10vh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--fg-muted));
+}
