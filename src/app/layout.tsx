@@ -7,10 +7,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://gokulmakes.in"),
   title: {
-    default: "Gokul Kannan Ganesamoorthy | Digital Experience Designer",
+    default: "Digital Experience Designer portfolio of Gokul Kannan Ganesamoorthy",
     template: "%s | Gokul Kannan Ganesamoorthy",
   },
-  description: "Designing the Invisible. Building things people remember.",
+  description: "Digital Experience Designer portfolio of Gokul Kannan Ganesamoorthy. Designing the Invisible. Building things people remember.",
   keywords: [
     "Digital Experience Designer",
     "UI/UX Designer",
@@ -145,7 +145,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+        <GoogleAnalytics gaId="G-LGV6KYWDH1" />
         <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
         <DevToolsLogger />
         {children}
