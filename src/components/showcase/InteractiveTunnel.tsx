@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useVelocity, useSpring, useTransform, useMotionValueEvent } from 'framer-motion';
 import styles from './InteractiveTunnel.module.css';
 
 interface Project {
@@ -11,166 +11,142 @@ interface Project {
   title?: string;
 }
 
-const colorPalettes = [
-  ['#FF007A', '#00E5FF', '#7000FF'], // Magenta, Cyan, Purple
-  ['#FF6B00', '#FFD600', '#FF0055'], // Orange, Yellow, Hot Pink
-  ['#8A2BE2', '#FF1493', '#0044FF'], // Electric Purple, Deep Pink, Blue
-  ['#00FFFF', '#39FF14', '#0088FF'], // Cyan, Lime Green, Bright Blue
-];
-
-function GlassCard({ project, index, activeIndex }: { project: Project; index: number; activeIndex: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  
-  // 3D Hover effect state
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    // Calculate rotation: Max rotation 15 degrees
-    const rY = ((mouseX / width) - 0.5) * 30; // -15 to 15
-    const rX = ((mouseY / height) - 0.5) * -30; // -15 to 15
-
-    setRotateX(rX);
-    setRotateY(rY);
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
-
-  const colors = colorPalettes[index % colorPalettes.length];
-  const isActive = activeIndex === index;
-
-  return (
-    <div className={styles.cardWrapper} ref={cardRef}>
-      <motion.div
-        className={styles.glassCard}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        animate={{
-          rotateX,
-          rotateY,
-          scale: isActive ? 1.02 : 0.95,
-          opacity: isActive ? 1 : 0.4,
-          z: isActive ? 50 : 0
-        }}
-        transition={{
-          rotateX: { type: 'spring', stiffness: 300, damping: 30 },
-          rotateY: { type: 'spring', stiffness: 300, damping: 30 },
-          scale: { duration: 0.6, ease: 'easeOut' },
-          opacity: { duration: 0.6, ease: 'easeOut' },
-          z: { duration: 0.6, ease: 'easeOut' }
-        }}
-      >
-        <div 
-          className={styles.yearBadge}
-          style={{ color: colors[0] }}
-        >
-          {project.year}
-        </div>
-        <h3 
-          className={styles.companyTitle}
-          style={{
-            background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}
-        >
-          {project.company}
-        </h3>
-        <p className={styles.roleText}>{project.role}</p>
-      </motion.div>
-    </div>
-  );
-}
-
 export default function InteractiveTunnel({ projects }: { projects: Project[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const displacementRef = useRef<SVGFEDisplacementMapElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const cardElements = containerRef.current.querySelectorAll(`.${styles.cardWrapper}`);
-      let newIndex = activeIndex;
-      const viewportHeight = window.innerHeight;
+  // 1. Setup Scroll Tracking
+  const { scrollYProgress, scrollY } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-      cardElements.forEach((el, index) => {
-        const rect = el.getBoundingClientRect();
-        // If the card is in the middle of the viewport
-        if (rect.top <= viewportHeight * 0.6 && rect.bottom >= viewportHeight * 0.4) {
-          newIndex = index;
-        }
-      });
-      
-      if (newIndex !== activeIndex) {
-        setActiveIndex(newIndex);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Trigger once on mount
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeIndex]);
+  // 2. Setup Velocity Tracking
+  const scrollVelocity = useVelocity(scrollY);
+  // Smooth out the velocity so the glitch doesn't snap off instantly
+  const smoothVelocity = useSpring(scrollVelocity, { damping: 30, stiffness: 200 });
 
-  const activeColors = colorPalettes[activeIndex % colorPalettes.length];
+  // Map velocity to SVG displacement scale (0 when still, high when scrolling fast)
+  // We use absolute value of velocity
+  const displacementScale = useTransform(smoothVelocity, [-2000, 0, 2000], [300, 0, 300]);
+  
+  // Update the SVG filter DOM node directly for maximum performance
+  useMotionValueEvent(displacementScale, "change", (latest) => {
+    if (displacementRef.current) {
+      displacementRef.current.setAttribute('scale', latest.toString());
+    }
+  });
+
+  // Map velocity to a CSS blur for extra chaos
+  const blurAmount = useTransform(smoothVelocity, [-2000, 0, 2000], [20, 0, 20]);
+  const filterString = useTransform(blurAmount, (val) => `blur(${val}px) url(#shredder)`);
+
+  const step = projects.length > 1 ? 1 / (projects.length - 1) : 1;
+
+  // React state for the progress indicator
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const newIndex = Math.min(Math.round(latest * (projects.length - 1)), projects.length - 1);
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  });
 
   return (
     <div className={styles.container} ref={containerRef}>
-      {/* Dynamic Fluid Aura Background */}
-      <div className={styles.auraContainer}>
-         <motion.div 
-           className={styles.auraBlob} 
-           style={{ width: '70vw', height: '70vw', left: '-20vw', top: '-10vh' }}
-           animate={{ 
-             backgroundColor: activeColors[0],
-             scale: [1, 1.1, 1],
-             x: [0, 40, 0],
-             y: [0, -40, 0]
-           }}
-           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-         />
-         <motion.div 
-           className={styles.auraBlob} 
-           style={{ width: '60vw', height: '60vw', right: '-10vw', bottom: '0vh' }}
-           animate={{ 
-             backgroundColor: activeColors[1],
-             scale: [1.1, 1, 1.1],
-             x: [0, -40, 0],
-             y: [0, 40, 0]
-           }}
-           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-         />
-         <motion.div 
-           className={styles.auraBlob} 
-           style={{ width: '50vw', height: '50vw', left: '25vw', top: '30vh' }}
-           animate={{ 
-             backgroundColor: activeColors[2],
-             scale: [1, 1.2, 1],
-             x: [0, 50, -30, 0],
-           }}
-           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-         />
-      </div>
+      {/* SVG Definitions for the Kinetic Velocity Shredder */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <filter id="shredder" colorInterpolationFilters="sRGB">
+          {/* Fractal noise heavily stretched horizontally to create slicing bands */}
+          <feTurbulence type="fractalNoise" baseFrequency="0.0001 0.4" numOctaves="1" result="warp" />
+          <feDisplacementMap 
+            ref={displacementRef}
+            xChannelSelector="R" 
+            yChannelSelector="G" 
+            scale="0" 
+            in="SourceGraphic" 
+            in2="warp" 
+          />
+        </filter>
+      </svg>
 
-      <div className={styles.timeline}>
-        <div className={styles.header}>
-          <h2 className={styles.headerTitle}>Experience</h2>
-          <div className={styles.headerSubtitle}>The Journey</div>
+      <div className={styles.noise} />
+
+      {/* The scroll track height defines how long we can scroll */}
+      <div className={styles.scrollTrack} style={{ height: `${projects.length * 120}vh` }}>
+        
+        <div className={styles.viewer}>
+          
+          {/* Progress Indicator */}
+          <div className={styles.progressIndicator}>
+            {projects.map((_, i) => (
+              <div 
+                key={i} 
+                className={`${styles.progressDot} ${activeIndex === i ? styles.progressDotActive : ''}`} 
+              />
+            ))}
+          </div>
+
+          {/* Dynamic Typography Panels */}
+          {projects.map((p, i) => {
+            const center = i * step;
+            // Define opacity mapping: Fade in as it approaches center, fade out as it leaves
+            const opacity = useTransform(
+              scrollYProgress, 
+              [center - (step * 0.5), center, center + (step * 0.5)], 
+              [0, 1, 0]
+            );
+            
+            // Define scale mapping: zoom in slightly from far, zoom past camera when leaving
+            const scale = useTransform(
+              scrollYProgress, 
+              [center - (step * 0.5), center, center + (step * 0.5)], 
+              [0.8, 1, 2.5]
+            );
+
+            // Define Y parallax
+            const y = useTransform(
+              scrollYProgress, 
+              [center - (step * 0.5), center, center + (step * 0.5)], 
+              [100, 0, -200]
+            );
+
+            return (
+              <motion.div 
+                key={p.id} 
+                className={styles.contentWrapper}
+                style={{ 
+                  position: 'absolute', 
+                  opacity, 
+                  scale, 
+                  y,
+                  filter: filterString, // Apply both blur and the SVG shredder
+                  pointerEvents: activeIndex === i ? 'auto' : 'none'
+                }}
+              >
+                 <motion.h2 className={styles.companyText}>
+                    {p.company}
+                 </motion.h2>
+                 <motion.div className={styles.subText}>
+                    {p.role}
+                 </motion.div>
+
+                 <div className={styles.detailsGrid}>
+                    <div className={styles.detailCol}>
+                      <span className={styles.detailLabel}>Duration</span>
+                      <span className={styles.detailValue}>{p.year}</span>
+                    </div>
+                    <div className={styles.detailCol}>
+                      <span className={styles.detailLabel}>Project ID</span>
+                      <span className={styles.detailValue}>#{p.id.toUpperCase()}</span>
+                    </div>
+                 </div>
+              </motion.div>
+            );
+          })}
+
         </div>
-
-        {projects.map((p, i) => (
-          <GlassCard key={p.id} project={p} index={i} activeIndex={activeIndex} />
-        ))}
       </div>
     </div>
   );

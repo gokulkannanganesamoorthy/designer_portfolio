@@ -1,166 +1,137 @@
 .container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  background-color: var(--bg-primary);
-  overflow: hidden;
+  background-color: #030303; /* Brutalist Deep Black */
+  color: #ffffff;
 }
 
-/* Liquid Aura Blobs */
-.auraContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
+.scrollTrack {
+  position: relative;
   width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  /* Height will be calculated dynamically via React inline style based on items */
+}
+
+.viewer {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* Apply SVG Filter programmatically in React */
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
 }
 
-.auraBlob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  -webkit-filter: blur(120px);
-  opacity: 0.6;
-  will-change: transform, background;
-  transition: background 1s ease-out;
-}
-
-/* On dark mode, make the blobs slightly brighter */
-@media (prefers-color-scheme: dark) {
-  .auraBlob {
-    opacity: 0.4;
-  }
-}
-
-.timeline {
-  position: relative;
-  z-index: 10;
+.contentWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15vh 5vw 15vh 5vw;
-  gap: 15vh;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
 }
 
-.header {
+.companyText {
+  font-size: clamp(4rem, 15vw, 16rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  text-transform: uppercase;
   text-align: center;
-  margin-bottom: 5vh;
+  margin: 0;
+  color: #fff;
+  will-change: transform, filter;
+  /* A subtle glowing edge */
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
 }
 
-.headerTitle {
-  font-size: clamp(3rem, 6vw, 5rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  margin: 0 0 1rem 0;
-  color: var(--text-primary);
+.subText {
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-weight: 400;
+  color: #ff3366; /* Neon pink pop */
+  letter-spacing: -0.02em;
+  margin-top: 1rem;
+  will-change: transform, filter;
 }
 
-.headerSubtitle {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-/* Glass Card */
-.cardWrapper {
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
-  max-width: 900px;
-  perspective: 2000px;
+  max-width: 1400px;
+  padding: 2rem 4vw;
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 
-.glassCard {
-  width: 100%;
-  min-height: 50vh;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 40px;
-  padding: clamp(2rem, 5vw, 5rem);
+.detailCol {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  box-shadow: 
-    0 40px 100px rgba(0, 0, 0, 0.05),
-    inset 0 1px 1px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
-  position: relative;
-  overflow: hidden;
-  transform-style: preserve-3d;
+  gap: 0.5rem;
 }
 
-/* Dark mode overrides for glass card */
-@media (prefers-color-scheme: dark) {
-  .glassCard {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-      0 40px 100px rgba(0, 0, 0, 0.5),
-      inset 0 1px 1px rgba(255, 255, 255, 0.1),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.5);
-  }
+.detailCol:last-child {
+  align-items: flex-end;
+  text-align: right;
 }
 
-/* Card inner glare */
-.glassCard::before {
-  content: '';
+.detailLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #555;
+}
+
+.detailValue {
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-weight: 500;
+  color: #aaa;
+  letter-spacing: 0.05em;
+}
+
+/* Cinematic Noise overlay */
+.noise {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%);
-  z-index: -1;
-  border-radius: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.08;
   pointer-events: none;
+  z-index: 50;
+  mix-blend-mode: screen;
 }
 
-@media (prefers-color-scheme: dark) {
-  .glassCard::before {
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%);
-  }
+/* Progress indicator */
+.progressIndicator {
+  position: absolute;
+  left: 4vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
 }
 
-/* Typography */
-.yearBadge {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  background: rgba(0,0,0,0.05);
+.progressDot {
+  width: 4px;
+  height: 40px;
+  background: #333;
+  transition: background 0.3s ease, height 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .yearBadge {
-    background: rgba(255,255,255,0.1);
-  }
-}
-
-.companyTitle {
-  font-size: clamp(3.5rem, 8vw, 7rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  margin: 0 0 1.5rem 0;
-  color: var(--text-primary);
-  /* The dynamic color logic will inject the gradient as an inline style */
-}
-
-.roleText {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  font-weight: 500;
-  color: var(--text-secondary);
-  max-width: 90%;
-  line-height: 1.4;
+.progressDotActive {
+  background: #fff;
+  height: 80px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
