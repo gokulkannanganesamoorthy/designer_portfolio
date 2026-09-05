@@ -70,14 +70,52 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
   line-height: 1.4;
-  scroll-behavior: smooth;
+  /* Remove scroll-behavior: smooth; as Lenis handles it now */
+}
+
+/* Lenis Smooth Scroll Recommended Styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 /* Base Typography Styles */
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant), 'Times New Roman', serif;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.1;
+}
+
+.serif {
+  font-family: var(--font-cormorant), 'Times New Roman', serif;
+}
+
+.editorial-heading {
+  font-family: var(--font-cormorant), 'Times New Roman', serif;
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.editorial-subheading {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: clamp(0.75rem, 1vw, 1rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 a {

@@ -1,162 +1,77 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import styles from './BusinessCard.module.css';
 import Navigation from '../layout/Navigation';
-import GridBackground from './GridBackground';
-import Telemetry from './Telemetry';
-import Manifesto from './Manifesto';
-import MicroscopicText from './MicroscopicText';
-import Signature from './Signature';
-import ObserverOverlay from './ObserverOverlay';
-
 import { personalInfo } from '@/lib/data';
 
 export default function BusinessCard() {
-  const [isDeconstructed, setIsDeconstructed] = useState(false);
-  const [isGridVisible, setIsGridVisible] = useState(false);
-
-  useEffect(() => {
-    // Check if user has already seen the intro this session
-    if (sessionStorage.getItem("hasSeenIntro") === "true") {
-      setIsDeconstructed(true);
-      return;
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
     }
-
-    // Wait 2.2 seconds before deconstructing
-    const timer = setTimeout(() => {
-      setIsDeconstructed(true);
-      sessionStorage.setItem("hasSeenIntro", "true");
-    }, 2200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const transitionConfig: any = {
-    duration: 1.5,
-    ease: [0.2, 0, 0, 1],
   };
 
-  const titleWords = personalInfo.role.split(' ');
-  const titleLine1 = titleWords.slice(0, 2).join(' '); // "Digital Experience"
-  const titleLine2 = titleWords.slice(2).join(' '); // "Designer"
+  const itemVariants: Variants = {
+    hidden: { y: 100, opacity: 0 },
+    show: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 40,
+        damping: 15
+      }
+    }
+  };
 
   return (
-    <div className={styles.container} id="home">
-      <div
-        className={styles.scene}
-        data-state={isDeconstructed ? 'scattered' : 'card'}
+    <div className={styles.heroContainer} id="home">
+      <Navigation />
+      
+      <motion.div 
+        className={styles.typographyWrapper}
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
       >
-        <div className={styles.cardLayout}>
-          {/* Name Block */}
-          <motion.h1
-            layout
-            transition={transitionConfig}
-            className={`${styles.nameBlock} ${styles.name}`}
-            style={{ margin: 0, fontWeight: "normal" }}
-          >
-            <div className={styles.primaryName}>{personalInfo.firstName}</div>
-            <div className={styles.primaryName}>{personalInfo.lastName}</div>
-            <div className={styles.surname}>{personalInfo.title}</div>
+        <div className={styles.titleLine}>
+          <motion.h1 className="editorial-heading" variants={itemVariants}>
+            {personalInfo.firstName}
           </motion.h1>
-
-          {/* Title / Slogan */}
-          <motion.div
-            layout
-            transition={transitionConfig}
-            className={styles.title}
-          >
-            <div className={styles.titleText}>
-              <div>{titleLine1}</div>
-              <div>{titleLine2}</div>
-            </div>
-          </motion.div>
-
-          {/* Look Closer */}
-          <motion.div
-            layout
-            transition={{ ...transitionConfig, delay: 0.2 }}
-            className={`${styles.lookCloser}`}
-            onDoubleClick={() => {
-              setTimeout(() => setIsGridVisible((prev) => !prev), 400);
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            {isDeconstructed && (
-              <motion.button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  sessionStorage.removeItem("hasSeenIntro");
-                  window.location.reload();
-                }}
-                className="mono"
-                initial={{ backgroundPosition: "0% -100%" }}
-                animate={{ backgroundPosition: "0% 200%" }}
-                transition={{ duration: 2.5, ease: 'linear', repeat: Infinity }}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: "1.5rem",
-                  background: "linear-gradient(180deg, #b0b0b0 20%, #000 50%, #b0b0b0 80%)",
-                  backgroundSize: "100% 200%",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  border: "none",
-                  fontSize: "0.55rem",
-                  letterSpacing: "0.2em",
-                  cursor: "pointer",
-                  padding: 0,
-                  margin: 0,
-                  whiteSpace: "nowrap",
-                  writingMode: "vertical-rl",
-                  textOrientation: "mixed"
-                }}
-              >
-                [ REPLAY ]
-              </motion.button>
-            )}
-            
-            <motion.div
-              className={`${styles.lookCloserText} mono`}
-              initial={{ backgroundPosition: "-100% 0%" }}
-              animate={{ backgroundPosition: "200% 0%" }}
-              transition={{ duration: 2.5, ease: 'linear', repeat: Infinity }}
-              style={{
-                background: "linear-gradient(90deg, #b0b0b0 20%, #000 50%, #b0b0b0 80%)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                color: "transparent"
-              }}
-            >
-              {personalInfo.manifestoText}
-            </motion.div>
-          </motion.div>
-
-          {/* Dash */}
-          <motion.div
-            layout
-            transition={transitionConfig}
-            className={styles.dash}
-          >
-            <div className={styles.dashText}>—</div>
-          </motion.div>
         </div>
+        <div className={styles.titleLine}>
+          <motion.h1 className="editorial-heading" variants={itemVariants}>
+            {personalInfo.lastName}
+          </motion.h1>
+        </div>
+        
+        <motion.div className={styles.subtitle} variants={itemVariants}>
+          <p className="editorial-subheading">{personalInfo.title}</p>
+          <p className="editorial-subheading" style={{ marginTop: '0.5rem', color: 'var(--text-secondary)' }}>
+            Based in {personalInfo.location}
+          </p>
+        </motion.div>
+      </motion.div>
 
-        {/* Navigation fades in after scattering */}
-        {isDeconstructed && (
-          <>
-            {isGridVisible && <GridBackground />}
-            <Telemetry />
-            <Manifesto />
-            <MicroscopicText />
-            <Navigation delay={0.4} />
-            <Signature />
-            <ObserverOverlay />
-          </>
-        )}
-      </div>
+      <motion.div 
+        className={styles.scrollIndicator}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        transition={{ delay: 2, duration: 1 }}
+      >
+        <span className="editorial-subheading" style={{ fontSize: '0.6rem' }}>SCROLL</span>
+        <motion.div 
+          className={styles.scrollDot}
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+        />
+      </motion.div>
     </div>
   );
 }

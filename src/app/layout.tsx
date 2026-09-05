@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import DevToolsLogger from "../components/layout/DevToolsLogger";
 import Footer from "../components/layout/Footer";
+import SmoothScroll from "../components/layout/SmoothScroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -133,6 +134,15 @@ const jsonLd = [
   }
 ];
 
+import { Cormorant_Garamond } from 'next/font/google';
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -140,7 +150,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <body className={cormorant.variable} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -148,8 +158,10 @@ export default function RootLayout({
         <GoogleAnalytics gaId="G-LGV6KYWDH1" />
         <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
         <DevToolsLogger />
-        {children}
-        <Footer />
+        <SmoothScroll>
+          {children}
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );
