@@ -42,20 +42,17 @@ export default function BusinessCard() {
       >
         <div className={styles.titleLine}>
           <motion.h1 className="editorial-heading" variants={itemVariants}>
-            {personalInfo.firstName}
+            {personalInfo.businessName.split(' ')[0]}
           </motion.h1>
         </div>
         <div className={styles.titleLine}>
           <motion.h1 className="editorial-heading" variants={itemVariants}>
-            {personalInfo.lastName}
+            {personalInfo.businessName.split(' ')[1]}
           </motion.h1>
         </div>
         
         <motion.div className={styles.subtitle} variants={itemVariants}>
-          <p className="editorial-subheading">{personalInfo.title}</p>
-          <p className="editorial-subheading" style={{ marginTop: '0.5rem', color: 'var(--text-secondary)' }}>
-            Based in {personalInfo.location}
-          </p>
+          <p className="editorial-subheading">{personalInfo.tagline}</p>
         </motion.div>
       </motion.div>
 

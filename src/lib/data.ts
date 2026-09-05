@@ -9,12 +9,10 @@ export const navigationLinks = [
 ];
 
 export const personalInfo = {
-  firstName: 'GOKUL',
-  lastName: 'KANNAN',
-  title: 'GANESAMOORTHY',
-  role: 'DIGITAL EXPERIENCE DESIGNER',
-  location: 'COIMBATORE, INDIA',
-  manifestoText: 'FEEL FIRST', // The text on the right side of the business card
+  businessName: "GOKUL MAKES",
+  tagline: "CURATING DIGITAL EXPERIENCES",
+  role: "DIGITAL EXPERIENCE DESIGNER",
+  manifestoText: "FEEL FIRST", // The text on the right side of the business card
 };
 
 export const aboutContent = {
