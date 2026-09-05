@@ -1,8 +1,7 @@
 import BusinessCard from '@/components/landing/BusinessCard';
-import Positioning from '@/components/sections/Positioning';
+import ScrollStory from '@/components/sections/ScrollStory';
 import Projects from '@/components/sections/Projects';
 import TheInvisible from '@/components/sections/TheInvisible';
-import About from '@/components/sections/About';
 import Thinking from '@/components/sections/Thinking';
 import Process from '@/components/sections/Process';
 import Testimonials from '@/components/sections/Testimonials';
@@ -12,11 +11,9 @@ export default function Home() {
   return (
     <main>
       <BusinessCard />
-      <Positioning />
+      <ScrollStory />
       <Projects />
       <TheInvisible />
-      <About />
-      <Thinking />
       <Process />
       <Testimonials />
       <Contact />

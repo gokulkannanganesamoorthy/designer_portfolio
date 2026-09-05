@@ -50,19 +50,23 @@ export const invisiblePrinciples = [
   }
 ];
 
-export const aboutContent = {
-  opening: "I notice things most people don't.",
-  paragraphs: [
-    "Most people use a website without noticing the decisions behind it.",
-    "The 180ms transition.",
-    "The amount of space around a button.",
-    "The way a headline enters the screen.",
-    "The moment a page feels finished.",
-    "That's what I obsess over.",
-    "I'm Gokul Kannan, a Digital Experience Designer working at the intersection of design, technology and storytelling.",
-    "I design and build digital experiences that feel natural, intentional and memorable."
-  ]
-};
+export const scrollStory = [
+  { type: 'text', value: "HELLO, I'M GOKUL KANNAN " },
+  { type: 'image', src: "https://via.placeholder.com/60x60/111111/FFFFFF?text=GK", alt: "Gokul Portrait" },
+  { type: 'text', value: " DIGITAL EXPERIENCE DESIGNER & FOUNDER OF LUNO TECH. " },
+  { type: 'text', value: "I AM OBSESSED WITH THE INVISIBLE DECISIONS " },
+  { type: 'image', src: "https://via.placeholder.com/100x60/111111/FFFFFF?text=EYE", alt: "Eye Icon" },
+  { type: 'text', value: " THAT MAKE DIGITAL PRODUCTS FEEL EFFORTLESS. " },
+  { type: 'text', value: "DESIGN ISN't JUST HOW IT LOOKS, IT'S HOW IT FEELS WHEN YOU " },
+  { type: 'image', src: "https://via.placeholder.com/80x40/111111/FFFFFF?text=SCROLL", alt: "Scroll Icon" },
+  { type: 'text', value: " DOWN THE PAGE. " },
+  { type: 'text', value: "FROM 180MS TRANSITIONS " },
+  { type: 'image', src: "https://via.placeholder.com/60x60/111111/FFFFFF?text=TIME", alt: "Time Icon" },
+  { type: 'text', value: " TO MAGNETIC CURSORS, I CRAFT EXPERIENCES THAT " },
+  { type: 'text', value: "PEOPLE ACTUALLY REMEMBER. " },
+  { type: 'image', src: "https://via.placeholder.com/120x60/111111/FFFFFF?text=LUNO", alt: "Luno Tech" },
+  { type: 'text', value: " EVERY PIXEL HAS A PURPOSE." }
+];
 
 export const articles = [
   {

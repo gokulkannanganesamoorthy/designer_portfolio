@@ -1,12 +1,22 @@
-.container {
+.footerContainer {
+  position: relative;
+  height: 80vh;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.footerFixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  padding: var(--spacing-32) var(--page-margin);
-  background-color: var(--text-primary); /* Inverted for high impact */
+  height: 80vh;
+  background-color: var(--text-primary);
   color: var(--bg-primary);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  justify-content: space-between;
+  padding: var(--spacing-32) var(--page-margin) var(--spacing-8) var(--page-margin);
+  z-index: -1; /* This is the trick: it sits behind the scrolling content */
 }
 
 .heading {
@@ -15,71 +25,30 @@
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
-  max-width: 800px;
-  margin-bottom: var(--spacing-8);
 }
 
 .subheading {
   font-family: 'SF Pro Display', sans-serif;
   font-size: clamp(1rem, 2vw, 1.25rem);
   color: var(--text-secondary);
-  max-width: 500px;
-  margin-bottom: var(--spacing-16);
+  margin-top: var(--spacing-8);
 }
 
-.conversationalForm {
+.hugeLink {
   font-family: var(--font-cormorant), serif;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  line-height: 1.8;
-  max-width: 800px;
-  text-align: left;
-}
-
-.inputField {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border-light);
+  font-size: clamp(4rem, 10vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
   color: var(--bg-primary);
-  font-family: var(--font-cormorant), serif;
-  font-size: inherit;
-  padding: 0 var(--spacing-2);
-  margin: 0 var(--spacing-2);
-  width: 250px;
-  outline: none;
-  transition: border-color 0.3s ease;
+  transition: opacity 0.3s ease;
+  cursor: none; /* Let custom cursor handle this */
 }
 
-.inputField:focus {
-  border-color: var(--bg-primary);
+.hugeLink:hover {
+  opacity: 0.7;
 }
 
-.inputField::placeholder {
-  color: var(--text-secondary);
-  opacity: 0.5;
-}
-
-.submitBtn {
-  margin-top: var(--spacing-12);
-  font-family: 'SF Pro Display', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
-  padding: var(--spacing-4) var(--spacing-8);
-  border-radius: 40px;
-  transition: transform 0.3s var(--ease-slow), opacity 0.3s ease;
-}
-
-.submitBtn:hover {
-  transform: scale(1.05);
-}
-
-.footer {
-  margin-top: var(--spacing-32);
-  width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--spacing-8);
+.bottomRow {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -93,36 +62,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
-  text-align: left;
-}
-
-.footerTitle {
-  color: var(--bg-primary);
-  font-weight: 500;
-  letter-spacing: 0.1em;
 }
 
 .footerRight {
   display: flex;
   gap: var(--spacing-6);
-}
-
-.footerLink {
-  transition: color 0.3s ease;
-}
-
-.footerLink:hover {
-  color: var(--bg-primary);
-}
-
-@media (max-width: 768px) {
-  .inputField {
-    width: 100%;
-    margin: var(--spacing-2) 0;
-  }
-  .footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-8);
-  }
 }

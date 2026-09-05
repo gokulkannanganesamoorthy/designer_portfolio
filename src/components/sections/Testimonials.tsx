@@ -1,99 +1,68 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useAnimationFrame, useMotionValue, useTransform, wrap, useScroll, useVelocity, useSpring } from 'framer-motion';
 import styles from './Testimonials.module.css';
-
 import { testimonials } from '@/lib/data';
 
+// We duplicate the testimonials a few times so the marquee seamlessly loops
+const marqueeItems = [...testimonials, ...testimonials, ...testimonials];
+
 export default function Testimonials() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
+  const baseX = useMotionValue(0);
+  const { scrollY } = useScroll(); // to potentially tie speed to scroll
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false
   });
 
-  const step = testimonials.length > 1 ? 1 / (testimonials.length - 1) : 1;
+  const [isHovered, setIsHovered] = useState(false);
+  const directionFactor = useRef<number>(-1);
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // Determine the active index based on scroll progress
-    let closestIndex = 0;
-    let minDistance = 1;
-    
-    testimonials.forEach((_, i) => {
-      const distance = Math.abs(latest - (i * step));
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = i;
-      }
-    });
-    
-    setActiveIndex(closestIndex);
+  useAnimationFrame((t, delta) => {
+    // base speed is 1. When hovered, slow it down to 0.2
+    let moveBy = directionFactor.current * (isHovered ? 0.5 : 2) * (delta / 1000) * 100;
+
+    // Add scroll velocity factor
+    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+
+    baseX.set(baseX.get() + moveBy);
   });
+
+  // The wrap function bounds the x value. The range depends on the width of the content.
+  // We'll estimate width based on card size. For production, measuring ref is better, but this works for fixed-ish sizes.
+  const x = useTransform(baseX, (v) => `${wrap(-30, -60, v)}%`);
 
   return (
-    <section 
-      ref={containerRef} 
-      className={styles.container} 
-      id="testimonials"
-      style={{ height: `${testimonials.length * 100}vh` }}
-    >
-      <div className={styles.stickyWrapper}>
-        {testimonials.map((testimonial, i) => {
-          // Input range: when this item is active, it's at `i * step`
-          const inputMap = testimonials.map((_, idx) => idx * step);
-          
-          // Opacity: 1 when active, 0 otherwise
-          const outputOpacity = testimonials.map((_, idx) => idx === i ? 1 : 0);
-          const opacity = useTransform(scrollYProgress, inputMap, outputOpacity);
-
-          // Y-axis translation: comes up from bottom, stays pinned, goes up
-          const outputY = testimonials.map((_, idx) => idx < i ? 50 : idx === i ? 0 : -50);
-          const y = useTransform(scrollYProgress, inputMap, outputY);
-
-          // Scale: starts slightly smaller, grows to 1
-          const outputScale = testimonials.map((_, idx) => idx < i ? 0.95 : idx === i ? 1 : 1.05);
-          const scale = useTransform(scrollYProgress, inputMap, outputScale);
-
-          // Blur effect
-          const outputBlur = testimonials.map((_, idx) => idx === i ? 0 : 5);
-          const blurValue = useTransform(scrollYProgress, inputMap, outputBlur);
-          const filter = useTransform(blurValue, (v) => `blur(${v}px)`);
-
-          return (
+    <section className={styles.container}>
+      <div 
+        className={styles.marqueeContainer}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <motion.div className={styles.marqueeContent} style={{ x }}>
+          {marqueeItems.map((testimonial, index) => (
             <motion.div 
-              key={testimonial.id}
-              className={styles.quoteContainer}
-              style={{
-                opacity,
-                y,
-                scale,
-                filter,
-                pointerEvents: i === activeIndex ? 'auto' : 'none'
-              }}
+              key={index} 
+              className={styles.testimonialCard}
+              whileHover={{ scale: 1.05, backgroundColor: 'var(--text-primary)', color: 'var(--bg-primary)' }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <h2 className={styles.quoteText}>
-                "{testimonial.text}"
-              </h2>
+              <p className={styles.quote}>"{testimonial.text}"</p>
               <div className={styles.authorInfo}>
                 <span className={styles.authorName}>{testimonial.name}</span>
                 <span className={styles.authorRole}>{testimonial.role}</span>
               </div>
             </motion.div>
-          );
-        })}
-
-        <div className={styles.progressIndicator}>
-          {testimonials.map((_, i) => (
-            <div 
-              key={i} 
-              className={`${styles.progressDot} ${i === activeIndex ? styles.active : ''}`}
-            />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 }
+
+// Missing imports for useScroll, useVelocity in the file above. I will fix it.

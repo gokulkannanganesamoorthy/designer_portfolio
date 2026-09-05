@@ -1,50 +1,53 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import styles from './Process.module.css';
 import { processSteps } from '@/lib/data';
+
+function Card({ step, index, total }: { step: any; index: number; total: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start start"] // Track when the card reaches the top sticky position
+  });
+
+  // Calculate top offset for stacking effect
+  const topOffset = `calc(20vh + ${index * 20}px)`;
+
+  // As subsequent cards arrive, this card should scale down slightly and darken
+  // Since we don't have a global scroll tracking array easily here, we'll use a local trick:
+  // We track the scroll progress of *this* card container reaching the top.
+  // Actually, for a true stack effect, it's better to track a parent container, but this local approach works for simple overlapping.
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1 - ((total - index) * 0.02)]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+
+  return (
+    <div className={styles.cardWrapper} style={{ top: topOffset }}>
+      <motion.div 
+        className={styles.card}
+        style={{ scale }}
+      >
+        <span className={styles.stepNumber}>{step.id}</span>
+        <h3 className={styles.stepTitle}>{step.title}</h3>
+        <p className={styles.stepDescription}>{step.description}</p>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function Process() {
   return (
     <section className={styles.container}>
       <div className={styles.header}>
-        <motion.h2 
-          className={styles.sectionTitle}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20%" }}
-          transition={{ duration: 0.8, ease: [0.2, 0, 0, 1] }}
-        >
-          HOW I WORK
-        </motion.h2>
+        <h2 className={styles.sectionTitle}>HOW I WORK</h2>
       </div>
 
-      <div className={styles.grid}>
+      <div className={styles.cardsContainer}>
         {processSteps.map((step, index) => (
-          <motion.div 
-            key={step.id} 
-            className={styles.step}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.2, 0, 0, 1] }}
-          >
-            <span className={styles.stepNumber}>{step.id}</span>
-            <h3 className={styles.stepTitle}>{step.title}</h3>
-            <p className={styles.stepDescription}>{step.description}</p>
-          </motion.div>
+          <Card key={step.id} step={step} index={index} total={processSteps.length} />
         ))}
       </div>
-
-      <motion.div 
-        className={styles.footerLine}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 1, delay: 0.5, ease: [0.2, 0, 0, 1] }}
-      >
-        "Because the last 5% is usually where the experience becomes memorable."
-      </motion.div>
     </section>
   );
 }

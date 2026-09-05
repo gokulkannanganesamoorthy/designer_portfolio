@@ -3,6 +3,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import DevToolsLogger from "../components/layout/DevToolsLogger";
 import Footer from "../components/layout/Footer";
 import SmoothScroll from "../components/layout/SmoothScroll";
+import CustomCursor from "../components/ui/CustomCursor";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -150,7 +151,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cormorant.variable} style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <body className={cormorant.variable} style={{ minHeight: "100vh", display: "flex", flexDirection: "column", cursor: "none" }}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -158,6 +159,7 @@ export default function RootLayout({
         <GoogleAnalytics gaId="G-LGV6KYWDH1" />
         <div dangerouslySetInnerHTML={{ __html: "<!-- Look Closer. -->" }} />
         <DevToolsLogger />
+        <CustomCursor />
         <SmoothScroll>
           {children}
           <Footer />
