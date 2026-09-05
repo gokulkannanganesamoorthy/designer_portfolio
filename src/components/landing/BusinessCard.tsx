@@ -18,7 +18,7 @@ export default function BusinessCard() {
   };
 
   const itemVariants: Variants = {
-    hidden: { y: 100, opacity: 0 },
+    hidden: { y: 60, opacity: 0 },
     show: { 
       y: 0, 
       opacity: 1,
@@ -41,18 +41,21 @@ export default function BusinessCard() {
         animate="show"
       >
         <div className={styles.titleLine}>
-          <motion.h1 className="editorial-heading" variants={itemVariants}>
+          <motion.h1 className={styles.heroHeading} variants={itemVariants}>
             {personalInfo.businessName.split(' ')[0]}
           </motion.h1>
         </div>
         <div className={styles.titleLine}>
-          <motion.h1 className="editorial-heading" variants={itemVariants}>
+          <motion.h1 className={styles.heroHeading} variants={itemVariants}>
             {personalInfo.businessName.split(' ')[1]}
           </motion.h1>
         </div>
         
         <motion.div className={styles.subtitle} variants={itemVariants}>
-          <p className="editorial-subheading">{personalInfo.tagline}</p>
+          <p className={styles.tagline}>{personalInfo.tagline}</p>
+          <p className={styles.services}>
+            {personalInfo.services.join(' · ')}
+          </p>
         </motion.div>
       </motion.div>
 
@@ -65,7 +68,7 @@ export default function BusinessCard() {
         <span className="editorial-subheading" style={{ fontSize: '0.6rem' }}>SCROLL</span>
         <motion.div 
           className={styles.scrollDot}
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
         />
       </motion.div>

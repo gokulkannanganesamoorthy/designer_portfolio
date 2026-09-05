@@ -1,9 +1,12 @@
 :root {
-  /* Color Palette */
-  --bg-primary: #FAFAF8;
+  /* Color Palette - Premium Editorial */
+  --bg-primary: #F8F7F3;
+  --bg-secondary: #FFFFFF;
   --text-primary: #111111;
-  --text-secondary: #555555;
-  --divider-color: rgba(17, 17, 17, 0.1);
+  --text-secondary: #6E6E6E;
+  --border-light: #E6E4DE;
+  --accent-warm: #C8A97E;
+  --divider-color: var(--border-light);
 
   /* Spacing - Swiss Grid & Vertical Rhythm */
   --spacing-1: 0.25rem;

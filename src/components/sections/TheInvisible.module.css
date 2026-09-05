@@ -1,0 +1,84 @@
+.container {
+  width: 100%;
+  padding: var(--spacing-24) var(--page-margin);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.header {
+  margin-bottom: var(--spacing-16);
+}
+
+.sectionTitle {
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-4);
+}
+
+.sectionSubtitle {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 500px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--divider-color);
+}
+
+.item {
+  border-bottom: 1px solid var(--divider-color);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-6) 0;
+  gap: var(--spacing-6);
+}
+
+.itemNumber {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  width: 40px;
+}
+
+.itemTitle {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: transform 0.5s var(--ease-slow);
+}
+
+.item:hover .itemTitle {
+  transform: translateX(20px);
+}
+
+.itemContent {
+  padding-left: calc(40px + var(--spacing-6));
+  padding-bottom: var(--spacing-6);
+  max-width: 600px;
+}
+
+.itemDescription {
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .itemContent {
+    padding-left: 0;
+  }
+}

@@ -1,56 +1,77 @@
-"use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import styles from "./Contact.module.css";
+'use client';
 
-type Layout = "center" | "left" | "stagger";
-type InputStyle = "minimal" | "highlight" | "ghost";
+import { motion } from 'framer-motion';
+import styles from './Contact.module.css';
+import { personalInfo } from '@/lib/data';
 
 export default function Contact() {
-  const [name, setName] = useState("");
-  const [profession, setProfession] = useState("");
-  const [interest, setInterest] = useState("");
-  const [email, setEmail] = useState("");
-
-  const isFormFilled = name && profession && interest && email;
-
   return (
     <section className={styles.container} id="contact">
-      <div className={`${styles.content} ${styles['layout-center']}`}>
-        <h2 className={styles.title}>Start a Conversation</h2>
-        <a href="mailto:hello@gokulmakes.in" className={styles.emailLink}>hello@gokulmakes.in</a>
+      <motion.h2 
+        className={styles.heading}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-20%" }}
+        transition={{ duration: 1, ease: [0.2, 0, 0, 1] }}
+      >
+        HAVE SOMETHING<br />WORTH BUILDING?
+      </motion.h2>
+      
+      <motion.p 
+        className={styles.subheading}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-20%" }}
+        transition={{ duration: 1, delay: 0.3, ease: [0.2, 0, 0, 1] }}
+      >
+        Tell me what you're working on.<br />I'll tell you what I'd change.
+      </motion.p>
+
+      <motion.form 
+        className={styles.conversationalForm}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-20%" }}
+        transition={{ duration: 1, delay: 0.5, ease: [0.2, 0, 0, 1] }}
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <div>
+          Hi, my name is 
+          <input type="text" placeholder="your name" className={styles.inputField} /> 
+          and I am a 
+          <input type="text" placeholder="profession / company" className={styles.inputField} />.
+        </div>
+        <div style={{ marginTop: '1.5rem' }}>
+          I am currently building 
+          <input type="text" placeholder="what you're building" className={styles.inputField} style={{ width: '300px' }} />
+        </div>
+        <div style={{ marginTop: '1.5rem' }}>
+          and you can reach me at 
+          <input type="email" placeholder="your email address" className={styles.inputField} />.
+        </div>
         
-        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-          <div className={styles.paragraph}>
-            <span className={styles.line1}>Hi, my name is{" "}</span>
-            <div className={`${styles.inputWrapper} ${styles['input-minimal']}`} data-value={name || "your name"}>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="your name" className={styles.input} />
-            </div>
-            <span className={styles.line2}>, and my profession is{" "}</span>
-            <div className={`${styles.inputWrapper} ${styles['input-minimal']}`} data-value={profession || "your profession"}>
-              <input type="text" value={profession} onChange={(e) => setProfession(e.target.value)} placeholder="your profession" className={styles.input} />
-            </div>
-            <span className={styles.line3}>. I'd like to collaborate on{" "}</span>
-            <div className={`${styles.inputWrapper} ${styles['input-minimal']}`} data-value={interest || "what you're building"}>
-              <input type="text" value={interest} onChange={(e) => setInterest(e.target.value)} placeholder="what you're building" className={styles.input} />
-            </div>
-            <span className={styles.line4}>. You can reach me at{" "}</span>
-            <div className={`${styles.inputWrapper} ${styles['input-minimal']}`} data-value={email || "your email"}>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your email" className={styles.input} />
-            </div>
-            <span className={styles.line5}>.</span>
-          </div>
-          
-          <motion.button 
-            type="submit" 
-            className={`${styles.submitBtn} ${isFormFilled ? styles.ready : ""}`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Send Message
-          </motion.button>
-        </form>
-      </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button type="submit" className={styles.submitBtn}>
+            START A CONVERSATION
+          </button>
+        </div>
+      </motion.form>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerLeft}>
+          <span className={styles.footerTitle}>{personalInfo.name.toUpperCase()}</span>
+          <span>{personalInfo.title}</span>
+          <span>{personalInfo.role}, {personalInfo.company}</span>
+          <span style={{ marginTop: '1rem', fontStyle: 'italic', fontFamily: 'var(--font-cormorant), serif', fontSize: '1rem' }}>
+            Designing the Invisible.<br />Building things people remember.
+          </span>
+        </div>
+        <div className={styles.footerRight}>
+          <a href="mailto:hello@gokulmakes.in" className={styles.footerLink}>EMAIL</a>
+          <a href="#" className={styles.footerLink}>LINKEDIN</a>
+          <a href="#" className={styles.footerLink}>INSTAGRAM</a>
+        </div>
+      </footer>
     </section>
   );
 }

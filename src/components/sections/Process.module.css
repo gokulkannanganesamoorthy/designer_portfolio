@@ -1,0 +1,60 @@
+.container {
+  width: 100%;
+  padding: var(--spacing-24) var(--page-margin);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.header {
+  margin-bottom: var(--spacing-16);
+}
+
+.sectionTitle {
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-12);
+  border-top: 1px solid var(--divider-color);
+  padding-top: var(--spacing-12);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.stepNumber {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+.stepTitle {
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  font-weight: 500;
+}
+
+.stepDescription {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.footerLine {
+  margin-top: var(--spacing-24);
+  text-align: center;
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-style: italic;
+  color: var(--text-secondary);
+}
