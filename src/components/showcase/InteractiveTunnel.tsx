@@ -90,27 +90,19 @@ export default function InteractiveTunnel({ projects }: { projects: Project[] })
 
           {/* Dynamic Typography Panels */}
           {projects.map((p, i) => {
-            const center = i * step;
-            // Define opacity mapping: Fade in as it approaches center, fade out as it leaves
-            const opacity = useTransform(
-              scrollYProgress, 
-              [center - (step * 0.5), center, center + (step * 0.5)], 
-              [0, 1, 0]
-            );
-            
-            // Define scale mapping: zoom in slightly from far, zoom past camera when leaving
-            const scale = useTransform(
-              scrollYProgress, 
-              [center - (step * 0.5), center, center + (step * 0.5)], 
-              [0.8, 1, 2.5]
-            );
+            const inputMap = projects.map((_, idx) => idx * step);
 
-            // Define Y parallax
-            const y = useTransform(
-              scrollYProgress, 
-              [center - (step * 0.5), center, center + (step * 0.5)], 
-              [100, 0, -200]
-            );
+            // Opacity: 1 when active, 0 otherwise. Crossfades perfectly.
+            const outputOpacity = projects.map((_, idx) => idx === i ? 1 : 0);
+            const opacity = useTransform(scrollYProgress, inputMap, outputOpacity);
+            
+            // Scale: 0.8 when incoming, 1 when active, 2.5 when leaving
+            const outputScale = projects.map((_, idx) => idx < i ? 0.8 : idx === i ? 1 : 2.5);
+            const scale = useTransform(scrollYProgress, inputMap, outputScale);
+
+            // Y Parallax: 100 when incoming, 0 when active, -200 when leaving
+            const outputY = projects.map((_, idx) => idx < i ? 100 : idx === i ? 0 : -200);
+            const y = useTransform(scrollYProgress, inputMap, outputY);
 
             return (
               <motion.div 
