@@ -27,25 +27,29 @@ export default function ScrollStory() {
         <div className={styles.textContent}>
           {scrollStory.map((item, index) => {
             // Calculate the specific scroll range for this item to appear
-            const start = index / totalItems;
-            const end = (index + 1) / totalItems;
+            const rawStart = index / totalItems;
+            const rawEnd = (index + 1) / totalItems;
+            
+            // Clamp domains to [0, 1] to prevent WAAPI monotonic/bounds errors
+            const start = Math.max(0, rawStart - 0.1);
+            const end = Math.min(1, Math.max(start + 0.001, rawEnd));
 
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const opacity = useTransform(
               scrollYProgress,
-              [start - 0.1, end],
+              [start, end],
               [0.1, 1],
             );
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const y = useTransform(
               scrollYProgress,
-              [start - 0.1, end],
+              [start, end],
               [10, 0],
             );
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const scale = useTransform(
               scrollYProgress,
-              [start - 0.1, end],
+              [start, end],
               [0.9, 1],
             );
 
