@@ -1,85 +1,83 @@
 .container {
-  height: 200vh; /* Allow enough scrolling space for 4 items, but tighter for faster rotation */
   position: relative;
+  width: 100%;
   background-color: var(--bg-primary);
-  z-index: 10;
+  color: var(--text-primary);
 }
 
-.stickyContainer {
+.stickyWrapper {
   position: sticky;
   top: 0;
   height: 100vh;
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
-  padding: var(--page-margin);
 }
 
-.perspective {
-  perspective: 1500px; /* 3D perspective distance */
-  width: 100%;
-  max-width: 800px;
-  height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cylinder {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  /* Will be controlled by framer-motion inline styles */
-}
-
-.testimonialItem {
+.quoteContainer {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: 90vw;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem;
-  backface-visibility: hidden; /* Hides items when they rotate away */
+  padding: var(--spacing-8);
 }
 
-.quote {
-  font-size: var(--text-2xl);
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--text-primary);
-  margin-bottom: 3rem;
-  letter-spacing: -0.01em;
+.quoteText {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-8);
+  /* Use the editorial heading class styling */
+  font-family: var(--font-cormorant), 'Times New Roman', serif;
 }
 
-@media (min-width: 768px) {
-  .quote {
-    font-size: var(--text-3xl);
-  }
-}
-
-.author {
+.authorInfo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
 }
 
-.name {
-  font-size: var(--text-base);
-  font-weight: 500;
+.authorName {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.role {
-  font-size: var(--text-sm);
+.authorRole {
+  font-family: 'SF Pro Display', sans-serif;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.progressIndicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.progressDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+.progressDot.active {
+  opacity: 1;
 }
