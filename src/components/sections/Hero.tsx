@@ -4,6 +4,33 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Hero.module.css';
 
+// Unified blur reveal variants across all hooks for consistent, elegant cadence
+const hookVariants = {
+  initial: {
+    opacity: 0,
+    y: 12,
+    filter: 'blur(10px)',
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.55,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -12,
+    filter: 'blur(10px)',
+    transition: {
+      duration: 0.35,
+      ease: [0.2, 0, 0, 1] as [number, number, number, number],
+    },
+  },
+};
+
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0);
@@ -25,13 +52,13 @@ export default function Hero() {
   useEffect(() => {
     setMounted(true);
 
-    // Sequence of intro hooks
-    const t1 = setTimeout(() => setPhase(1), 400);   // Hook 1: Ready to elevate your digital presence?
-    const t2 = setTimeout(() => setPhase(2), 2200);  // Hook 2: Ready for your next digital experience?
-    const t3 = setTimeout(() => setPhase(3), 4000);  // Hook 3: Let’s begin
-    const t4 = setTimeout(() => setPhase(4), 5400);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
+    // Sequence of intro hooks with perfectly balanced reading dwell times
+    const t1 = setTimeout(() => setPhase(1), 300);   // Hook 1: "Ready to elevate your digital presence?"
+    const t2 = setTimeout(() => setPhase(2), 2150);  // Hook 2: "Ready for your next digital experience?"
+    const t3 = setTimeout(() => setPhase(3), 4350);  // Hook 3: "Let’s begin"
+    const t4 = setTimeout(() => setPhase(4), 6250);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
 
-    // After GOKUL MAKES settles (7000ms), fly the lines to the top right
+    // After GOKUL MAKES settles, fly the lines to the top right
     const t5 = setTimeout(() => {
       const topTarget = document.getElementById('nav-line-top-target');
       const bottomTarget = document.getElementById('nav-line-bottom-target');
@@ -89,7 +116,7 @@ export default function Hero() {
         window.dispatchEvent(new CustomEvent('hero-sequence-done'));
         setLinesHandedOver(true);
       }, 1200);
-    }, 7000);
+    }, 8000);
 
     return () => {
       clearTimeout(t1);
@@ -109,10 +136,10 @@ export default function Hero() {
             <motion.div
               key="hook1"
               className={styles.hookContainer}
-              initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              variants={hookVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
               <p className={styles.hookText}>
                 Ready to elevate your digital presence?
@@ -124,10 +151,10 @@ export default function Hero() {
             <motion.div
               key="hook2"
               className={styles.hookContainer}
-              initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              variants={hookVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
               <p className={styles.hookText}>
                 Ready for your next digital experience?
@@ -139,10 +166,10 @@ export default function Hero() {
             <motion.div
               key="hook3"
               className={styles.hookContainer}
-              initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              variants={hookVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
               <p className={styles.hookText}>Let&rsquo;s begin</p>
             </motion.div>
@@ -152,9 +179,9 @@ export default function Hero() {
             <motion.div
               key="final"
               className={styles.finalHero}
-              initial={{ opacity: 0, filter: 'blur(10px)', y: 15 }}
+              initial={{ opacity: 0, filter: 'blur(10px)', y: 12 }}
               animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Top line (underscore) — reveals in-place, then flies right & up */}
               {!linesHandedOver && (
@@ -178,20 +205,18 @@ export default function Hero() {
                           duration: 1.2,
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.55, 1],
-                          width: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
                         }
-                      : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }
+                      : { duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }
                   }
+                  style={{
+                    marginBottom: '1rem',
+                  }}
                 />
               )}
 
-              {/* Text block: GOKUL MAKES */}
-              <motion.div className={styles.heroTextBlock}>
-                <h1 className={styles.title}>GOKUL MAKES</h1>
-                <p className={styles.subtitle}>
-                  Turning brands into experiences.
-                </p>
-              </motion.div>
+              <h1 className={styles.title}>
+                GOKUL MAKES
+              </h1>
 
               {/* Bottom line (underscore) — reveals in-place, then flies right & up */}
               {!linesHandedOver && (
@@ -215,10 +240,12 @@ export default function Hero() {
                           duration: 1.2,
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.55, 1],
-                          width: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
                         }
-                      : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.35 }
+                      : { duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }
                   }
+                  style={{
+                    marginTop: '1rem',
+                  }}
                 />
               )}
             </motion.div>
@@ -228,4 +255,3 @@ export default function Hero() {
     </section>
   );
 }
-
