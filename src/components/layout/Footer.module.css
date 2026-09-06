@@ -1,5 +1,5 @@
 .footer {
-  padding: var(--space-xl) var(--page-pad) var(--space-lg) var(--page-pad);
+  padding: var(--space-xl) var(--page-pad) clamp(140px, 14vw, 200px) var(--page-pad);
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -18,11 +18,11 @@
 }
 
 .top h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-primary);
   font-size: var(--text-display);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .email {
@@ -69,6 +69,7 @@
   color: var(--fg-dim);
   font-size: var(--text-small);
   justify-content: flex-end;
+  padding-right: clamp(20px, 6vw, 100px);
 }
 
 .links {
@@ -101,6 +102,8 @@
     grid-column: span 2;
     text-align: left;
     margin-top: var(--space-lg);
+    padding-right: 0;
+    padding-bottom: 48px;
   }
 }
 
@@ -110,5 +113,6 @@
   }
   .colRight {
     grid-column: span 1;
+    padding-bottom: 56px;
   }
 }
