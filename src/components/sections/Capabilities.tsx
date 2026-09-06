@@ -93,7 +93,7 @@ export default function Capabilities() {
                 </span>
                 <span className={styles.counterDivider}>/</span>
                 <span className={styles.counterTotal}>
-                  0{CAPABILITIES.length}
+                  0{CAPABILITIES.length + 1}
                 </span>
               </div>
               <div className={styles.buttonGroup}>
@@ -163,6 +163,47 @@ export default function Capabilities() {
                 <div className={styles.cardAccentBorder} />
               </div>
             ))}
+
+            {/* Card 04: Matching Light CTA Card */}
+            <div
+              className={`${styles.folioCard} ${styles.ctaCard}`}
+              tabIndex={0}
+            >
+              <div className={styles.cardHeader}>
+                <span className={styles.largeIndex}>04</span>
+              </div>
+
+              <div className={styles.cardBody}>
+                <h3 className={styles.disciplineTitle}>
+                  Let’s make something.
+                </h3>
+                <p className={styles.disciplineTagline}>
+                  Have an idea worth building?
+                </p>
+                <p className={styles.disciplineDesc}>
+                  I take on a limited number of high-stakes builds per quarter.
+                  Direct collaboration from raw concept to finished flagship.
+                </p>
+              </div>
+
+              <div className={styles.ctaFooter}>
+                <a href="#contact" className={styles.ctaButton}>
+                  <span>Initiate Dialogue</span>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M7 17L17 7M17 7H7M17 7V17" />
+                  </svg>
+                </a>
+              </div>
+
+              <div className={styles.cardAccentBorder} />
+            </div>
           </div>
         </div>
       </div>
