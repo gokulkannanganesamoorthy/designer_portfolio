@@ -12,6 +12,7 @@ const MANIFESTO_TEXT = `I don't just design interfaces. I design how things feel
 export default function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null);
   const wordsRef = useRef<HTMLDivElement>(null);
+  const hasRevealedRef = useRef(false);
 
   useEffect(() => {
     if (!wordsRef.current || !sectionRef.current) return;
@@ -19,25 +20,41 @@ export default function Manifesto() {
     const words = wordsRef.current.querySelectorAll(`.${styles.word}`);
 
     const ctx = gsap.context(() => {
-      gsap.set(words, { opacity: 0.1, y: 10 });
+      gsap.set(words, { opacity: 0.15, y: 8 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.5,
+        start: 'top 75%',
+        end: 'center 35%',
+        scrub: 0.3,
         onUpdate: (self) => {
+          // If already revealed once, keep words fully visible so scrolling back up does NOT un-reveal or dim them
+          if (hasRevealedRef.current) return;
+
           const progress = self.progress;
+
+          if (progress >= 0.95) {
+            hasRevealedRef.current = true;
+            gsap.to(words, {
+              opacity: 1,
+              y: 0,
+              duration: 0.25,
+              stagger: 0.01,
+              overwrite: true,
+            });
+            return;
+          }
+
           words.forEach((word, i) => {
             const wordProgress = (progress - i / words.length) * words.length;
             const clampedProgress = Math.max(
               0,
-              Math.min(1, wordProgress * 1.5),
+              Math.min(1, wordProgress * 1.4),
             );
 
             gsap.set(word, {
-              opacity: 0.1 + clampedProgress * 0.9,
-              y: 10 * (1 - clampedProgress),
+              opacity: 0.15 + clampedProgress * 0.85,
+              y: 8 * (1 - clampedProgress),
             });
           });
         },
@@ -51,7 +68,7 @@ export default function Manifesto() {
 
   return (
     <section ref={sectionRef} className={styles.manifesto} id="manifesto">
-      <div className={styles.stickyContainer}>
+      <div className={styles.container}>
         <div className={styles.inner}>
           <div className={styles.logoRow}>
             <h2 className={styles.wordmark}>More about me</h2>

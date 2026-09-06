@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import Link from 'next/link';
 import styles from './Navigation.module.css';
 import { navigationLinks as links } from '@/lib/data';
 
@@ -45,6 +44,8 @@ const itemVariants = {
 
 export default function Navigation({ delay = 8 }: NavigationProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const { scrollY } = useScroll();
@@ -52,26 +53,33 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
 
   useMotionValueEvent(scrollY, 'change', (current) => {
     const previous = scrollY.getPrevious() || 0;
-    if (current > previous && current > 150) {
-      setHidden(true); // Hide on scroll down
-    } else {
-      setHidden(false); // Show on scroll up
+    // Only hide on scroll down if mobile menu is NOT open
+    if (!isMobileOpen) {
+      if (current > previous && current > 150) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
     }
 
-    // Always make nav visible if user scrolls past hero
-    if (current > 100 && !visible) {
+    if (current > 80 && !visible) {
       setVisible(true);
     }
   });
 
   useEffect(() => {
-    // If page is refreshed when already scrolled down, show immediately
-    if (typeof window !== 'undefined' && window.scrollY > 100) {
-      setVisible(true);
-      return;
-    }
+    const checkViewport = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      // Immediately visible on mobile or if already scrolled down
+      if (mobile || window.scrollY > 80) {
+        setVisible(true);
+      }
+    };
 
-    // Hero sequence sends this event when the two underscore lines land in the top right
+    checkViewport();
+    window.addEventListener('resize', checkViewport);
+
     const handleSequenceDone = () => {
       setVisible(true);
     };
@@ -79,90 +87,229 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
     window.addEventListener('hero-sequence-done', handleSequenceDone);
 
     return () => {
+      window.removeEventListener('resize', checkViewport);
       window.removeEventListener('hero-sequence-done', handleSequenceDone);
     };
   }, []);
 
-  return (
-    <motion.div
-      className={styles.navContainer}
-      animate={{ 
-        y: hidden ? -100 : 0 
-      }}
-      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      style={{
-        opacity: visible ? 1 : 0,
-        pointerEvents: visible ? 'auto' : 'none',
-        visibility: visible ? 'visible' : 'hidden',
-      }}
-    >
-      <motion.nav
-        className={styles.navPill}
-        onHoverStart={() => {
-          setIsHovered(true);
-          window.dispatchEvent(new CustomEvent('nav-hover'));
-        }}
-        onHoverEnd={() => {
-          setIsHovered(false);
-          window.dispatchEvent(new CustomEvent('nav-leave'));
-        }}
-        layout
-        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-      >
-        {/* The animated snake oval border — active whenever hovered, exactly 2 dashes (one per line) */}
-        <svg className={styles.svgBorder}>
-          <rect
-            className={`${styles.animatedRect} ${isHovered ? styles.rectActive : ''}`}
-            x="0.75"
-            y="0.75"
-            width="calc(100% - 1.5px)"
-            height="calc(100% - 1.5px)"
-            rx="21.25"
-            pathLength="100"
-          />
-        </svg>
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsMobileOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isMobileOpen]);
 
-        <AnimatePresence mode="wait">
-          {!isHovered ? (
-            <motion.div
-              key="icon"
-              className={styles.menuIcon}
-              exit={{ opacity: 0, x: -10 }}
-            >
-              <motion.div
-                id="nav-line-top-target"
-                className={styles.hamburgerLine}
-                animate={{ x: isHovered ? 20 : 0, opacity: isHovered ? 0 : 1 }}
-                transition={{ duration: 0.3 }}
+  const handleLinkClick = useCallback((href: string) => {
+    setIsMobileOpen(false);
+    setIsHovered(false);
+
+    const target = document.querySelector(href);
+    if (target) {
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(target, { offset: -30, duration: 1.4 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
+
+  const handlePillClick = () => {
+    if (isMobile) {
+      setIsMobileOpen((prev) => !prev);
+    } else {
+      setIsHovered((prev) => !prev);
+    }
+  };
+
+  return (
+    <>
+      <motion.div
+        className={styles.navContainer}
+        animate={{
+          y: hidden && !isMobileOpen ? -100 : 0,
+        }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          opacity: visible ? 1 : 0,
+          pointerEvents: visible ? 'auto' : 'none',
+          visibility: visible ? 'visible' : 'hidden',
+        }}
+      >
+        <motion.nav
+          className={styles.navPill}
+          onClick={handlePillClick}
+          onHoverStart={() => {
+            if (!isMobile) {
+              setIsHovered(true);
+              window.dispatchEvent(new CustomEvent('nav-hover'));
+            }
+          }}
+          onHoverEnd={() => {
+            if (!isMobile) {
+              setIsHovered(false);
+              window.dispatchEvent(new CustomEvent('nav-leave'));
+            }
+          }}
+          layout
+          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+          aria-label="Navigation Menu"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handlePillClick();
+            }
+          }}
+        >
+          {/* The animated snake oval border on desktop hover */}
+          {!isMobile && (
+            <svg className={styles.svgBorder}>
+              <rect
+                className={`${styles.animatedRect} ${isHovered ? styles.rectActive : ''}`}
+                x="0.75"
+                y="0.75"
+                width="calc(100% - 1.5px)"
+                height="calc(100% - 1.5px)"
+                rx="21.25"
+                pathLength="100"
               />
+            </svg>
+          )}
+
+          <AnimatePresence mode="wait">
+            {!isHovered || isMobile ? (
               <motion.div
-                id="nav-line-bottom-target"
-                className={styles.hamburgerLine}
-                animate={{ x: isHovered ? -20 : 0, opacity: isHovered ? 0 : 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="links"
-              className={styles.linksWrapper}
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              exit="exit"
-            >
-              {links.map((link) => (
-                <motion.div key={link.name} variants={itemVariants}>
-                  <Link href={link.href} className={styles.navItem}>
-                    {link.name}
-                  </Link>
+                key="icon"
+                className={styles.menuIcon}
+                exit={{ opacity: 0, x: -10 }}
+              >
+                <motion.div
+                  id="nav-line-top-target"
+                  className={styles.hamburgerLine}
+                  animate={{
+                    rotate: isMobileOpen ? 45 : 0,
+                    y: isMobileOpen ? 3.5 : 0,
+                  }}
+                  transition={{ duration: 0.25 }}
+                />
+                <motion.div
+                  id="nav-line-bottom-target"
+                  className={styles.hamburgerLine}
+                  animate={{
+                    rotate: isMobileOpen ? -45 : 0,
+                    y: isMobileOpen ? -3.5 : 0,
+                  }}
+                  transition={{ duration: 0.25 }}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="links"
+                className={styles.linksWrapper}
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+              >
+                {links.map((link) => (
+                  <motion.div key={link.name} variants={itemVariants}>
+                    <a
+                      href={link.href}
+                      className={styles.navItem}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleLinkClick(link.href);
+                      }}
+                    >
+                      {link.name}
+                    </a>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.nav>
+      </motion.div>
+
+      {/* Luxury Full-Screen Mobile Navigation Overlay */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            className={styles.mobileOverlay}
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            data-lenis-prevent="true"
+          >
+            <div className={styles.mobileHeader}>
+              <span className={styles.mobileBrand}>GOKUL KANNAN</span>
+              <button
+                type="button"
+                className={styles.mobileCloseBtn}
+                onClick={() => setIsMobileOpen(false)}
+                aria-label="Close menu"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            <nav className={styles.mobileNavLinks}>
+              {links.map((link, idx) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    delay: 0.08 + idx * 0.06,
+                    duration: 0.45,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <a
+                    href={link.href}
+                    className={styles.mobileNavLink}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick(link.href);
+                    }}
+                  >
+                    <span className={styles.mobileNavNum}>0{idx + 1}</span>
+                    <span className={styles.mobileNavText}>{link.name}</span>
+                  </a>
                 </motion.div>
               ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
-    </motion.div>
+            </nav>
+
+            <div className={styles.mobileFooter}>
+              <p className={styles.mobileTagline}>Digital Experience Designer</p>
+              <span className={styles.mobileStatus}>● Available for select projects</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
-
