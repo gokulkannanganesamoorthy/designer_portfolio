@@ -207,6 +207,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="preload"
+          href="/assets/works/castella.webp"
+          as="image"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          href="/assets/works/GRE.webp"
+          as="image"
+          type="image/webp"
+        />
+      </head>
       <body
         className={`${nohemi.variable} ${jetbrainsMono.variable} antialiased`}
       >
