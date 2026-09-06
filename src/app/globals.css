@@ -57,7 +57,7 @@
   --radius-pill: 100px;
 }
 
-.dark, html[class="dark"] {
+.dark, html.dark, [data-theme="dark"], html[class*="dark"] {
   --bg:           #0A0A0A;
   --bg-surface:   rgba(255, 255, 255, 0.03);
   --fg:           #F5F2ED;

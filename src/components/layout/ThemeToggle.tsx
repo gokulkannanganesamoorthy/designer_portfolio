@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import './ThemeToggle.css'; // Import standard CSS to match EXACT DOM selectors from Uiverse
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -14,21 +14,23 @@ export default function ThemeToggle() {
 
   if (!mounted) return null;
 
-  const isDark = theme === 'dark';
+  const currentTheme = resolvedTheme || theme || 'light';
+  const isDark = currentTheme === 'dark';
 
   const toggleTheme = () => {
     setTheme(isDark ? 'light' : 'dark');
   };
 
   return (
-    <label className="switch">
+    <label className="switch" aria-label="Toggle light and dark theme">
       <input 
-        id="input" 
+        id="theme-toggle-input" 
+        className="switch-input"
         type="checkbox" 
         checked={isDark} 
         onChange={toggleTheme} 
       />
-      <div className="slider round">
+      <div className={`slider round ${isDark ? 'slider-dark' : ''}`}>
         <div className="sun-moon">
           <svg id="moon-dot-1" className="moon-dot" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
