@@ -235,12 +235,12 @@ export default function RootLayout({
               __html: '<!-- Designing the Invisible. -->',
             }}
           />
-          <Navigation delay={8} />
+          <Navigation delay={6.5} />
           <SmoothScroll>
             {children}
             <Footer />
           </SmoothScroll>
-          <BottomHUD delay={8} />
+          <BottomHUD delay={6.5} />
         </ThemeProvider>
       </body>
     </html>

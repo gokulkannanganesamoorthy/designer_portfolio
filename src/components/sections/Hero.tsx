@@ -8,24 +8,24 @@ import styles from './Hero.module.css';
 const hookVariants = {
   initial: {
     opacity: 0,
-    y: 18,
-    filter: 'blur(16px)',
+    y: 16,
+    filter: 'blur(12px)',
   },
   animate: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 1.1,
+      duration: 0.75,
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
   exit: {
     opacity: 0,
-    y: -16,
-    filter: 'blur(16px)',
+    y: -14,
+    filter: 'blur(12px)',
     transition: {
-      duration: 0.6,
+      duration: 0.4,
       ease: [0.2, 0, 0, 1] as [number, number, number, number],
     },
   },
@@ -52,11 +52,11 @@ export default function Hero() {
   useEffect(() => {
     setMounted(true);
 
-    // Sequence of intro hooks with slow, smooth blur reveal cadence
-    const t1 = setTimeout(() => setPhase(1), 400);   // Hook 1: "Ready to elevate your digital presence?"
-    const t2 = setTimeout(() => setPhase(2), 2800);  // Hook 2: "Ready for your next digital experience?"
-    const t3 = setTimeout(() => setPhase(3), 5600);  // Hook 3: "Let’s begin"
-    const t4 = setTimeout(() => setPhase(4), 8000);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
+    // Sequence of intro hooks with smooth, responsive blur reveal cadence
+    const t1 = setTimeout(() => setPhase(1), 300);   // Hook 1: "Ready to elevate your digital presence?"
+    const t2 = setTimeout(() => setPhase(2), 2100);  // Hook 2: "Ready for your next digital experience?"
+    const t3 = setTimeout(() => setPhase(3), 4200);  // Hook 3: "Let’s begin"
+    const t4 = setTimeout(() => setPhase(4), 5800);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
 
     // After GOKUL MAKES settles, fly the lines to the top right
     const t5 = setTimeout(() => {
@@ -113,12 +113,12 @@ export default function Hero() {
       // Launch flight animation: moves right first, then moves up
       setLinesFlown(true);
 
-      // Exactly when flight completes (1.2s), hand over to Navigation seamlessly
+      // Exactly when flight completes (1.0s), hand over to Navigation seamlessly
       setTimeout(() => {
         window.dispatchEvent(new CustomEvent('hero-sequence-done'));
         setLinesHandedOver(true);
-      }, 1200);
-    }, 10500);
+      }, 1000);
+    }, 8200);
 
     return () => {
       clearTimeout(t1);
@@ -198,11 +198,11 @@ export default function Hero() {
                   transition={
                     linesFlown
                       ? {
-                          duration: 1.2,
+                          duration: 1.0,
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.55, 1],
                         }
-                      : { duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }
+                      : { duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }
                   }
                   style={{
                     marginBottom: '1.25rem',
@@ -242,11 +242,11 @@ export default function Hero() {
                   transition={
                     linesFlown
                       ? {
-                          duration: 1.2,
+                          duration: 1.0,
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.55, 1],
                         }
-                      : { duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }
+                      : { duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }
                   }
                   style={{
                     marginTop: '1.25rem',
