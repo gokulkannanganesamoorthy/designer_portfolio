@@ -44,7 +44,7 @@ const GALLERY_DATA: GalleryColumn[] = [
       },
       {
         name: 'TAT',
-        url: '/assets/works/tat.png',
+        url: '/assets/works/tat2.png',
         width: 2880,
         height: 1800,
       },
@@ -60,8 +60,8 @@ const GALLERY_DATA: GalleryColumn[] = [
         height: 1800,
       },
       {
-        name: 'Luminary 2',
-        url: '/assets/works/luminary2.png',
+        name: 'Lexo',
+        url: '/assets/works/lexo.png',
         width: 2880,
         height: 1800,
       },
@@ -77,7 +77,7 @@ const GALLERY_DATA: GalleryColumn[] = [
         height: 1800,
       },
       {
-        name: 'TAT 2',
+        name: 'TAT',
         url: '/assets/works/tat2.png',
         width: 2880,
         height: 1800,
