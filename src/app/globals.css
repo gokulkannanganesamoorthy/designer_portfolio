@@ -29,7 +29,7 @@
 
   /* Consistent Section Typography across all sections */
   --text-section-title:   clamp(2.5rem, 6vw, 5.5rem);
-  --text-section-tagline: clamp(14px, 1.25vw, 19px);
+  --text-section-tagline: clamp(16px, 1.55vw, 22px);
 
   --text-hero:    clamp(4rem, 15vw, 14rem);
   --text-display: clamp(2.5rem, 6vw, 6rem);

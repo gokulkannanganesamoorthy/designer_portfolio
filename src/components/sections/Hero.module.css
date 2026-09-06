@@ -72,14 +72,15 @@
 
 .subtitle {
   font-family: var(--font-secondary);
-  font-size: var(--text-micro);
+  font-size: clamp(0.95rem, 1.35vw, 1.3rem);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 500;
   opacity: 0.75;
-  max-width: 500px;
+  max-width: 650px;
   text-align: center;
   color: var(--fg);
+  line-height: 1.4;
 }
 
 /* ─── Responsive ─── */
