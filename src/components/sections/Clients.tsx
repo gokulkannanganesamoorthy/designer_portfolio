@@ -18,9 +18,9 @@ export default function Clients() {
     <section className={styles.clients} id="clients">
       <div className={styles.container}>
         <div className={styles.logoRow}>
-          <h2 className={styles.wordmark}>CLIENTS</h2>
+          <h2 className={styles.wordmark}>Brands I collaborated with</h2>
           <p className={styles.tagline}>
-            Brands I collaborated <br /> with.
+            A few partners worth <br /> building with.
           </p>
         </div>
 
