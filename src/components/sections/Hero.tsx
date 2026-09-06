@@ -114,9 +114,9 @@ export default function Hero() {
               exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className={styles.hookText}>
+              <p className={styles.hookText}>
                 Ready to elevate your digital presence?
-              </h1>
+              </p>
             </motion.div>
           )}
 
@@ -129,9 +129,9 @@ export default function Hero() {
               exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className={styles.hookText}>
+              <p className={styles.hookText}>
                 Ready for your next digital experience?
-              </h1>
+              </p>
             </motion.div>
           )}
 
@@ -144,7 +144,7 @@ export default function Hero() {
               exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className={styles.hookText}>Let&rsquo;s begin</h1>
+              <p className={styles.hookText}>Let&rsquo;s begin</p>
             </motion.div>
           )}
 

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import Footer from '../components/layout/Footer';
@@ -28,22 +28,41 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500'],
 });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FFFFFF' },
+    { media: '(prefers-color-scheme: dark)', color: '#0A0A0A' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://gokulmakes.in'),
   title: {
-    default: 'Gokul Kannan — Digital Experience Designer',
+    default: 'Gokul Kannan — Digital Experience Designer & Creative Technologist',
     template: '%s | Gokul Kannan',
   },
   description:
-    'Digital Experience Designer. Designing the Invisible. Building things people remember. Founder, Luno Tech.',
+    'Digital Experience Designer crafting world-class digital products, bespoke 3D web experiences, and thoughtful brand identities. Founder of Luno Tech.',
   keywords: [
     'Digital Experience Designer',
+    'Creative Technologist',
     'UI/UX Designer',
     'Product Designer',
+    'Gokul Kannan',
     'Gokul Kannan Ganesamoorthy',
+    'Gokul Makes',
     'Creative Director',
     'Brand Strategist',
-    'Gokul Makes',
+    'Interactive Web Experiences',
+    '3D Web Design',
+    'Frontend Engineer',
+    'Luno Tech',
+    'Design Portfolio',
+    'Modern Web Design',
+    'Awwwards Portfolio',
   ],
   authors: [
     { name: 'Gokul Kannan Ganesamoorthy', url: 'https://gokulmakes.in' },
@@ -56,10 +75,17 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: '/favicon.png',
+    icon: [
+      { url: '/favicon.png' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/favicon.png', sizes: '180x180', type: 'image/png' }],
   },
+  manifest: '/manifest.webmanifest',
   alternates: {
-    canonical: '/',
+    canonical: 'https://gokulmakes.in',
   },
   robots: {
     index: true,
@@ -73,8 +99,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Gokul Kannan — Digital Experience Designer',
-    description: 'Designing the Invisible. Building things people remember.',
+    title: 'Gokul Kannan — Digital Experience Designer & Creative Technologist',
+    description:
+      'Digital Experience Designer crafting world-class digital products, bespoke 3D web experiences, and thoughtful brand identities. Founder of Luno Tech.',
     url: 'https://gokulmakes.in',
     siteName: 'Gokul Makes',
     locale: 'en_US',
@@ -82,9 +109,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gokul Kannan — Digital Experience Designer',
-    description: 'Designing the Invisible. Building things people remember.',
+    title: 'Gokul Kannan — Digital Experience Designer & Creative Technologist',
+    description:
+      'Digital Experience Designer crafting world-class digital products, bespoke 3D web experiences, and thoughtful brand identities.',
+    creator: '@gokulkannan',
   },
+  category: 'design',
+  classification: 'Portfolio',
 };
 
 const jsonLd = [
@@ -92,18 +123,55 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Gokul Kannan Ganesamoorthy',
-    jobTitle: 'Digital Experience Designer',
+    alternateName: ['Gokul Kannan', 'Gokul Makes'],
+    jobTitle: 'Digital Experience Designer & Creative Technologist',
+    description:
+      'Digital Experience Designer crafting world-class digital products, bespoke 3D web experiences, and thoughtful brand identities. Founder of Luno Tech.',
     url: 'https://gokulmakes.in',
+    image: 'https://gokulmakes.in/favicon.png',
     sameAs: [
       'https://twitter.com/gokulkannan',
       'https://linkedin.com/in/gokulkannan',
+      'https://github.com/gokulkannanganesamoorthy',
+    ],
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Luno Tech',
+      url: 'https://lunotech.in',
+    },
+    knowsAbout: [
+      'Digital Experience Design',
+      'UI/UX Design',
+      'Creative Technologist',
+      'Frontend Engineering',
+      'Interaction Design',
+      'Brand Identity',
+      'Design Systems',
+      '3D Web Development',
     ],
   },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Gokul Makes',
+    alternateName: 'Gokul Kannan — Portfolio',
     url: 'https://gokulmakes.in',
+    description: 'Designing the Invisible. Building things people remember.',
+    publisher: {
+      '@type': 'Person',
+      name: 'Gokul Kannan Ganesamoorthy',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    dateCreated: '2026-01-01T00:00:00Z',
+    dateModified: new Date().toISOString(),
+    mainEntity: {
+      '@type': 'Person',
+      name: 'Gokul Kannan Ganesamoorthy',
+      jobTitle: 'Digital Experience Designer',
+    },
   },
 ];
 

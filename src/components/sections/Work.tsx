@@ -249,7 +249,7 @@ export default function Work() {
                           src={img.url}
                           width={img.width}
                           height={img.height}
-                          alt={colData.artist}
+                          alt={`${colData.artist} — Design & Editorial Project by Gokul Kannan`}
                           loading={
                             colIndex < 3 && imgIndex === 0 ? 'eager' : 'lazy'
                           }
