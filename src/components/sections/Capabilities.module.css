@@ -25,48 +25,34 @@
   margin-bottom: clamp(40px, 5vw, 64px);
 }
 
-.headerTop {
+.logoRow {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
-  margin-bottom: clamp(28px, 3.5vw, 48px);
-}
-
-.headerMeta {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(0, 0, 0, 0.45);
-}
-
-.headlineRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
+  gap: clamp(16px, 2.5vw, 40px);
   flex-wrap: wrap;
-  gap: 24px;
 }
 
-.mainTitle {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
+.wordmark {
+  font-family: var(--font-display), 'Space Grotesk', -apple-system, sans-serif;
+  font-size: clamp(2.8rem, 6.5vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
   color: #000000;
-  margin: 0 0 12px 0;
+  margin: 0;
+  text-transform: uppercase;
 }
 
-.subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(15px, 1.2vw, 19px);
-  line-height: 1.5;
-  color: rgba(0, 0, 0, 0.58);
+.tagline {
+  font-family: var(--font-body), -apple-system, sans-serif;
+  font-size: clamp(14px, 1.3vw, 20px);
+  line-height: 1.25;
+  color: #111111;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding-top: clamp(4px, 0.8vw, 14px);
+  white-space: nowrap;
   margin: 0;
-  max-width: 540px;
 }
 
 /* ─── Architectural Progress & Controls ─── */

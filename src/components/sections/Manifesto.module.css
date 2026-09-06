@@ -21,8 +21,35 @@
   gap: var(--space-lg);
 }
 
-.sectionLabel {
-  align-self: flex-start;
+.logoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(16px, 2.5vw, 40px);
+  margin-bottom: clamp(16px, 2vw, 32px);
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-family: var(--font-display), 'Space Grotesk', -apple-system, sans-serif;
+  font-size: clamp(2.8rem, 6.5vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--fg);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.tagline {
+  font-family: var(--font-body), -apple-system, sans-serif;
+  font-size: clamp(14px, 1.3vw, 20px);
+  line-height: 1.25;
+  color: var(--fg-dim);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding-top: clamp(4px, 0.8vw, 14px);
+  white-space: nowrap;
+  margin: 0;
 }
 
 .textBlock {

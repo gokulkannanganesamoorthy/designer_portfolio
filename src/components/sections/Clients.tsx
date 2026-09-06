@@ -17,8 +17,11 @@ export default function Clients() {
   return (
     <section className={styles.clients} id="clients">
       <div className={styles.container}>
-        <div className={styles.header}>
-          <span className="mono-label">[04] Selected Partners</span>
+        <div className={styles.logoRow}>
+          <h2 className={styles.wordmark}>CLIENTS</h2>
+          <p className={styles.tagline}>
+            Brands I collaborated <br /> with.
+          </p>
         </div>
 
         <div className={styles.grid}>

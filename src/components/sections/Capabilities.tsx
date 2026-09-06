@@ -77,98 +77,95 @@ export default function Capabilities() {
       <div className={styles.capabilities}>
         {/* ─── Storytelling Narrative Header ─── */}
         <div className={styles.header}>
-        <div className={styles.headerTop}>
-          <span className="mono-label">[02] Capabilities</span>
-          <span className={styles.headerMeta}>End-to-End Execution</span>
-        </div>
-
-        <div className={styles.headlineRow}>
-          <div>
-            <h2 className={styles.mainTitle}>What I build</h2>
-            <p className={styles.subtitle}>
-              Three ways I turn ideas into useful digital experiences.
-            </p>
-          </div>
-
-          {/* Architectural Progress & Nav Controls */}
-          <div className={styles.navControls}>
-            <div className={styles.counter}>
-              <span className={styles.counterCurrent}>0{activeIndex + 1}</span>
-              <span className={styles.counterDivider}>/</span>
-              <span className={styles.counterTotal}>
-                0{CAPABILITIES.length}
-              </span>
+          <div className={styles.headlineRow}>
+            <div className={styles.logoRow}>
+              <h2 className={styles.wordmark}>What can i do ?</h2>
+              <p className={styles.tagline}>
+                Three ways I turn ideas into <br /> useful digital experiences.
+              </p>
             </div>
-            <div className={styles.buttonGroup}>
-              <button
-                type="button"
-                onClick={() => scrollTo('left')}
-                disabled={!canScrollLeft}
-                className={`${styles.navBtn} ${!canScrollLeft ? styles.navBtnDisabled : ''}`}
-                aria-label="Previous panel"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
+
+            {/* Architectural Progress & Nav Controls */}
+            <div className={styles.navControls}>
+              <div className={styles.counter}>
+                <span className={styles.counterCurrent}>
+                  0{activeIndex + 1}
+                </span>
+                <span className={styles.counterDivider}>/</span>
+                <span className={styles.counterTotal}>
+                  0{CAPABILITIES.length}
+                </span>
+              </div>
+              <div className={styles.buttonGroup}>
+                <button
+                  type="button"
+                  onClick={() => scrollTo('left')}
+                  disabled={!canScrollLeft}
+                  className={`${styles.navBtn} ${!canScrollLeft ? styles.navBtnDisabled : ''}`}
+                  aria-label="Previous panel"
                 >
-                  <path d="M19 12H5M12 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollTo('right')}
-                disabled={!canScrollRight}
-                className={`${styles.navBtn} ${!canScrollRight ? styles.navBtnDisabled : ''}`}
-                aria-label="Next panel"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollTo('right')}
+                  disabled={!canScrollRight}
+                  className={`${styles.navBtn} ${!canScrollRight ? styles.navBtnDisabled : ''}`}
+                  aria-label="Next panel"
                 >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </button>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ─── 3 Large Horizontal / Stacked Panels ─── */}
-      <div className={styles.stripWrapper}>
-        <div ref={scrollContainerRef} className={styles.stripTrack}>
-          {CAPABILITIES.map((item, idx) => (
-            <div
-              key={item.num}
-              className={`${styles.folioCard} ${activeIndex === idx ? styles.folioCardActive : ''}`}
-              tabIndex={0}
-            >
-              {/* Card Top: Architectural Index & Code */}
-              <div className={styles.cardHeader}>
-                <span className={styles.largeIndex}>{item.num}</span>
+        {/* ─── 3 Large Horizontal / Stacked Panels ─── */}
+        <div className={styles.stripWrapper}>
+          <div ref={scrollContainerRef} className={styles.stripTrack}>
+            {CAPABILITIES.map((item, idx) => (
+              <div
+                key={item.num}
+                className={`${styles.folioCard} ${activeIndex === idx ? styles.folioCardActive : ''}`}
+                tabIndex={0}
+              >
+                {/* Card Top: Architectural Index & Code */}
+                <div className={styles.cardHeader}>
+                  <span className={styles.largeIndex}>{item.num}</span>
+                </div>
+
+                {/* Card Middle: Title, Sharp Tagline, and Body Description */}
+                <div className={styles.cardBody}>
+                  <h3 className={styles.disciplineTitle}>{item.title}</h3>
+                  <p className={styles.disciplineTagline}>{item.tagline}</p>
+                  <p className={styles.disciplineDesc}>{item.description}</p>
+                </div>
+
+                {/* Subtle Ambient Hover Border */}
+                <div className={styles.cardAccentBorder} />
               </div>
-
-              {/* Card Middle: Title, Sharp Tagline, and Body Description */}
-              <div className={styles.cardBody}>
-                <h3 className={styles.disciplineTitle}>{item.title}</h3>
-                <p className={styles.disciplineTagline}>{item.tagline}</p>
-                <p className={styles.disciplineDesc}>{item.description}</p>
-              </div>
-
-              {/* Subtle Ambient Hover Border */}
-              <div className={styles.cardAccentBorder} />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 }
