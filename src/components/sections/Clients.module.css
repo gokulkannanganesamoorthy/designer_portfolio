@@ -107,11 +107,29 @@
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .clientItem {
+    padding: clamp(18px, 3.5vw, 26px) 6px;
+  }
+
+  .clientName {
+    font-size: clamp(1rem, 3.8vw, 1.25rem);
   }
 }
 
 @media (max-width: 480px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .clientItem {
+    padding: 16px 4px;
+  }
+
+  .clientName {
+    font-size: clamp(0.9rem, 3.6vw, 1.1rem);
   }
 }
