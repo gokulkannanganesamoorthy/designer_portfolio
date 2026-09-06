@@ -90,7 +90,8 @@ export default function Capabilities() {
     const targetCard = cards[clampedIdx];
     if (!targetCard) return;
 
-    const containerLeft = scrollContainerRef.current.getBoundingClientRect().left;
+    const containerLeft =
+      scrollContainerRef.current.getBoundingClientRect().left;
     const cardLeft = targetCard.getBoundingClientRect().left;
     const targetScroll =
       scrollContainerRef.current.scrollLeft + (cardLeft - containerLeft);
@@ -133,7 +134,8 @@ export default function Capabilities() {
     let wheelTimeout: NodeJS.Timeout;
 
     const handleWheel = (e: WheelEvent) => {
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey;
+      const isHorizontal =
+        Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey;
       if (!isHorizontal) return;
 
       e.preventDefault();
@@ -244,9 +246,7 @@ export default function Capabilities() {
                   0{activeIndex + 1}
                 </span>
                 <span className={styles.counterDivider}>/</span>
-                <span className={styles.counterTotal}>
-                  0{TOTAL_CARDS}
-                </span>
+                <span className={styles.counterTotal}>0{TOTAL_CARDS}</span>
               </div>
               <div className={styles.buttonGroup}>
                 <button
@@ -334,14 +334,14 @@ export default function Capabilities() {
                 </p>
                 <p className={styles.disciplineDesc}>
                   Bring me the idea. Let's Make it real soon.
-                  <br /> <br />I only work with a selected projects where
+                  <br /> <br />I only work with selected projects where
                   thoughtful design and technology can make a real difference.
                 </p>
               </div>
 
               <div className={styles.ctaFooter}>
                 <a href="#contact" className={styles.ctaButton}>
-                  <span>Initiate Dialogue</span>
+                  <span>Start a conversation</span>
                   <svg
                     width="14"
                     height="14"

@@ -1,15 +1,16 @@
 /* ═══════════════════════════════════════════════════════════════
    CAPABILITIES — "What I build"
-   Crisp White Editorial Monograph (Matches Work Section)
+   Theme-Adaptive Editorial Monograph
    ═══════════════════════════════════════════════════════════════ */
 
 .capabilitiesSection {
   width: 100%;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--bg);
+  color: var(--fg);
   position: relative;
   overflow-x: hidden;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .capabilities {
@@ -38,21 +39,23 @@
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.9;
-  color: #000000;
+  color: var(--fg);
   margin: 0;
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .tagline {
   font-family: var(--font-body), -apple-system, sans-serif;
   font-size: clamp(14px, 1.3vw, 20px);
   line-height: 1.25;
-  color: #111111;
+  color: var(--fg-dim);
   font-weight: 400;
   letter-spacing: -0.01em;
   padding-top: clamp(4px, 0.8vw, 14px);
   white-space: nowrap;
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 /* ─── Architectural Progress & Controls ─── */
@@ -72,16 +75,17 @@
 }
 
 .counterCurrent {
-  color: #000000;
+  color: var(--fg);
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .counterDivider {
-  color: rgba(0, 0, 0, 0.2);
+  color: var(--fg-muted);
 }
 
 .counterTotal {
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--fg-dim);
 }
 
 .buttonGroup {
@@ -94,9 +98,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
   background: transparent;
-  color: #000000;
+  color: var(--fg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,9 +109,9 @@
 }
 
 .navBtn:hover:not(.navBtnDisabled) {
-  background: #000000;
-  color: #ffffff;
-  border-color: #000000;
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
   transform: translateY(-2px);
 }
 
@@ -145,8 +149,8 @@
 /* ─── Folio Card (Large Architectural Panel) ─── */
 .folioCard {
   flex: 0 0 clamp(360px, 42vw, 560px);
-  background: #faf9f6;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: clamp(32px, 3.5vw, 48px);
   display: flex;
@@ -160,27 +164,27 @@
 }
 
 .folioCard:hover {
-  border-color: rgba(0, 0, 0, 0.25);
+  border-color: var(--card-border-hover);
   transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
-  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  background: var(--card-bg-hover);
 }
 
-/* ─── Card 04: CTA Invitation Card (Matching Light Aesthetic) ─── */
+/* ─── Card 04: CTA Invitation Card ─── */
 .ctaCard {
-  border: 1px dashed rgba(0, 0, 0, 0.16);
-  background: #faf9f6;
+  border: 1px dashed var(--border-hover);
+  background: var(--card-bg);
 }
 
 .ctaCard:hover {
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.3);
-  background: #ffffff;
+  border-color: var(--fg-dim);
+  background: var(--card-bg-hover);
 }
 
 .ctaFooter {
   padding-top: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--border);
 }
 
 .ctaButton {
@@ -188,8 +192,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 22px;
-  background: #000000;
-  color: #ffffff;
+  background: var(--fg);
+  color: var(--bg);
   border-radius: 50px;
   font-family: var(--font-mono);
   font-size: 11.5px;
@@ -202,7 +206,7 @@
 }
 
 .ctaButton:hover {
-  background: #222222;
+  opacity: 0.85;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
@@ -213,7 +217,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #000000, transparent);
+  background: linear-gradient(90deg, transparent, var(--fg), transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -228,7 +232,7 @@
   justify-content: flex-end;
   align-items: baseline;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--border);
 }
 
 .largeIndex {
@@ -236,12 +240,12 @@
   font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--fg-dim);
   transition: color 0.3s ease;
 }
 
 .folioCard:hover .largeIndex {
-  color: #000000;
+  color: var(--fg);
 }
 
 /* Card Body */
@@ -258,8 +262,9 @@
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: #000000;
+  color: var(--fg);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .disciplineTagline {
@@ -267,14 +272,16 @@
   font-size: clamp(15px, 1.1vw, 17px);
   font-weight: 500;
   line-height: 1.45;
-  color: #111111;
+  color: var(--fg);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .disciplineDesc {
   font-family: var(--font-body);
   font-size: clamp(13px, 0.95vw, 14.5px);
   line-height: 1.6;
-  color: rgba(0, 0, 0, 0.62);
+  color: var(--fg-dim);
   margin: 4px 0 0 0;
+  transition: color 0.3s ease;
 }

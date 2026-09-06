@@ -215,7 +215,7 @@ export default function Work() {
               fontSize="160"
               fontWeight="700"
               letterSpacing="-0.04em"
-              fill="#000000"
+              fill="currentColor"
             >
               WORKS
             </text>

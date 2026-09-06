@@ -13,6 +13,10 @@
   --accent-dim:   rgba(10, 10, 10, 0.1);
   --border:       rgba(0, 0, 0, 0.1);
   --border-hover: rgba(0, 0, 0, 0.2);
+  --card-bg:      #faf9f6;
+  --card-bg-hover:#ffffff;
+  --card-border:  rgba(0, 0, 0, 0.08);
+  --card-border-hover: rgba(0, 0, 0, 0.22);
 
   /* ─── Typography ─── */
   --font-display: 'Space Grotesk', sans-serif;
@@ -63,6 +67,10 @@
   --accent-dim:   rgba(245, 242, 237, 0.1);
   --border:       rgba(255, 255, 255, 0.1);
   --border-hover: rgba(255, 255, 255, 0.2);
+  --card-bg:      #131313;
+  --card-bg-hover:#1a1a1a;
+  --card-border:  rgba(255, 255, 255, 0.08);
+  --card-border-hover: rgba(255, 255, 255, 0.22);
 }
 
 /* ─── Reset ─── */
