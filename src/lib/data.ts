@@ -4,6 +4,7 @@ export const navigationLinks = [
   { name: 'PHILOSOPHY', href: '#manifesto' },
   { name: 'CAPABILITIES', href: '#capabilities' },
   { name: 'WORK', href: '#work' },
+  { name: 'CLIENTS', href: '#clients' },
   { name: 'CONTACT', href: '#contact' },
 ];
 
