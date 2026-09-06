@@ -15,30 +15,30 @@ const containerVariants = {
     width: 'auto',
     opacity: 1,
     transition: {
-      duration: 0.8,
+      duration: 0.5,
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      staggerChildren: 0.1,
-      delayChildren: 0.15,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
   exit: {
     width: 0,
     opacity: 0,
-    transition: { duration: 0.5, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
+    transition: { duration: 0.35, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: 15 },
+  hidden: { opacity: 0, x: 12 },
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
+    transition: { duration: 0.35, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
   },
   exit: {
     opacity: 0,
-    x: 15,
-    transition: { duration: 0.3, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
+    x: 12,
+    transition: { duration: 0.25, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
   },
 };
 
@@ -52,14 +52,14 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
   const [hidden, setHidden] = useState(false);
 
   useMotionValueEvent(scrollY, 'change', (current) => {
+    // On mobile, never hide the nav bar to eliminate scroll re-render jitter & lag
+    if (isMobile) return;
+
     const previous = scrollY.getPrevious() || 0;
-    // Only hide on scroll down if mobile menu is NOT open
-    if (!isMobileOpen) {
-      if (current > previous && current > 150) {
-        setHidden(true);
-      } else {
-        setHidden(false);
-      }
+    if (current > previous && current > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
     }
 
     if (current > 80 && !visible) {
@@ -116,7 +116,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
     const target = document.querySelector(href);
     if (target) {
       if ((window as any).lenis) {
-        (window as any).lenis.scrollTo(target, { offset: -30, duration: 1.4 });
+        (window as any).lenis.scrollTo(target, { offset: -30, duration: 1.2 });
       } else {
         target.scrollIntoView({ behavior: 'smooth' });
       }
@@ -136,9 +136,9 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
       <motion.div
         className={styles.navContainer}
         animate={{
-          y: hidden && !isMobileOpen ? -100 : 0,
+          y: !isMobile && hidden && !isMobileOpen ? -100 : 0,
         }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
         style={{
           opacity: visible ? 1 : 0,
           pointerEvents: visible ? 'auto' : 'none',
@@ -160,8 +160,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
               window.dispatchEvent(new CustomEvent('nav-leave'));
             }
           }}
-          layout
-          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+          transition={{ duration: 0.2 }}
           aria-label="Navigation Menu"
           role="button"
           tabIndex={0}
@@ -191,7 +190,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
               <motion.div
                 key="icon"
                 className={styles.menuIcon}
-                exit={{ opacity: 0, x: -10 }}
+                exit={{ opacity: 0 }}
               >
                 <motion.div
                   id="nav-line-top-target"
@@ -200,7 +199,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
                     rotate: isMobileOpen ? 45 : 0,
                     y: isMobileOpen ? 3.5 : 0,
                   }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.2 }}
                 />
                 <motion.div
                   id="nav-line-bottom-target"
@@ -209,7 +208,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
                     rotate: isMobileOpen ? -45 : 0,
                     y: isMobileOpen ? -3.5 : 0,
                   }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.2 }}
                 />
               </motion.div>
             ) : (
@@ -246,10 +245,10 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
         {isMobileOpen && (
           <motion.div
             className={styles.mobileOverlay}
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             data-lenis-prevent="true"
           >
             <div className={styles.mobileHeader}>
@@ -278,16 +277,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
 
             <nav className={styles.mobileNavLinks}>
               {links.map((link, idx) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    delay: 0.08 + idx * 0.06,
-                    duration: 0.45,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
+                <div key={link.name}>
                   <a
                     href={link.href}
                     className={styles.mobileNavLink}
@@ -299,7 +289,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
                     <span className={styles.mobileNavNum}>0{idx + 1}</span>
                     <span className={styles.mobileNavText}>{link.name}</span>
                   </a>
-                </motion.div>
+                </div>
               ))}
             </nav>
 

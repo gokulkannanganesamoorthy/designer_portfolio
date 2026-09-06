@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import styles from './Capabilities.module.css';
 
@@ -43,75 +43,75 @@ export default function Capabilities() {
 
   const TOTAL_CARDS = 4;
   const targetIndexRef = useRef(0);
+  const activeIndexRef = useRef(0);
+  const canScrollLeftRef = useRef(false);
+  const canScrollRightRef = useRef(true);
   const isTweeningRef = useRef(false);
 
-  const checkScroll = () => {
-    if (!scrollContainerRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  // Fast, layout-reflow-free scroll check using mathematical offset calculation
+  const checkScroll = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
 
-    const cards = Array.from(
-      scrollContainerRef.current.querySelectorAll(`.${styles.folioCard}`),
-    ) as HTMLElement[];
-    if (!cards.length) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
 
-    const containerLeft =
-      scrollContainerRef.current.getBoundingClientRect().left;
+    const canLeft = scrollLeft > 15;
+    const canRight = scrollLeft < scrollWidth - clientWidth - 15;
 
-    let closestIndex = 0;
-    let minDistance = Infinity;
-
-    cards.forEach((card, idx) => {
-      const cardRect = card.getBoundingClientRect();
-      const distance = Math.abs(cardRect.left - containerLeft);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = idx;
-      }
-    });
-
-    setActiveIndex(closestIndex);
-    if (!isTweeningRef.current) {
-      targetIndexRef.current = closestIndex;
+    if (canLeft !== canScrollLeftRef.current) {
+      canScrollLeftRef.current = canLeft;
+      setCanScrollLeft(canLeft);
     }
-  };
+    if (canRight !== canScrollRightRef.current) {
+      canScrollRightRef.current = canRight;
+      setCanScrollRight(canRight);
+    }
 
-  const slideToCard = (targetIdx: number) => {
-    if (!scrollContainerRef.current) return;
-    const cards = Array.from(
-      scrollContainerRef.current.querySelectorAll(`.${styles.folioCard}`),
-    ) as HTMLElement[];
-    if (!cards.length) return;
+    const firstCard = el.firstElementChild as HTMLElement | null;
+    if (!firstCard) return;
 
-    const clampedIdx = Math.max(0, Math.min(cards.length - 1, targetIdx));
+    const cardWidth = firstCard.offsetWidth + 24; // width + gap
+    const estimatedIndex = Math.min(
+      TOTAL_CARDS - 1,
+      Math.max(0, Math.round(scrollLeft / cardWidth)),
+    );
+
+    if (estimatedIndex !== activeIndexRef.current) {
+      activeIndexRef.current = estimatedIndex;
+      setActiveIndex(estimatedIndex);
+    }
+    if (!isTweeningRef.current) {
+      targetIndexRef.current = estimatedIndex;
+    }
+  }, [TOTAL_CARDS]);
+
+  const slideToCard = useCallback((targetIdx: number) => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const firstCard = el.firstElementChild as HTMLElement | null;
+    if (!firstCard) return;
+
+    const clampedIdx = Math.max(0, Math.min(TOTAL_CARDS - 1, targetIdx));
     targetIndexRef.current = clampedIdx;
 
-    const targetCard = cards[clampedIdx];
-    if (!targetCard) return;
-
-    const containerLeft =
-      scrollContainerRef.current.getBoundingClientRect().left;
-    const cardLeft = targetCard.getBoundingClientRect().left;
-    const targetScroll =
-      scrollContainerRef.current.scrollLeft + (cardLeft - containerLeft);
+    const cardWidth = firstCard.offsetWidth + 24;
+    const targetScroll = clampedIdx * cardWidth;
 
     isTweeningRef.current = true;
 
-    // "like premium furniture, if you force close also it'll close slowly"
-    // Power4.out hydraulic deceleration with 1.3s glide:
-    gsap.to(scrollContainerRef.current, {
+    // Fast, buttery 120fps glide without layout thrashing
+    gsap.to(el, {
       scrollLeft: targetScroll,
-      duration: 1.3,
-      ease: 'power4.out',
+      duration: 0.65,
+      ease: 'power3.out',
       overwrite: 'auto',
-      onUpdate: checkScroll,
       onComplete: () => {
         isTweeningRef.current = false;
         checkScroll();
       },
     });
-  };
+  }, [TOTAL_CARDS, checkScroll]);
 
   const scrollTo = (direction: 'left' | 'right') => {
     const nextIdx =
@@ -126,10 +126,21 @@ export default function Capabilities() {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    el.addEventListener('scroll', checkScroll, { passive: true });
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          checkScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    el.addEventListener('scroll', onScroll, { passive: true });
     checkScroll();
 
-    // Damped horizontal wheel / trackpad scrolling
+    // Damped horizontal wheel / trackpad scrolling for desktop
     let wheelTarget = el.scrollLeft;
     let wheelTimeout: NodeJS.Timeout;
 
@@ -141,10 +152,9 @@ export default function Capabilities() {
       e.preventDefault();
       const rawDelta = e.shiftKey ? e.deltaY : e.deltaX;
 
-      // Soft-close compression of violent/fast movements:
       const sign = Math.sign(rawDelta);
       const mag = Math.abs(rawDelta);
-      const dampenedDelta = sign * Math.min(mag * 0.65, 140);
+      const dampenedDelta = sign * Math.min(mag * 0.7, 120);
 
       const maxScroll = el.scrollWidth - el.clientWidth;
       wheelTarget = Math.max(
@@ -158,35 +168,36 @@ export default function Capabilities() {
       isTweeningRef.current = true;
       gsap.to(el, {
         scrollLeft: wheelTarget,
-        duration: 1.1,
-        ease: 'power3.out',
+        duration: 0.6,
+        ease: 'power2.out',
         overwrite: 'auto',
-        onUpdate: checkScroll,
         onComplete: () => {
           isTweeningRef.current = false;
           checkScroll();
         },
       });
 
-      // Soft-close snap to nearest card when wheel scrolling rests:
       clearTimeout(wheelTimeout);
       wheelTimeout = setTimeout(() => {
         if (!isTweeningRef.current) {
           slideToCard(targetIndexRef.current);
         }
-      }, 200);
+      }, 180);
     };
 
     el.addEventListener('wheel', handleWheel, { passive: false });
 
-    // Drag-to-slide with luxury soft-close release:
+    // Desktop Mouse Drag (Touch devices use native hardware-accelerated scroll-snap)
     let isDown = false;
     let startX = 0;
     let scrollStart = 0;
     let hasDragged = false;
 
     const onPointerDown = (e: PointerEvent) => {
+      // NEVER hijack touch on mobile — let native 120fps hardware scrolling work!
+      if (e.pointerType === 'touch') return;
       if ((e.target as HTMLElement).closest('a, button')) return;
+
       isDown = true;
       startX = e.pageX;
       scrollStart = el.scrollLeft;
@@ -201,7 +212,6 @@ export default function Capabilities() {
       const walk = (x - startX) * 0.9;
       if (Math.abs(walk) > 5) hasDragged = true;
       el.scrollLeft = scrollStart - walk;
-      checkScroll();
     };
 
     const onPointerUp = () => {
@@ -217,14 +227,14 @@ export default function Capabilities() {
     window.addEventListener('pointerup', onPointerUp);
 
     return () => {
-      el.removeEventListener('scroll', checkScroll);
+      el.removeEventListener('scroll', onScroll);
       el.removeEventListener('wheel', handleWheel);
       el.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       clearTimeout(wheelTimeout);
     };
-  }, []);
+  }, [checkScroll, slideToCard]);
 
   return (
     <section className={styles.capabilitiesSection} id="capabilities">
@@ -292,7 +302,11 @@ export default function Capabilities() {
 
         {/* ─── 3 Large Horizontal / Stacked Panels ─── */}
         <div className={styles.stripWrapper}>
-          <div ref={scrollContainerRef} className={styles.stripTrack}>
+          <div
+            ref={scrollContainerRef}
+            className={styles.stripTrack}
+            data-lenis-prevent="true"
+          >
             {CAPABILITIES.map((item, idx) => (
               <div
                 key={item.num}
