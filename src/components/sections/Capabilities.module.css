@@ -127,11 +127,15 @@
   display: flex;
   gap: 24px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
   padding: 12px 0 32px 0;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+.stripTrack:active {
+  cursor: grabbing;
 }
 
 .stripTrack::-webkit-scrollbar {
@@ -140,16 +144,15 @@
 
 /* ─── Folio Card (Large Architectural Panel) ─── */
 .folioCard {
-  flex: 0 0 clamp(320px, 28vw, 420px);
-  scroll-snap-align: start;
+  flex: 0 0 clamp(360px, 42vw, 560px);
   background: #faf9f6;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  padding: clamp(32px, 3vw, 44px);
+  padding: clamp(32px, 3.5vw, 48px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 440px;
+  min-height: 460px;
   position: relative;
   overflow: hidden;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -202,24 +205,6 @@
   background: #222222;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* On very large screens, allow all 4 panels to display in a unified grid */
-@media (min-width: 1500px) {
-  .stripTrack {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    overflow-x: visible;
-  }
-
-  .folioCard {
-    flex: none;
-    width: 100%;
-  }
-
-  .navControls {
-    display: none;
-  }
 }
 
 .cardAccentBorder {

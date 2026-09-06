@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import { gsap } from 'gsap';
 import styles from './Capabilities.module.css';
 
 interface CapabilityItem {
@@ -41,6 +42,8 @@ export default function Capabilities() {
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   const TOTAL_CARDS = 4;
+  const targetIndexRef = useRef(0);
+  const isTweeningRef = useRef(false);
 
   const checkScroll = () => {
     if (!scrollContainerRef.current) return;
@@ -48,47 +51,178 @@ export default function Capabilities() {
     setCanScrollLeft(scrollLeft > 10);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-    const maxScroll = scrollWidth - clientWidth;
-    if (maxScroll <= 0) {
-      setActiveIndex(0);
-      return;
-    }
+    const cards = Array.from(
+      scrollContainerRef.current.querySelectorAll(`.${styles.folioCard}`),
+    ) as HTMLElement[];
+    if (!cards.length) return;
 
-    // When scrolled to or near the very end, snap to the last card (04)
-    if (scrollLeft >= maxScroll - 25) {
-      setActiveIndex(TOTAL_CARDS - 1);
-      return;
-    }
+    const containerLeft =
+      scrollContainerRef.current.getBoundingClientRect().left;
 
-    // Dynamic progress across the 4 cards
-    const progress = Math.max(0, Math.min(1, scrollLeft / maxScroll));
-    const index = Math.min(
-      TOTAL_CARDS - 1,
-      Math.max(0, Math.round(progress * (TOTAL_CARDS - 1)))
-    );
-    setActiveIndex(index);
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    cards.forEach((card, idx) => {
+      const cardRect = card.getBoundingClientRect();
+      const distance = Math.abs(cardRect.left - containerLeft);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = idx;
+      }
+    });
+
+    setActiveIndex(closestIndex);
+    if (!isTweeningRef.current) {
+      targetIndexRef.current = closestIndex;
+    }
+  };
+
+  const slideToCard = (targetIdx: number) => {
+    if (!scrollContainerRef.current) return;
+    const cards = Array.from(
+      scrollContainerRef.current.querySelectorAll(`.${styles.folioCard}`),
+    ) as HTMLElement[];
+    if (!cards.length) return;
+
+    const clampedIdx = Math.max(0, Math.min(cards.length - 1, targetIdx));
+    targetIndexRef.current = clampedIdx;
+
+    const targetCard = cards[clampedIdx];
+    if (!targetCard) return;
+
+    const containerLeft = scrollContainerRef.current.getBoundingClientRect().left;
+    const cardLeft = targetCard.getBoundingClientRect().left;
+    const targetScroll =
+      scrollContainerRef.current.scrollLeft + (cardLeft - containerLeft);
+
+    isTweeningRef.current = true;
+
+    // "like premium furniture, if you force close also it'll close slowly"
+    // Power4.out hydraulic deceleration with 1.3s glide:
+    gsap.to(scrollContainerRef.current, {
+      scrollLeft: targetScroll,
+      duration: 1.3,
+      ease: 'power4.out',
+      overwrite: 'auto',
+      onUpdate: checkScroll,
+      onComplete: () => {
+        isTweeningRef.current = false;
+        checkScroll();
+      },
+    });
+  };
+
+  const scrollTo = (direction: 'left' | 'right') => {
+    const nextIdx =
+      direction === 'right'
+        ? Math.min(TOTAL_CARDS - 1, targetIndexRef.current + 1)
+        : Math.max(0, targetIndexRef.current - 1);
+
+    slideToCard(nextIdx);
   };
 
   useEffect(() => {
     const el = scrollContainerRef.current;
     if (!el) return;
+
     el.addEventListener('scroll', checkScroll, { passive: true });
     checkScroll();
-    return () => el.removeEventListener('scroll', checkScroll);
-  }, []);
 
-  const scrollTo = (direction: 'left' | 'right') => {
-    if (!scrollContainerRef.current) return;
-    const firstCard = scrollContainerRef.current.querySelector(
-      `.${styles.folioCard}`,
-    ) as HTMLElement | null;
-    const step = firstCard ? firstCard.offsetWidth + 24 : 380;
-    const scrollAmount = direction === 'left' ? -step : step;
-    scrollContainerRef.current.scrollBy({
-      left: scrollAmount,
-      behavior: 'smooth',
-    });
-  };
+    // Damped horizontal wheel / trackpad scrolling
+    let wheelTarget = el.scrollLeft;
+    let wheelTimeout: NodeJS.Timeout;
+
+    const handleWheel = (e: WheelEvent) => {
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey;
+      if (!isHorizontal) return;
+
+      e.preventDefault();
+      const rawDelta = e.shiftKey ? e.deltaY : e.deltaX;
+
+      // Soft-close compression of violent/fast movements:
+      const sign = Math.sign(rawDelta);
+      const mag = Math.abs(rawDelta);
+      const dampenedDelta = sign * Math.min(mag * 0.65, 140);
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      wheelTarget = Math.max(
+        0,
+        Math.min(
+          maxScroll,
+          (isTweeningRef.current ? wheelTarget : el.scrollLeft) + dampenedDelta,
+        ),
+      );
+
+      isTweeningRef.current = true;
+      gsap.to(el, {
+        scrollLeft: wheelTarget,
+        duration: 1.1,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onUpdate: checkScroll,
+        onComplete: () => {
+          isTweeningRef.current = false;
+          checkScroll();
+        },
+      });
+
+      // Soft-close snap to nearest card when wheel scrolling rests:
+      clearTimeout(wheelTimeout);
+      wheelTimeout = setTimeout(() => {
+        if (!isTweeningRef.current) {
+          slideToCard(targetIndexRef.current);
+        }
+      }, 200);
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+
+    // Drag-to-slide with luxury soft-close release:
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
+    let hasDragged = false;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if ((e.target as HTMLElement).closest('a, button')) return;
+      isDown = true;
+      startX = e.pageX;
+      scrollStart = el.scrollLeft;
+      hasDragged = false;
+      gsap.killTweensOf(el);
+      isTweeningRef.current = false;
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDown) return;
+      const x = e.pageX;
+      const walk = (x - startX) * 0.9;
+      if (Math.abs(walk) > 5) hasDragged = true;
+      el.scrollLeft = scrollStart - walk;
+      checkScroll();
+    };
+
+    const onPointerUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      if (hasDragged) {
+        slideToCard(targetIndexRef.current);
+      }
+    };
+
+    el.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      el.removeEventListener('wheel', handleWheel);
+      el.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      clearTimeout(wheelTimeout);
+    };
+  }, []);
 
   return (
     <section className={styles.capabilitiesSection} id="capabilities">
