@@ -53,10 +53,10 @@ export default function Hero() {
     setMounted(true);
 
     // Sequence of intro hooks with perfectly balanced reading dwell times
-    const t1 = setTimeout(() => setPhase(1), 300);   // Hook 1: "Ready to elevate your digital presence?"
-    const t2 = setTimeout(() => setPhase(2), 2150);  // Hook 2: "Ready for your next digital experience?"
-    const t3 = setTimeout(() => setPhase(3), 4350);  // Hook 3: "Let’s begin"
-    const t4 = setTimeout(() => setPhase(4), 6250);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
+    const t1 = setTimeout(() => setPhase(1), 300); // Hook 1: "Ready to elevate your digital presence?"
+    const t2 = setTimeout(() => setPhase(2), 2150); // Hook 2: "Ready for your next digital experience?"
+    const t3 = setTimeout(() => setPhase(3), 4350); // Hook 3: "Let’s begin"
+    const t4 = setTimeout(() => setPhase(4), 6250); // Hook 4: "GOKUL MAKES" with 2 underscore lines
 
     // After GOKUL MAKES settles, fly the lines to the top right
     const t5 = setTimeout(() => {
@@ -69,12 +69,12 @@ export default function Hero() {
       const sourceBottom = bottomLineRef.current?.getBoundingClientRect();
 
       if (sourceTop) {
-        const targetCenterX = topRect && topRect.width > 0
-          ? topRect.left + topRect.width / 2
-          : window.innerWidth - 60;
-        const targetCenterY = topRect && topRect.height > 0
-          ? topRect.top + topRect.height / 2
-          : 50;
+        const targetCenterX =
+          topRect && topRect.width > 0
+            ? topRect.left + topRect.width / 2
+            : window.innerWidth - 60;
+        const targetCenterY =
+          topRect && topRect.height > 0 ? topRect.top + topRect.height / 2 : 50;
 
         const sourceCenterX = sourceTop.left + sourceTop.width / 2;
         const sourceCenterY = sourceTop.top + sourceTop.height / 2;
@@ -89,12 +89,14 @@ export default function Hero() {
       }
 
       if (sourceBottom) {
-        const targetCenterX = bottomRect && bottomRect.width > 0
-          ? bottomRect.left + bottomRect.width / 2
-          : window.innerWidth - 60;
-        const targetCenterY = bottomRect && bottomRect.height > 0
-          ? bottomRect.top + bottomRect.height / 2
-          : 56;
+        const targetCenterX =
+          bottomRect && bottomRect.width > 0
+            ? bottomRect.left + bottomRect.width / 2
+            : window.innerWidth - 60;
+        const targetCenterY =
+          bottomRect && bottomRect.height > 0
+            ? bottomRect.top + bottomRect.height / 2
+            : 56;
 
         const sourceCenterX = sourceBottom.left + sourceBottom.width / 2;
         const sourceCenterY = sourceBottom.top + sourceBottom.height / 2;
@@ -214,9 +216,12 @@ export default function Hero() {
                 />
               )}
 
-              <h1 className={styles.title}>
-                GOKUL MAKES
-              </h1>
+              <motion.div className={styles.heroTextBlock}>
+                <h1 className={styles.title}>GOKUL MAKES</h1>
+                <p className={styles.subtitle}>
+                  Turning brands into experiences.
+                </p>
+              </motion.div>
 
               {/* Bottom line (underscore) — reveals in-place, then flies right & up */}
               {!linesHandedOver && (
