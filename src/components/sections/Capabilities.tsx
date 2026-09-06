@@ -40,16 +40,31 @@ export default function Capabilities() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  const TOTAL_CARDS = 4;
+
   const checkScroll = () => {
     if (!scrollContainerRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    setCanScrollLeft(scrollLeft > 20);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-    const cardWidth = 480 + 28;
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll <= 0) {
+      setActiveIndex(0);
+      return;
+    }
+
+    // When scrolled to or near the very end, snap to the last card (04)
+    if (scrollLeft >= maxScroll - 25) {
+      setActiveIndex(TOTAL_CARDS - 1);
+      return;
+    }
+
+    // Dynamic progress across the 4 cards
+    const progress = Math.max(0, Math.min(1, scrollLeft / maxScroll));
     const index = Math.min(
-      CAPABILITIES.length - 1,
-      Math.max(0, Math.round(scrollLeft / cardWidth)),
+      TOTAL_CARDS - 1,
+      Math.max(0, Math.round(progress * (TOTAL_CARDS - 1)))
     );
     setActiveIndex(index);
   };
@@ -64,8 +79,11 @@ export default function Capabilities() {
 
   const scrollTo = (direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return;
-    const cardWidth = 500;
-    const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
+    const firstCard = scrollContainerRef.current.querySelector(
+      `.${styles.folioCard}`,
+    ) as HTMLElement | null;
+    const step = firstCard ? firstCard.offsetWidth + 24 : 380;
+    const scrollAmount = direction === 'left' ? -step : step;
     scrollContainerRef.current.scrollBy({
       left: scrollAmount,
       behavior: 'smooth',
@@ -93,7 +111,7 @@ export default function Capabilities() {
                 </span>
                 <span className={styles.counterDivider}>/</span>
                 <span className={styles.counterTotal}>
-                  0{CAPABILITIES.length + 1}
+                  0{TOTAL_CARDS}
                 </span>
               </div>
               <div className={styles.buttonGroup}>
@@ -178,11 +196,12 @@ export default function Capabilities() {
                   Let’s make something.
                 </h3>
                 <p className={styles.disciplineTagline}>
-                  Have an idea worth building?
+                  Have something in mind?
                 </p>
                 <p className={styles.disciplineDesc}>
-                  I take on a limited number of high-stakes builds per quarter.
-                  Direct collaboration from raw concept to finished flagship.
+                  Bring me the idea. Let's Make it real soon.
+                  <br /> <br />I only work with a selected projects where
+                  thoughtful design and technology can make a real difference.
                 </p>
               </div>
 
