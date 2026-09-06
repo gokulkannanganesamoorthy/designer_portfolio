@@ -16,7 +16,7 @@ const hookVariants = {
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.75,
+      duration: 1.0,
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
@@ -25,7 +25,7 @@ const hookVariants = {
     y: -14,
     filter: 'blur(12px)',
     transition: {
-      duration: 0.4,
+      duration: 0.6,
       ease: [0.2, 0, 0, 1] as [number, number, number, number],
     },
   },
@@ -53,10 +53,10 @@ export default function Hero() {
     setMounted(true);
 
     // Sequence of intro hooks with smooth, responsive blur reveal cadence
-    const t1 = setTimeout(() => setPhase(1), 300);   // Hook 1: "Ready to elevate your digital presence?"
-    const t2 = setTimeout(() => setPhase(2), 2100);  // Hook 2: "Ready for your next digital experience?"
-    const t3 = setTimeout(() => setPhase(3), 4200);  // Hook 3: "Let’s begin"
-    const t4 = setTimeout(() => setPhase(4), 5800);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
+    const t1 = setTimeout(() => setPhase(1), 200); // Hook 1: "Ready to elevate your digital presence?"
+    const t2 = setTimeout(() => setPhase(2), 2000); // Hook 2: "Ready for your next digital experience?"
+    const t3 = setTimeout(() => setPhase(3), 4000); // Hook 3: "Let’s begin"
+    const t4 = setTimeout(() => setPhase(4), 6000); // Hook 4: "GOKUL MAKES" with 2 underscore lines
 
     // After GOKUL MAKES settles, fly the lines to the top right
     const t5 = setTimeout(() => {
@@ -118,7 +118,7 @@ export default function Hero() {
         window.dispatchEvent(new CustomEvent('hero-sequence-done'));
         setLinesHandedOver(true);
       }, 1000);
-    }, 8200);
+    }, 7500);
 
     return () => {
       clearTimeout(t1);
