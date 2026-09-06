@@ -7,6 +7,7 @@ import './ThemeToggle.css'; // Import standard CSS to match EXACT DOM selectors 
 export default function ThemeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -18,8 +19,17 @@ export default function ThemeToggle() {
   const isDark = currentTheme === 'dark';
 
   const toggleTheme = () => {
+    setHasInteracted(true);
     setTheme(isDark ? 'light' : 'dark');
   };
+
+  const sliderModeClass = hasInteracted
+    ? isDark
+      ? 'slider-dark'
+      : 'slider-light'
+    : isDark
+      ? 'slider-dark'
+      : '';
 
   return (
     <label className="switch" aria-label="Toggle light and dark theme">
@@ -30,7 +40,7 @@ export default function ThemeToggle() {
         checked={isDark} 
         onChange={toggleTheme} 
       />
-      <div className={`slider round ${isDark ? 'slider-dark' : ''}`}>
+      <div className={`slider round ${sliderModeClass}`}>
         <div className="sun-moon">
           <svg id="moon-dot-1" className="moon-dot" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
