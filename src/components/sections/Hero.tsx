@@ -4,28 +4,28 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Hero.module.css';
 
-// Unified blur reveal variants across all hooks for consistent, elegant cadence
+// Unified cinematic blur reveal variants across all hooks AND final hero text
 const hookVariants = {
   initial: {
     opacity: 0,
-    y: 12,
-    filter: 'blur(10px)',
+    y: 18,
+    filter: 'blur(16px)',
   },
   animate: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.55,
+      duration: 1.1,
       ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
   exit: {
     opacity: 0,
-    y: -12,
-    filter: 'blur(10px)',
+    y: -16,
+    filter: 'blur(16px)',
     transition: {
-      duration: 0.35,
+      duration: 0.6,
       ease: [0.2, 0, 0, 1] as [number, number, number, number],
     },
   },
@@ -52,11 +52,11 @@ export default function Hero() {
   useEffect(() => {
     setMounted(true);
 
-    // Sequence of intro hooks with perfectly balanced reading dwell times
-    const t1 = setTimeout(() => setPhase(1), 300); // Hook 1: "Ready to elevate your digital presence?"
-    const t2 = setTimeout(() => setPhase(2), 2150); // Hook 2: "Ready for your next digital experience?"
-    const t3 = setTimeout(() => setPhase(3), 4350); // Hook 3: "Let’s begin"
-    const t4 = setTimeout(() => setPhase(4), 6250); // Hook 4: "GOKUL MAKES" with 2 underscore lines
+    // Sequence of intro hooks with slow, smooth blur reveal cadence
+    const t1 = setTimeout(() => setPhase(1), 400);   // Hook 1: "Ready to elevate your digital presence?"
+    const t2 = setTimeout(() => setPhase(2), 2800);  // Hook 2: "Ready for your next digital experience?"
+    const t3 = setTimeout(() => setPhase(3), 5600);  // Hook 3: "Let’s begin"
+    const t4 = setTimeout(() => setPhase(4), 8000);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
 
     // After GOKUL MAKES settles, fly the lines to the top right
     const t5 = setTimeout(() => {
@@ -118,7 +118,7 @@ export default function Hero() {
         window.dispatchEvent(new CustomEvent('hero-sequence-done'));
         setLinesHandedOver(true);
       }, 1200);
-    }, 8000);
+    }, 10500);
 
     return () => {
       clearTimeout(t1);
@@ -178,13 +178,7 @@ export default function Hero() {
           )}
 
           {phase === 4 && (
-            <motion.div
-              key="final"
-              className={styles.finalHero}
-              initial={{ opacity: 0, filter: 'blur(10px)', y: 12 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
+            <div key="final" className={styles.finalHero}>
               {/* Top line (underscore) — reveals in-place, then flies right & up */}
               {!linesHandedOver && (
                 <motion.div
@@ -208,15 +202,21 @@ export default function Hero() {
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.55, 1],
                         }
-                      : { duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }
+                      : { duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }
                   }
                   style={{
-                    marginBottom: '1rem',
+                    marginBottom: '1.25rem',
                   }}
                 />
               )}
 
-              <motion.div className={styles.heroTextBlock}>
+              {/* Text block: GOKUL MAKES — uses the EXACT same slow blur reveal as the 3 hooks */}
+              <motion.div
+                className={styles.heroTextBlock}
+                variants={hookVariants}
+                initial="initial"
+                animate="animate"
+              >
                 <h1 className={styles.title}>GOKUL MAKES</h1>
                 <p className={styles.subtitle}>
                   Turning brands into experiences.
@@ -246,14 +246,14 @@ export default function Hero() {
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.55, 1],
                         }
-                      : { duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }
+                      : { duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }
                   }
                   style={{
-                    marginTop: '1rem',
+                    marginTop: '1.25rem',
                   }}
                 />
               )}
-            </motion.div>
+            </div>
           )}
         </AnimatePresence>
       </div>
