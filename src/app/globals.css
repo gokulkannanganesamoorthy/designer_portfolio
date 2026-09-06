@@ -3,16 +3,16 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── Colors ─── */
-  --bg:           #0A0A0A;
-  --bg-surface:   rgba(255, 255, 255, 0.03);
-  --fg:           #F5F2ED;
-  --fg-dim:       rgba(245, 242, 237, 0.35);
-  --fg-muted:     rgba(245, 242, 237, 0.12);
-  --accent:       #F5F2ED; /* Monochrome accent */
-  --accent-dim:   rgba(245, 242, 237, 0.1);
-  --border:       rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(255, 255, 255, 0.2);
+  /* ─── Colors (Light Theme Default) ─── */
+  --bg:           #FFFFFF;
+  --bg-surface:   rgba(0, 0, 0, 0.03);
+  --fg:           #0A0A0A;
+  --fg-dim:       rgba(10, 10, 10, 0.45);
+  --fg-muted:     rgba(10, 10, 10, 0.15);
+  --accent:       #0A0A0A;
+  --accent-dim:   rgba(10, 10, 10, 0.1);
+  --border:       rgba(0, 0, 0, 0.1);
+  --border-hover: rgba(0, 0, 0, 0.2);
 
   /* ─── Typography ─── */
   --font-display: 'Space Grotesk', sans-serif;
@@ -53,16 +53,16 @@
   --radius-pill: 100px;
 }
 
-.light, html[class="light"] {
-  --bg:           #F5F2ED;
-  --bg-surface:   rgba(0, 0, 0, 0.03);
-  --fg:           #0A0A0A;
-  --fg-dim:       rgba(10, 10, 10, 0.45);
-  --fg-muted:     rgba(10, 10, 10, 0.15);
-  --accent:       #0A0A0A;
-  --accent-dim:   rgba(10, 10, 10, 0.1);
-  --border:       rgba(0, 0, 0, 0.1);
-  --border-hover: rgba(0, 0, 0, 0.2);
+.dark, html[class="dark"] {
+  --bg:           #0A0A0A;
+  --bg-surface:   rgba(255, 255, 255, 0.03);
+  --fg:           #F5F2ED;
+  --fg-dim:       rgba(245, 242, 237, 0.35);
+  --fg-muted:     rgba(245, 242, 237, 0.12);
+  --accent:       #F5F2ED;
+  --accent-dim:   rgba(245, 242, 237, 0.1);
+  --border:       rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
 }
 
 /* ─── Reset ─── */
