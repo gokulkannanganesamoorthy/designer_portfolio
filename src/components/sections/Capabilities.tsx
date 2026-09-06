@@ -1,88 +1,174 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useRef, useState, useEffect } from 'react';
 import styles from './Capabilities.module.css';
 
-gsap.registerPlugin(ScrollTrigger);
+interface CapabilityItem {
+  num: string;
+  title: string;
+  tagline: string;
+  description: string;
+}
 
-const CAPABILITIES = [
+const CAPABILITIES: CapabilityItem[] = [
   {
     num: '01',
-    title: 'Digital Experience',
-    desc: 'Engineering interactive environments where technology serves emotion.',
+    title: 'Digital Experiences',
+    tagline: 'Websites that make a brand feel different.',
+    description:
+      'Strategy, design, interaction and development — brought together into one experience.',
   },
   {
     num: '02',
-    title: 'Brand Systems',
-    desc: 'Architecting identity frameworks that scale without losing soul.',
+    title: 'CRM',
+    tagline: 'Systems built around how your business actually works.',
+    description:
+      'No generic dashboards. No unnecessary features. Just a CRM shaped around your people, process and growth.',
   },
   {
     num: '03',
-    title: 'Creative Dev',
-    desc: 'Bridging the gap between visionary design and technical execution.',
-  },
-  {
-    num: '04',
-    title: 'Technical Strategy',
-    desc: 'Aligning product architecture with long-term business objectives.',
+    title: 'ERP',
+    tagline: 'The operating system behind your business.',
+    description:
+      'Finance, inventory, operations and workflows unified into a tailored, lightning-fast internal platform built to scale.',
   },
 ];
 
 export default function Capabilities() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 20);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
+
+    const cardWidth = 480 + 28;
+    const index = Math.min(
+      CAPABILITIES.length - 1,
+      Math.max(0, Math.round(scrollLeft / cardWidth)),
+    );
+    setActiveIndex(index);
+  };
 
   useEffect(() => {
-    if (!sectionRef.current || !gridRef.current) return;
-
-    const cards = gridRef.current.children;
-    const ctx = gsap.context(() => {
-      
-      gsap.fromTo(cards, 
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-          }
-        }
-      );
-
-    }, sectionRef);
-
-    return () => ctx.revert();
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+    return () => el.removeEventListener('scroll', checkScroll);
   }, []);
 
-  return (
-    <section ref={sectionRef} className={styles.capabilities} id="capabilities">
-      <div className={styles.header}>
-        <span className="mono-label">[03] Services</span>
-        <h2 className={styles.title}>Capabilities</h2>
-      </div>
+  const scrollTo = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return;
+    const cardWidth = 500;
+    const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
+    scrollContainerRef.current.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth',
+    });
+  };
 
-      <div ref={gridRef} className={styles.grid}>
-        {CAPABILITIES.map((cap) => (
-          <div key={cap.num} className={styles.card}>
-            <div className={styles.cardGlow} />
-            <div className={styles.cardContent}>
-              <div className={styles.cardHeader}>
-                <span className="mono-label">{cap.num}</span>
-              </div>
-              <div className={styles.cardBody}>
-                <h3 className={styles.cardTitle}>{cap.title}</h3>
-                <p className={styles.cardDesc}>{cap.desc}</p>
-              </div>
+  return (
+    <section className={styles.capabilitiesSection} id="capabilities">
+      <div className={styles.capabilities}>
+        {/* ─── Storytelling Narrative Header ─── */}
+        <div className={styles.header}>
+        <div className={styles.headerTop}>
+          <span className="mono-label">[02] Capabilities</span>
+          <span className={styles.headerMeta}>End-to-End Execution</span>
+        </div>
+
+        <div className={styles.headlineRow}>
+          <div>
+            <h2 className={styles.mainTitle}>What I build</h2>
+            <p className={styles.subtitle}>
+              Three ways I turn ideas into useful digital experiences.
+            </p>
+          </div>
+
+          {/* Architectural Progress & Nav Controls */}
+          <div className={styles.navControls}>
+            <div className={styles.counter}>
+              <span className={styles.counterCurrent}>0{activeIndex + 1}</span>
+              <span className={styles.counterDivider}>/</span>
+              <span className={styles.counterTotal}>
+                0{CAPABILITIES.length}
+              </span>
+            </div>
+            <div className={styles.buttonGroup}>
+              <button
+                type="button"
+                onClick={() => scrollTo('left')}
+                disabled={!canScrollLeft}
+                className={`${styles.navBtn} ${!canScrollLeft ? styles.navBtnDisabled : ''}`}
+                aria-label="Previous panel"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollTo('right')}
+                disabled={!canScrollRight}
+                className={`${styles.navBtn} ${!canScrollRight ? styles.navBtnDisabled : ''}`}
+                aria-label="Next panel"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           </div>
-        ))}
+        </div>
       </div>
-    </section>
+
+      {/* ─── 3 Large Horizontal / Stacked Panels ─── */}
+      <div className={styles.stripWrapper}>
+        <div ref={scrollContainerRef} className={styles.stripTrack}>
+          {CAPABILITIES.map((item, idx) => (
+            <div
+              key={item.num}
+              className={`${styles.folioCard} ${activeIndex === idx ? styles.folioCardActive : ''}`}
+              tabIndex={0}
+            >
+              {/* Card Top: Architectural Index & Code */}
+              <div className={styles.cardHeader}>
+                <span className={styles.largeIndex}>{item.num}</span>
+              </div>
+
+              {/* Card Middle: Title, Sharp Tagline, and Body Description */}
+              <div className={styles.cardBody}>
+                <h3 className={styles.disciplineTitle}>{item.title}</h3>
+                <p className={styles.disciplineTagline}>{item.tagline}</p>
+                <p className={styles.disciplineDesc}>{item.description}</p>
+              </div>
+
+              {/* Subtle Ambient Hover Border */}
+              <div className={styles.cardAccentBorder} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
   );
 }

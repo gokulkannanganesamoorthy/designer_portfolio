@@ -1,81 +1,68 @@
 .clients {
-  padding: var(--space-xl) 0;
-  overflow: hidden;
+  padding: var(--space-xl) var(--page-pad);
   border-top: 1px solid var(--border);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  /* The group hover effect */
+}
+
+.grid:hover .clientName {
+  color: var(--fg-muted);
+}
+
+.clientItem {
+  padding: var(--space-lg) 0;
   border-bottom: 1px solid var(--border);
-}
-
-.header {
-  padding: 0 var(--page-pad);
-  margin-bottom: var(--space-xl);
-}
-
-/* ─── Marquee ─── */
-.marqueeContainer {
-  position: relative;
-  width: 100vw;
   display: flex;
+  justify-content: center;
   align-items: center;
-}
-
-.fadeLeft, .fadeRight {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 15vw;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.fadeLeft {
-  left: 0;
-  background: linear-gradient(to right, var(--bg), transparent);
-}
-
-.fadeRight {
-  right: 0;
-  background: linear-gradient(to left, var(--bg), transparent);
-}
-
-.marqueeTrack {
-  display: flex;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.marqueeItem {
-  display: flex;
-  align-items: center;
-  padding: 0 var(--space-md);
+  text-align: center;
 }
 
 .clientName {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 8vw, 8rem);
+  font-size: clamp(1.35rem, 2.1vw, 2.2rem);
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: var(--fg);
-  text-transform: uppercase;
-  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  color: var(--fg-dim);
+  transition: all 0.3s ease;
+  cursor: default;
 }
 
-.marqueeContainer:hover .clientName {
-  opacity: 0.3;
-}
-
-.marqueeItem:hover .clientName {
-  opacity: 1 !important;
-}
-
-.separator {
-  font-size: clamp(2rem, 4vw, 4rem);
-  color: var(--fg-muted);
-  margin-left: var(--space-xl);
+.clientItem:hover .clientName {
+  color: var(--fg) !important;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
 }
 
 /* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
-  .separator {
-    margin-left: var(--space-md);
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 }

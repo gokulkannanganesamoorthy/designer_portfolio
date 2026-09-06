@@ -1,65 +1,231 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Hero.module.css';
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0);
+  const [linesFlown, setLinesFlown] = useState(false);
+  const [linesHandedOver, setLinesHandedOver] = useState(false);
+
+  const topLineRef = useRef<HTMLDivElement>(null);
+  const bottomLineRef = useRef<HTMLDivElement>(null);
+
+  const [flightPathTop, setFlightPathTop] = useState({
+    x: [0, 0, 0] as (number | string)[],
+    y: [0, 0, 0] as (number | string)[],
+  });
+  const [flightPathBottom, setFlightPathBottom] = useState({
+    x: [0, 0, 0] as (number | string)[],
+    y: [0, 0, 0] as (number | string)[],
+  });
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    setMounted(true);
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    // Sequence of intro hooks
+    const t1 = setTimeout(() => setPhase(1), 400);   // Hook 1: Ready to elevate your digital presence?
+    const t2 = setTimeout(() => setPhase(2), 2200);  // Hook 2: Ready for your next digital experience?
+    const t3 = setTimeout(() => setPhase(3), 4000);  // Hook 3: Let’s begin
+    const t4 = setTimeout(() => setPhase(4), 5400);  // Hook 4: "GOKUL MAKES" with 2 underscore lines
 
-      // Clean cinematic fade up
-      tl.fromTo(titleRef.current,
-        { opacity: 0, y: 30, filter: 'blur(10px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, delay: 0.2 }
-      )
-      .fromTo(subtitleRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1.5 },
-        '-=1.2'
-      );
-    }, sectionRef);
+    // After GOKUL MAKES settles (7000ms), fly the lines to the top right
+    const t5 = setTimeout(() => {
+      const topTarget = document.getElementById('nav-line-top-target');
+      const bottomTarget = document.getElementById('nav-line-bottom-target');
+      const topRect = topTarget?.getBoundingClientRect();
+      const bottomRect = bottomTarget?.getBoundingClientRect();
 
-    return () => ctx.revert();
+      const sourceTop = topLineRef.current?.getBoundingClientRect();
+      const sourceBottom = bottomLineRef.current?.getBoundingClientRect();
+
+      if (sourceTop) {
+        const targetCenterX = topRect && topRect.width > 0
+          ? topRect.left + topRect.width / 2
+          : window.innerWidth - 60;
+        const targetCenterY = topRect && topRect.height > 0
+          ? topRect.top + topRect.height / 2
+          : 50;
+
+        const sourceCenterX = sourceTop.left + sourceTop.width / 2;
+        const sourceCenterY = sourceTop.top + sourceTop.height / 2;
+
+        const dx = targetCenterX - sourceCenterX;
+        const dy = targetCenterY - sourceCenterY;
+
+        setFlightPathTop({
+          x: [0, dx, dx],
+          y: [0, 0, dy],
+        });
+      }
+
+      if (sourceBottom) {
+        const targetCenterX = bottomRect && bottomRect.width > 0
+          ? bottomRect.left + bottomRect.width / 2
+          : window.innerWidth - 60;
+        const targetCenterY = bottomRect && bottomRect.height > 0
+          ? bottomRect.top + bottomRect.height / 2
+          : 56;
+
+        const sourceCenterX = sourceBottom.left + sourceBottom.width / 2;
+        const sourceCenterY = sourceBottom.top + sourceBottom.height / 2;
+
+        const dx = targetCenterX - sourceCenterX;
+        const dy = targetCenterY - sourceCenterY;
+
+        setFlightPathBottom({
+          x: [0, dx, dx],
+          y: [0, 0, dy],
+        });
+      }
+
+      // Launch flight animation: moves right first, then moves up
+      setLinesFlown(true);
+
+      // Exactly when flight completes (1.2s), hand over to Navigation seamlessly
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('hero-sequence-done'));
+        setLinesHandedOver(true);
+      }, 1200);
+    }, 7000);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
   }, []);
 
   return (
-    <section ref={sectionRef} className={styles.hero} id="hero">
-      
-      {/* Subtle atmospheric glow */}
-      <div className={styles.glow} />
+    <section className={styles.heroContainer} id="hero">
+      <div className={styles.wrapper}>
+        {/* Hook Sequence */}
+        <AnimatePresence mode="wait">
+          {phase === 1 && (
+            <motion.div
+              key="hook1"
+              className={styles.hookContainer}
+              initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h1 className={styles.hookText}>
+                Ready to elevate your digital presence?
+              </h1>
+            </motion.div>
+          )}
 
-      <div className={styles.content}>
-        <div className={styles.topInfo}>
-          <span className="mono-label">Based in Chennai, IN</span>
-          <span className="mono-label">Available '25</span>
-        </div>
+          {phase === 2 && (
+            <motion.div
+              key="hook2"
+              className={styles.hookContainer}
+              initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h1 className={styles.hookText}>
+                Ready for your next digital experience?
+              </h1>
+            </motion.div>
+          )}
 
-        <div className={styles.centerBlock}>
-          <h1 ref={titleRef} className={styles.title}>
-            <span className={styles.titleLine}>GOKUL</span>
-            <span className={styles.titleLine}>MAKES</span>
-          </h1>
-          
-          <p ref={subtitleRef} className={styles.subtitle}>
-            Digital Experience Designer.
-            <br />Designing the invisible. Building things people remember.
-          </p>
-        </div>
+          {phase === 3 && (
+            <motion.div
+              key="hook3"
+              className={styles.hookContainer}
+              initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -15, filter: 'blur(10px)' }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h1 className={styles.hookText}>Let&rsquo;s begin</h1>
+            </motion.div>
+          )}
 
+          {phase === 4 && (
+            <motion.div
+              key="final"
+              className={styles.finalHero}
+              initial={{ opacity: 0, filter: 'blur(10px)', y: 15 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* Top line (underscore) — reveals in-place, then flies right & up */}
+              {!linesHandedOver && (
+                <motion.div
+                  ref={topLineRef}
+                  className={styles.heroLine}
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={
+                    linesFlown
+                      ? {
+                          width: 16,
+                          opacity: 1,
+                          x: flightPathTop.x,
+                          y: flightPathTop.y,
+                        }
+                      : { width: 60, opacity: 1, x: 0, y: 0 }
+                  }
+                  transition={
+                    linesFlown
+                      ? {
+                          duration: 1.2,
+                          ease: [0.76, 0, 0.24, 1],
+                          times: [0, 0.55, 1],
+                          width: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+                        }
+                      : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }
+                  }
+                />
+              )}
+
+              {/* Text block: GOKUL MAKES */}
+              <motion.div className={styles.heroTextBlock}>
+                <h1 className={styles.title}>GOKUL MAKES</h1>
+                <p className={styles.subtitle}>
+                  Turning brands into experiences.
+                </p>
+              </motion.div>
+
+              {/* Bottom line (underscore) — reveals in-place, then flies right & up */}
+              {!linesHandedOver && (
+                <motion.div
+                  ref={bottomLineRef}
+                  className={styles.heroLine}
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={
+                    linesFlown
+                      ? {
+                          width: 16,
+                          opacity: 1,
+                          x: flightPathBottom.x,
+                          y: flightPathBottom.y,
+                        }
+                      : { width: 60, opacity: 1, x: 0, y: 0 }
+                  }
+                  transition={
+                    linesFlown
+                      ? {
+                          duration: 1.2,
+                          ease: [0.76, 0, 0.24, 1],
+                          times: [0, 0.55, 1],
+                          width: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+                        }
+                      : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.35 }
+                  }
+                />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      <div className={styles.scrollIndicator}>
-        <div className={styles.scrollLine} />
-      </div>
-
     </section>
   );
 }
+

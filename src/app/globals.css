@@ -53,6 +53,18 @@
   --radius-pill: 100px;
 }
 
+.light, html[class="light"] {
+  --bg:           #F5F2ED;
+  --bg-surface:   rgba(0, 0, 0, 0.03);
+  --fg:           #0A0A0A;
+  --fg-dim:       rgba(10, 10, 10, 0.45);
+  --fg-muted:     rgba(10, 10, 10, 0.15);
+  --accent:       #0A0A0A;
+  --accent-dim:   rgba(10, 10, 10, 0.1);
+  --border:       rgba(0, 0, 0, 0.1);
+  --border-hover: rgba(0, 0, 0, 0.2);
+}
+
 /* ─── Reset ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

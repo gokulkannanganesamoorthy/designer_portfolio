@@ -1,51 +1,68 @@
 .contact {
-  padding: var(--space-2xl) var(--page-pad);
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--page-pad);
+  overflow: hidden;
   background: var(--bg);
 }
 
 .container {
-  max-width: var(--max-width);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--space-lg);
+  gap: var(--space-xl);
 }
 
 .title {
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 12vw, 12rem);
-  font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 400;
+  color: var(--fg-dim);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-.ctaWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-md);
-  margin-top: var(--space-xl);
-}
-
-.emailBtn {
-  font-family: var(--font-display);
-  font-size: var(--text-heading);
-  font-weight: 500;
-  padding: 16px 48px;
-  border-radius: var(--radius-pill);
+/* ─── The Centerpiece Button ─── */
+.centerpieceBtn {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
   background: var(--fg);
   color: var(--bg);
-  transition: transform 0.3s var(--ease-expo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: var(--text-subhead);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  will-change: transform;
+  z-index: 10;
+  transition: transform 0.3s ease, box-shadow 0.5s ease;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
 }
 
-.emailBtn:hover {
-  transform: scale(1.05);
+.centerpieceBtn:hover {
+  transform: scale(1.05) !important; /* Override GSAP slightly on direct hover */
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.2);
 }
 
-.emailText {
-  font-family: var(--font-mono);
-  color: var(--fg-dim);
+.btnText {
+  pointer-events: none;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .centerpieceBtn {
+    width: 180px;
+    height: 180px;
+    font-size: var(--text-body);
+  }
 }

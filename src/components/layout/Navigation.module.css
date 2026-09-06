@@ -1,0 +1,97 @@
+.navContainer {
+  position: fixed;
+  top: 2rem;
+  right: var(--page-pad);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none; /* Let clicks pass through container */
+}
+
+.navPill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  padding: 0.75rem 1.25rem;
+  pointer-events: auto; /* Re-enable clicks for the pill */
+  cursor: pointer;
+  overflow: visible;
+  min-width: 56px;
+  min-height: 44px;
+  position: relative;
+  border-radius: 40px;
+}
+
+.svgBorder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.animatedRect {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-dasharray: 15 35; /* Two lines spaced perfectly evenly on opposite sides */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rectActive {
+  opacity: 1;
+  animation: snake 2.5s linear infinite;
+}
+
+@keyframes snake {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Dark mode fallback removed since background is gone */
+
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  padding-right: 0.5rem; /* Space between icon and links if open */
+}
+
+.hamburgerLine {
+  width: 16px;
+  height: 1.5px;
+  background-color: var(--fg);
+  border-radius: 2px;
+}
+
+.linksWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.navItem {
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding: 0 0.25rem;
+}
+
+.navItem:hover {
+  color: var(--fg);
+}
