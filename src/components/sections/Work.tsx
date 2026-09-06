@@ -3,142 +3,84 @@
 import React, { useEffect, useRef } from 'react';
 import './Work.css';
 
-interface GalleryItem {
-  col: number;
-  artist: string;
-  images: {
-    url: string;
-    width: number;
-    height: number;
-    bg?: string;
-  }[];
+interface WorkItem {
+  name: string;
+  url: string;
+  width: number;
+  height: number;
 }
 
-const GALLERY_DATA: GalleryItem[] = [
+interface GalleryColumn {
+  col: number;
+  items: WorkItem[];
+}
+
+const GALLERY_DATA: GalleryColumn[] = [
   {
     col: 1,
-    artist: 'Beth Sternbaum',
-    images: [
+    items: [
       {
-        // Blue swimmer image matching reference Image 2
-        url: 'https://www.datocms-assets.com/196616/1774484687-221112_nike-hydrostrong_5316.jpg?auto=format&q=90&w=750',
-        width: 800,
-        height: 1200,
-        bg: '#1494c3',
+        name: 'Castella',
+        url: '/assets/works/castella.png',
+        width: 2880,
+        height: 1800,
       },
       {
-        url: 'https://www.datocms-assets.com/196616/1779918226-beauty-model-photography-beth-sternbaum-la-nyc-52.jpg?auto=format&q=90&w=750',
-        width: 760,
-        height: 1140,
-        bg: '#e0ae2e',
-      },
-      {
-        url: 'https://www.datocms-assets.com/196616/1779918224-beauty-model-photography-beth-sternbaum-la-nyc-63.jpg?auto=format&q=90&w=750',
-        width: 760,
-        height: 1140,
-        bg: '#b7744c',
+        name: 'GRE',
+        url: '/assets/works/GRE.png',
+        width: 2880,
+        height: 1800,
       },
     ],
   },
   {
     col: 2,
-    artist: 'Arturo Torres',
-    images: [
+    items: [
       {
-        // Light blue foam sculpture dress
-        url: 'https://www.datocms-assets.com/196616/1777465143-20180623_foam_test_585.jpg?auto=format&q=90&w=750',
-        width: 1143,
-        height: 1600,
-        bg: '#1e9d98',
+        name: 'Luminary',
+        url: '/assets/works/luminary.png',
+        width: 2880,
+        height: 1800,
       },
       {
-        url: 'https://www.datocms-assets.com/196616/1779142866-arturo-torres-advertising-photographer-lifestyle-fashion-sports88.jpg?auto=format&q=90&w=750',
-        width: 1500,
-        height: 2048,
-        bg: '#d0833b',
-      },
-      {
-        url: 'https://www.datocms-assets.com/196616/1779142867-arturo-torres-advertising-photographer-lifestyle-fashion-sports13.jpg?auto=format&q=90&w=750',
-        width: 1000,
-        height: 1500,
-        bg: '#c15e26',
+        name: 'TAT',
+        url: '/assets/works/tat.png',
+        width: 2880,
+        height: 1800,
       },
     ],
   },
   {
     col: 3,
-    artist: 'Cera Hensley',
-    images: [
+    items: [
       {
-        // Pastel purple & peach still life cosmetics (peeks under 2nd V)
-        url: 'https://www.datocms-assets.com/196616/1777466641-cera-hensley-beauty-photography-stilllife-cosmetics-21.jpg?auto=format&q=90&w=750',
-        width: 2583,
-        height: 3228,
-        bg: '#a7a1cf',
+        name: 'Orrayson',
+        url: '/assets/works/orrayson.png',
+        width: 2880,
+        height: 1800,
       },
       {
-        // Post Malone with white cowboy hat
-        url: 'https://www.datocms-assets.com/196616/1778795295-quinn-gravier-advertising-photographer-portraits-celebrity45.jpg?auto=format&q=90&w=750',
-        width: 5462,
-        height: 8189,
-        bg: '#cfac4c',
-      },
-      {
-        url: 'https://www.datocms-assets.com/196616/1778868514-cera-hensley-x-peaceout.jpg?auto=format&q=90&w=750',
-        width: 1280,
-        height: 1600,
-        bg: '#baadd1',
+        name: 'Luminary 2',
+        url: '/assets/works/luminary2.png',
+        width: 2880,
+        height: 1800,
       },
     ],
   },
   {
     col: 4,
-    artist: 'Quinn Gravier',
-    images: [
+    items: [
       {
-        // The Weeknd in red jacket
-        url: 'https://www.datocms-assets.com/196616/1782286850-photo-jan-07-2026-3-32-47-pm.jpg?auto=format&q=90&w=750',
-        width: 5352,
-        height: 6690,
-        bg: '#a86649',
+        name: 'Village Woods',
+        url: '/assets/works/village-woods.png',
+        width: 2880,
+        height: 1800,
       },
       {
-        // Person with arm on green tiles / chest tattoo
-        url: 'https://www.datocms-assets.com/196616/1778772904-danielle-moore-phils-skincare-mens-beauty-portrait.jpg?auto=format&q=90&w=750',
-        width: 1536,
-        height: 2048,
-        bg: '#904640',
-      },
-      {
-        url: 'https://www.datocms-assets.com/196616/1774484653-byrum-20200305-nike-basketball-studio-0416.jpg?auto=format&q=90&w=750',
-        width: 880,
-        height: 1200,
-        bg: '#428e96',
-      },
-    ],
-  },
-  {
-    col: 5,
-    artist: 'Jason Kent',
-    images: [
-      {
-        // Black and white editorial portrait
-        url: 'https://www.datocms-assets.com/196616/1778795294-quinn-gravier-advertising-photographer-portraits-celebrity47.jpg?auto=format&q=90&w=750',
-        width: 1024,
-        height: 1545,
-        bg: '#434343',
-      },
-      {
-        url: 'https://www.datocms-assets.com/196616/1779144620-jonathan-mannion-hiphop-music-rap-photography-advertising-photographer-sports48.jpg?auto=format&q=90&w=750',
-        width: 759,
-        height: 1140,
-        bg: '#c8b3b0',
-      },
-      {
-        url: 'https://www.datocms-assets.com/196616/1779948864-jason-kent-beauty-photographer-la-nyc-still-life107.jpg?auto=format&q=90&w=750',
-        width: 912,
-        height: 1140,
-        bg: '#df9d06',
+        name: 'TAT 2',
+        url: '/assets/works/tat2.png',
+        width: 2880,
+        height: 1800,
       },
     ],
   },
@@ -238,25 +180,22 @@ export default function Work() {
                   className={`c-home__gallery-col c-home__gallery-col--${colData.col}`}
                   data-col={colData.col}
                 >
-                  {colData.images.map((img, imgIndex) => (
-                    <div key={imgIndex} className="c-home__gallery-item">
-                      <div
-                        className="c-home__gallery-media-wrap"
-                        style={{ backgroundColor: img.bg || '#ededed' }}
-                      >
+                  {colData.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="c-home__gallery-item">
+                      <div className="c-home__gallery-media-wrap">
                         <img
                           className="c-home__gallery-media"
-                          src={img.url}
-                          width={img.width}
-                          height={img.height}
-                          alt={`${colData.artist} — Design & Editorial Project by Gokul Kannan`}
+                          src={item.url}
+                          width={item.width}
+                          height={item.height}
+                          alt={`${item.name} — Design Project by Gokul Kannan`}
                           loading={
-                            colIndex < 3 && imgIndex === 0 ? 'eager' : 'lazy'
+                            colIndex < 2 && itemIndex === 0 ? 'eager' : 'lazy'
                           }
                         />
                       </div>
                       <span className="c-home__gallery-item-name">
-                        {colData.artist}
+                        {item.name}
                       </span>
                     </div>
                   ))}
