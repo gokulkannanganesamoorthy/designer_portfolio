@@ -1,5 +1,5 @@
 .footer {
-  padding: var(--space-xl) var(--page-pad) clamp(140px, 16vw, 200px) var(--page-pad);
+  padding: var(--space-xl) var(--page-pad) var(--space-lg) var(--page-pad);
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -26,7 +26,7 @@
 }
 
 .email {
-  font-family: var(--font-display);
+  font-family: var(--font-secondary);
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   font-weight: 500;
   color: var(--fg-dim);

@@ -28,8 +28,8 @@
 .wordmark {
   font-family: var(--font-primary);
   font-size: var(--text-section-title);
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 0.95;
   color: var(--fg);
   margin: 0;
