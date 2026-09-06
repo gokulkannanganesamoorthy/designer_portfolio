@@ -46,9 +46,9 @@
 }
 
 .c-home__wordmark {
-  font-family: var(--font-heading);
+  font-family: var(--font-primary);
   font-size: var(--text-section-title);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.9;
   color: var(--fg);
@@ -58,7 +58,7 @@
 }
 
 .c-home__tagline {
-  font-family: var(--font-body), -apple-system, sans-serif;
+  font-family: var(--font-primary);
   font-size: var(--text-section-tagline);
   line-height: 1.25;
   color: var(--fg-dim);
@@ -214,7 +214,7 @@
 }
 
 .c-home__gallery-item-name {
-  font-family: var(--font-heading);
+  font-family: var(--font-primary);
   font-size: clamp(14px, 1.1vw, 16px);
   font-weight: 600;
   color: var(--fg);

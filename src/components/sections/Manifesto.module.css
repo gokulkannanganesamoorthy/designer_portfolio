@@ -35,9 +35,9 @@
 }
 
 .wordmark {
-  font-family: var(--font-heading);
+  font-family: var(--font-primary);
   font-size: var(--text-section-title);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.95;
   color: var(--fg);
@@ -46,7 +46,7 @@
 }
 
 .tagline {
-  font-family: var(--font-body), -apple-system, sans-serif;
+  font-family: var(--font-primary);
   font-size: var(--text-section-tagline);
   line-height: 1.35;
   color: var(--fg-dim);

@@ -42,9 +42,9 @@
 }
 
 .wordmark {
-  font-family: var(--font-heading);
+  font-family: var(--font-primary);
   font-size: var(--text-section-title);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.9;
   color: var(--fg);
@@ -54,7 +54,7 @@
 }
 
 .tagline {
-  font-family: var(--font-body), -apple-system, sans-serif;
+  font-family: var(--font-primary);
   font-size: var(--text-section-tagline);
   line-height: 1.25;
   color: var(--fg-dim);
@@ -74,7 +74,7 @@
 }
 
 .counter {
-  font-family: var(--font-mono);
+  font-family: var(--font-secondary);
   font-size: 13px;
   letter-spacing: 0.12em;
   display: flex;
@@ -227,7 +227,7 @@
 }
 
 .largeIndex {
-  font-family: var(--font-heading);
+  font-family: var(--font-secondary);
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -248,7 +248,7 @@
 }
 
 .disciplineTitle {
-  font-family: var(--font-heading);
+  font-family: var(--font-primary);
   font-size: clamp(1.6rem, 2.2vw, 2.2rem);
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -259,7 +259,7 @@
 }
 
 .disciplineTagline {
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-size: clamp(14px, 1.1vw, 16px);
   font-weight: 500;
   line-height: 1.45;
@@ -269,7 +269,8 @@
 }
 
 .disciplineDesc {
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
+  font-weight: 400;
   font-size: clamp(13px, 0.95vw, 14.5px);
   line-height: 1.6;
   color: var(--fg-dim);

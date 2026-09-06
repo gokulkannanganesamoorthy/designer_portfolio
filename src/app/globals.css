@@ -18,11 +18,13 @@
   --card-border:  rgba(0, 0, 0, 0.08);
   --card-border-hover: rgba(0, 0, 0, 0.22);
 
-  /* ─── Typography ─── */
-  --font-heading:        var(--font-mono), monospace;
-  --font-display:        var(--font-mono), monospace;
-  --font-body:           'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:           'JetBrains Mono', monospace;
+  /* ─── Typography (Primary: Nohemi | Secondary: JetBrains Mono) ─── */
+  --font-primary:        var(--font-primary), 'Nohemi', -apple-system, sans-serif;
+  --font-secondary:      var(--font-secondary), 'JetBrains Mono', monospace;
+  --font-heading:        var(--font-primary);
+  --font-display:        var(--font-primary);
+  --font-body:           var(--font-primary);
+  --font-mono:           var(--font-secondary);
 
   /* Consistent Section Typography across all sections */
   --text-section-title:   clamp(2.5rem, 6vw, 5.5rem);

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
+import { JetBrains_Mono } from 'next/font/google';
 import Footer from '../components/layout/Footer';
 import SmoothScroll from '../components/layout/SmoothScroll';
 import { ThemeProvider } from '../components/layout/ThemeProvider';
@@ -8,22 +9,46 @@ import BottomHUD from '../components/layout/BottomHUD';
 import './globals.css';
 import Navigation from '@/components/layout/Navigation';
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
+const nohemi = localFont({
+  src: [
+    {
+      path: '../../public/fonts/nohemi/Nohemi-Regular.woff',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/nohemi/Nohemi-Medium.woff',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/nohemi/Nohemi-SemiBold.woff',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/nohemi/Nohemi-Bold.woff',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/nohemi/Nohemi-ExtraBold.woff',
+      weight: '800',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/nohemi/Nohemi-Black.woff',
+      weight: '900',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-primary',
   display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-mono',
+  variable: '--font-secondary',
   display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
 });
@@ -183,7 +208,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${nohemi.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ThemeProvider>
           <script
