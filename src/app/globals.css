@@ -19,9 +19,14 @@
   --card-border-hover: rgba(0, 0, 0, 0.22);
 
   /* ─── Typography ─── */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
+  --font-heading:        var(--font-mono), monospace;
+  --font-display:        var(--font-mono), monospace;
+  --font-body:           'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:           'JetBrains Mono', monospace;
+
+  /* Consistent Section Typography across all sections */
+  --text-section-title:   clamp(2.5rem, 6vw, 5.5rem);
+  --text-section-tagline: clamp(14px, 1.25vw, 19px);
 
   --text-hero:    clamp(4rem, 15vw, 14rem);
   --text-display: clamp(2.5rem, 6vw, 6rem);

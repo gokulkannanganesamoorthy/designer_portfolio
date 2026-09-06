@@ -8,8 +8,9 @@
   background-color: var(--bg);
   color: var(--fg);
   overflow-x: hidden;
-  padding: 40px 0 120px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: clamp(60px, 8vw, 120px) 0;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-body);
   transition: background-color 0.3s ease, color 0.3s ease;
   box-sizing: border-box;
 }
@@ -22,48 +23,57 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ViV Logo Row - overlaid with precision */
+/* ─── Architectural Header with WORKS Wordmark, Tagline & Controls ─── */
+.c-home__header {
+  position: relative;
+  width: 100%;
+  padding: 0 var(--page-pad);
+  margin-bottom: clamp(28px, 4vw, 52px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
 .c-home__logo-row {
-  position: absolute;
-  top: 1.5vw;
-  left: clamp(24px, 6vw, 100px);
   display: flex;
   align-items: flex-start;
-  gap: 2.5vw;
-  z-index: 10;
-  pointer-events: none;
+  gap: clamp(16px, 2.5vw, 40px);
+  flex-wrap: wrap;
   color: var(--fg);
 }
 
-.c-home__logo-svg {
-  width: clamp(240px, 38vw, 520px);
-  height: auto;
-  flex-shrink: 0;
-  display: block;
-}
-
-.c-home__meta-col {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  pointer-events: auto;
-  padding-top: 1.2vw;
+.c-home__wordmark {
+  font-family: var(--font-heading);
+  font-size: var(--text-section-title);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--fg);
+  margin: 0;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .c-home__tagline {
-  font-family: inherit;
-  font-size: clamp(14px, 1.4vw, 20px);
+  font-family: var(--font-body), -apple-system, sans-serif;
+  font-size: var(--text-section-tagline);
   line-height: 1.25;
   color: var(--fg-dim);
   font-weight: 400;
   letter-spacing: -0.01em;
+  padding-top: clamp(4px, 0.8vw, 14px);
   white-space: nowrap;
+  margin: 0;
+  transition: color 0.3s ease;
 }
 
 .c-home__nav-btns {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .c-home__nav-btn {
@@ -92,6 +102,12 @@
   transform: scale(0.94);
 }
 
+.c-home__nav-btn--disabled {
+  opacity: 0.25;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 /* Parallax Gallery Outer - Scrollable & Draggable */
 .c-home__parallax {
   position: relative;
@@ -112,7 +128,7 @@
 .c-home__parallax-inner {
   width: max-content;
   display: flex;
-  padding: 0 6vw 0 6vw;
+  padding: 0 var(--page-pad);
   will-change: transform;
   transform: translate3d(0, 0, 0);
 }
@@ -141,15 +157,15 @@
 }
 
 .c-home__gallery-col--2 {
-  margin-top: 12.5vw;
+  margin-top: 10vw;
 }
 
 .c-home__gallery-col--3 {
-  margin-top: 7.5vw;
+  margin-top: 5vw;
 }
 
 .c-home__gallery-col--4 {
-  margin-top: 14.5vw;
+  margin-top: 12vw;
 }
 
 /* Gallery Item & Media Wrap */
@@ -198,8 +214,8 @@
 }
 
 .c-home__gallery-item-name {
-  font-family: var(--font-display), -apple-system, sans-serif;
-  font-size: clamp(15px, 1.2vw, 18px);
+  font-family: var(--font-heading);
+  font-size: clamp(14px, 1.1vw, 16px);
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.01em;
@@ -211,31 +227,20 @@
 
 @media (max-width: 991px) {
   .c-work-section {
-    padding: 30px 0 80px 0;
+    padding: clamp(40px, 6vw, 60px) 0;
   }
 
-  .c-home__logo-row {
-    position: relative;
-    top: 0;
-    left: 5vw;
-    margin-bottom: 28px;
+  .c-home__header {
     flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
-    pointer-events: auto;
-  }
-
-  .c-home__logo-svg {
-    width: min(85vw, 360px);
-  }
-
-  .c-home__meta-col {
-    padding-top: 0;
-    gap: 14px;
+    margin-bottom: 24px;
   }
 
   .c-home__tagline {
-    font-size: 16px;
+    font-size: 15px;
     white-space: normal;
+    padding-top: 0;
   }
 
   .c-home__parallax {
@@ -243,7 +248,7 @@
   }
 
   .c-home__parallax-inner {
-    padding: 0 5vw 0 5vw;
+    padding: 0 var(--page-pad);
     width: max-content;
   }
 
@@ -262,14 +267,14 @@
   }
 
   .c-home__gallery-col--2 {
-    margin-top: 10vw;
+    margin-top: 8vw;
   }
 
   .c-home__gallery-col--3 {
-    margin-top: 5vw;
+    margin-top: 4vw;
   }
 
   .c-home__gallery-col--4 {
-    margin-top: 12vw;
+    margin-top: 10vw;
   }
 }

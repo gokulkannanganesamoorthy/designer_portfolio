@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Work.css';
 
 interface WorkItem {
@@ -91,16 +91,35 @@ export default function Work() {
   const parallaxInnerRef = useRef<HTMLDivElement>(null);
   const colRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const manualOffsetRef = useRef(0);
+
+  const scrollBy = (direction: 'left' | 'right') => {
+    // Step by ~22vw per click
+    const step = 22;
+    const maxOffset = 0;
+    const minOffset = -55; // max horizontal scroll range in vw
+
+    if (direction === 'left') {
+      manualOffsetRef.current = Math.min(maxOffset, manualOffsetRef.current + step);
+    } else {
+      manualOffsetRef.current = Math.max(minOffset, manualOffsetRef.current - step);
+    }
+    setCanScrollLeft(manualOffsetRef.current < 0);
+    setCanScrollRight(manualOffsetRef.current > minOffset);
+  };
+
   useEffect(() => {
-    let targetOffset = 0;
+    let mouseOffset = 0;
     let currentOffset = 0;
     let animationFrameId: number;
 
     const handleMouseMove = (e: MouseEvent) => {
       // Normalized between -1 and 1
       const normX = (e.clientX / window.innerWidth - 0.5) * 2;
-      // Pan smoothly by up to +/- 5vw
-      targetOffset = normX * -5;
+      // Gentle subtle pan by up to +/- 3vw
+      mouseOffset = normX * -3;
     };
 
     const handleScroll = () => {
@@ -118,11 +137,10 @@ export default function Work() {
     };
 
     const tick = () => {
-      currentOffset += (targetOffset - currentOffset) * 0.07;
+      const target = manualOffsetRef.current + mouseOffset;
+      currentOffset += (target - currentOffset) * 0.08;
       if (parallaxInnerRef.current) {
-        // Base translation is -9vw so Col 1 aligns perfectly touching the left of the ViV logo
-        const totalX = -9 + currentOffset;
-        parallaxInnerRef.current.style.transform = `translate3d(${totalX}vw, 0, 0)`;
+        parallaxInnerRef.current.style.transform = `translate3d(${currentOffset}vw, 0, 0)`;
       }
       animationFrameId = requestAnimationFrame(tick);
     };
@@ -141,30 +159,52 @@ export default function Work() {
   return (
     <section ref={sectionRef} className="c-work-section" id="work">
       <div className="c-home">
-        {/* ViV-Style Architectural Header with WORKS Wordmark & Tagline */}
-        <div className="c-home__logo-row">
-          <svg
-            className="c-home__logo-svg"
-            viewBox="0 0 620 150"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="WORKS"
-          >
-            <text
-              x="0"
-              y="125"
-              fontFamily="var(--font-display), 'Space Grotesk', -apple-system, sans-serif"
-              fontSize="160"
-              fontWeight="700"
-              letterSpacing="-0.04em"
-              fill="currentColor"
+        {/* Unified Architectural Header with WORKS Wordmark, Tagline & Controls */}
+        <div className="c-home__header">
+          <div className="c-home__logo-row">
+            <h2 className="c-home__wordmark">WORKS</h2>
+            <p className="c-home__tagline">
+              A few things worth <br /> seeing.
+            </p>
+          </div>
+          <div className="c-home__nav-btns">
+            <button
+              type="button"
+              className={`c-home__nav-btn ${!canScrollLeft ? 'c-home__nav-btn--disabled' : ''}`}
+              onClick={() => scrollBy('left')}
+              disabled={!canScrollLeft}
+              aria-label="Previous work column"
             >
-              WORKS
-            </text>
-          </svg>
-          <p className="c-home__tagline">
-            A few things worth <br /> seeing.
-          </p>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className={`c-home__nav-btn ${!canScrollRight ? 'c-home__nav-btn--disabled' : ''}`}
+              onClick={() => scrollBy('right')}
+              disabled={!canScrollRight}
+              aria-label="Next work column"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Staggered Parallax Gallery */}

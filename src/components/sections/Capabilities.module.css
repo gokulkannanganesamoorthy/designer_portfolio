@@ -42,8 +42,8 @@
 }
 
 .wordmark {
-  font-family: var(--font-display), 'Space Grotesk', -apple-system, sans-serif;
-  font-size: clamp(2.8rem, 6.5vw, 6.5rem);
+  font-family: var(--font-heading);
+  font-size: var(--text-section-title);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.9;
@@ -55,7 +55,7 @@
 
 .tagline {
   font-family: var(--font-body), -apple-system, sans-serif;
-  font-size: clamp(14px, 1.3vw, 20px);
+  font-size: var(--text-section-tagline);
   line-height: 1.25;
   color: var(--fg-dim);
   font-weight: 400;
@@ -227,9 +227,9 @@
 }
 
 .largeIndex {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--fg-dim);
   transition: color 0.3s ease;
@@ -248,9 +248,9 @@
 }
 
 .disciplineTitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 2.2vw, 2.4rem);
-  font-weight: 500;
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--fg);
@@ -259,8 +259,8 @@
 }
 
 .disciplineTagline {
-  font-family: var(--font-display);
-  font-size: clamp(15px, 1.1vw, 17px);
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.1vw, 16px);
   font-weight: 500;
   line-height: 1.45;
   color: var(--fg);
