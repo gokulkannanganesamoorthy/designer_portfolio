@@ -174,8 +174,7 @@
 
 .folioCard:hover {
   border-color: var(--card-border-hover);
-  transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
   background: var(--card-bg-hover);
 }
 

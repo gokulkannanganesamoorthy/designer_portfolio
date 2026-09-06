@@ -305,7 +305,6 @@ export default function Capabilities() {
           <div
             ref={scrollContainerRef}
             className={styles.stripTrack}
-            data-lenis-prevent="true"
           >
             {CAPABILITIES.map((item, idx) => (
               <div
