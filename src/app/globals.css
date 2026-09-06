@@ -23,7 +23,8 @@
   --font-secondary:      var(--font-secondary), 'JetBrains Mono', monospace;
   --font-heading:        var(--font-primary);
   --font-display:        var(--font-primary);
-  --font-body:           var(--font-primary);
+  --font-body:           var(--font-secondary);
+  --font-subhead:        var(--font-secondary);
   --font-mono:           var(--font-secondary);
 
   /* Consistent Section Typography across all sections */

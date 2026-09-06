@@ -46,9 +46,9 @@
 }
 
 .tagline {
-  font-family: var(--font-primary);
+  font-family: var(--font-secondary);
   font-size: var(--text-section-tagline);
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--fg-dim);
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -59,11 +59,11 @@
 }
 
 .textBlock {
-  font-family: var(--font-body), -apple-system, sans-serif;
-  font-size: clamp(1.4rem, 2.8vw, 2.5rem);
+  font-family: var(--font-secondary);
+  font-size: clamp(1.25rem, 2.4vw, 2.2rem);
   font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
   max-width: 100%;
   width: 100%;
 }
