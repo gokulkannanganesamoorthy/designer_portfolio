@@ -20,7 +20,8 @@ export default function Clients() {
         <div className={styles.logoRow}>
           <h2 className={styles.wordmark}>Brands I collaborated with</h2>
           <p className={styles.tagline}>
-            A few partners worth <br /> building with.
+            A few partners I've
+            <br /> worked with.
           </p>
         </div>
 

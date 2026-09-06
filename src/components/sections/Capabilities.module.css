@@ -140,12 +140,12 @@
 
 /* ─── Folio Card (Large Architectural Panel) ─── */
 .folioCard {
-  flex: 0 0 clamp(340px, 31vw, 440px);
+  flex: 0 0 clamp(320px, 28vw, 420px);
   scroll-snap-align: start;
   background: #faf9f6;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  padding: clamp(32px, 3.2vw, 44px);
+  padding: clamp(32px, 3vw, 44px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -156,29 +156,105 @@
   cursor: default;
 }
 
-/* On desktop, format cleanly as 3 expansive columns */
-@media (min-width: 1200px) {
-  .stripTrack {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    overflow-x: visible;
-  }
-
-  .folioCard {
-    flex: none;
-    width: 100%;
-  }
-
-  .navControls {
-    display: none;
-  }
-}
-
 .folioCard:hover {
   border-color: rgba(0, 0, 0, 0.25);
   transform: translateY(-6px);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
   background: #ffffff;
+}
+
+/* ─── 04: CTA Invitation Card ─── */
+.endCapCard {
+  flex: 0 0 clamp(320px, 28vw, 420px);
+  scroll-snap-align: start;
+  background: #0A0A0A;
+  color: #ffffff;
+  border: 1px solid #0A0A0A;
+  border-radius: 16px;
+  padding: clamp(32px, 3vw, 44px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 440px;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.endCapCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+}
+
+.endCapLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.endCapCard .largeIndex {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.endCapCard:hover .largeIndex {
+  color: #ffffff;
+}
+
+.endCapTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.2vw, 2.3rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0;
+}
+
+.endCapTagline {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.05vw, 16px);
+  font-weight: 500;
+  line-height: 1.45;
+  color: #ffffff;
+  margin: 10px 0 6px 0;
+}
+
+.endCapDesc {
+  font-family: var(--font-body);
+  font-size: clamp(12.5px, 0.9vw, 14px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+.endCapFooter {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.endCapCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 50px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s var(--ease-expo);
+  width: 100%;
+}
+
+.endCapCta:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
 }
 
 .cardAccentBorder {
