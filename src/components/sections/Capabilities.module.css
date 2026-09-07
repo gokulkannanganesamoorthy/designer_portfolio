@@ -168,7 +168,7 @@
   padding: clamp(32px, 3.5vw, 48px);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   min-height: 460px;
   position: relative;
   overflow: hidden;
@@ -195,6 +195,7 @@
 }
 
 .ctaFooter {
+  margin-top: auto;
   padding-top: 20px;
   border-top: 1px solid var(--border);
 }
@@ -231,9 +232,10 @@
 }
 
 .largeIndex {
-  font-family: var(--font-secondary);
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   font-size: 20px;
   font-weight: 600;
+  line-height: 1;
   letter-spacing: -0.02em;
   color: var(--fg-dim);
   transition: color 0.3s ease;
@@ -245,35 +247,38 @@
 
 /* Card Body */
 .cardBody {
-  margin: clamp(24px, 2.5vw, 36px) 0;
+  margin-top: clamp(24px, 2.5vw, 36px);
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
 .disciplineTitle {
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), 'Nohemi', sans-serif;
   font-size: clamp(1.6rem, 2.2vw, 2.2rem);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--fg);
   margin: 0;
+  min-height: calc(1.1em * 1);
   transition: color 0.3s ease;
 }
 
 .disciplineTagline {
-  font-family: var(--font-secondary);
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   font-size: clamp(14px, 1.1vw, 16px);
   font-weight: 500;
   line-height: 1.45;
   color: var(--fg);
   margin: 0;
+  min-height: calc(1.45em * 2);
   transition: color 0.3s ease;
 }
 
 .disciplineDesc {
-  font-family: var(--font-secondary);
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   font-weight: 400;
   font-size: clamp(13px, 0.95vw, 14.5px);
   line-height: 1.6;
@@ -315,5 +320,9 @@
     scroll-snap-align: start;
     min-height: 400px;
     padding: 28px 24px;
+  }
+
+  .disciplineTagline {
+    min-height: auto;
   }
 }

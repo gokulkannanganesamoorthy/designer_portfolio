@@ -71,8 +71,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
     const checkViewport = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
-      // Immediately visible on mobile or if already scrolled down
-      if (mobile || window.scrollY > 80) {
+      if (window.scrollY > 80) {
         setVisible(true);
       }
     };
@@ -84,11 +83,19 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
       setVisible(true);
     };
 
+    const handleSequenceReset = () => {
+      setVisible(false);
+      setIsHovered(false);
+      setIsMobileOpen(false);
+    };
+
     window.addEventListener('hero-sequence-done', handleSequenceDone);
+    window.addEventListener('hero-sequence-reset', handleSequenceReset);
 
     return () => {
       window.removeEventListener('resize', checkViewport);
       window.removeEventListener('hero-sequence-done', handleSequenceDone);
+      window.removeEventListener('hero-sequence-reset', handleSequenceReset);
     };
   }, []);
 
