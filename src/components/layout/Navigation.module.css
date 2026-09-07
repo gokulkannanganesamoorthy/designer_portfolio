@@ -84,7 +84,9 @@
 }
 
 .navItem {
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   font-size: var(--text-micro);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--fg-dim);
@@ -127,7 +129,7 @@
 }
 
 .mobileBrand {
-  font-family: var(--font-display);
+  font-family: var(--font-primary), 'Nohemi', sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
@@ -175,14 +177,14 @@
 }
 
 .mobileNavNum {
-  font-family: var(--font-mono);
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   font-size: 0.85rem;
   color: var(--fg-dim);
   font-weight: 500;
 }
 
 .mobileNavText {
-  font-family: var(--font-display);
+  font-family: var(--font-primary), 'Nohemi', sans-serif;
   font-size: clamp(2rem, 8.5vw, 3.2rem);
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -199,6 +201,7 @@
 }
 
 .mobileTagline {
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   font-size: 0.85rem;
   color: var(--fg-dim);
   margin: 0;
@@ -207,7 +210,7 @@
 .mobileStatus {
   font-size: 0.75rem;
   color: #10b981;
-  font-family: var(--font-mono);
+  font-family: var(--font-secondary), 'JetBrains Mono', monospace;
 }
 
 @media (max-width: 768px) {

@@ -177,50 +177,52 @@ export default function Work() {
     <section ref={sectionRef} className="c-work-section" id="work">
       <div className="c-home">
         {/* Unified Architectural Header with WORKS Wordmark, Tagline & Controls */}
-        <div className="c-home__header">
-          <div className="c-home__logo-row">
-            <h2 className="c-home__wordmark">WORKS</h2>
-            <p className="c-home__tagline">
-              A few things worth <br /> seeing.
-            </p>
-          </div>
-          <div className="c-home__nav-btns">
-            <button
-              type="button"
-              className={`c-home__nav-btn ${!canScrollLeft ? 'c-home__nav-btn--disabled' : ''}`}
-              onClick={() => scrollBy('left')}
-              disabled={!canScrollLeft}
-              aria-label="Previous work column"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
+        <div className="c-home__header-wrap">
+          <div className="c-home__header">
+            <div className="c-home__logo-row">
+              <h2 className="c-home__wordmark">WORKS</h2>
+              <p className="c-home__tagline">
+                A few things worth <br /> seeing.
+              </p>
+            </div>
+            <div className="c-home__nav-btns">
+              <button
+                type="button"
+                className={`c-home__nav-btn ${!canScrollLeft ? 'c-home__nav-btn--disabled' : ''}`}
+                onClick={() => scrollBy('left')}
+                disabled={!canScrollLeft}
+                aria-label="Previous work column"
               >
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className={`c-home__nav-btn ${!canScrollRight ? 'c-home__nav-btn--disabled' : ''}`}
-              onClick={() => scrollBy('right')}
-              disabled={!canScrollRight}
-              aria-label="Next work column"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className={`c-home__nav-btn ${!canScrollRight ? 'c-home__nav-btn--disabled' : ''}`}
+                onClick={() => scrollBy('right')}
+                disabled={!canScrollRight}
+                aria-label="Next work column"
               >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 

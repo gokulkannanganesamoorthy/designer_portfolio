@@ -19,7 +19,6 @@
 .logoRow {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   gap: clamp(16px, 2.5vw, 40px);
   flex-wrap: wrap;
   width: 100%;

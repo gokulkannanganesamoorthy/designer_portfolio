@@ -2,6 +2,50 @@
    GOKUL MAKES — "Cool & Dope" Premium
    ═══════════════════════════════════════════════════════════════ */
 
+/* Direct @font-face declarations for Nohemi local font as bulletproof fallback */
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi/Nohemi-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi/Nohemi-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi/Nohemi-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi/Nohemi-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi/Nohemi-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi/Nohemi-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ─── Colors (Light Theme Default) ─── */
   --bg:           #FFFFFF;
@@ -19,13 +63,11 @@
   --card-border-hover: rgba(0, 0, 0, 0.22);
 
   /* ─── Typography (Primary: Nohemi | Secondary: JetBrains Mono) ─── */
-  --font-primary:        var(--font-primary), 'Nohemi', -apple-system, sans-serif;
-  --font-secondary:      var(--font-secondary), 'JetBrains Mono', monospace;
-  --font-heading:        var(--font-primary);
-  --font-display:        var(--font-primary);
-  --font-body:           var(--font-secondary);
-  --font-subhead:        var(--font-secondary);
-  --font-mono:           var(--font-secondary);
+  --font-heading:        var(--font-primary, 'Nohemi', -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-display:        var(--font-primary, 'Nohemi', -apple-system, BlinkMacSystemFont, sans-serif);
+  --font-body:           var(--font-secondary, 'JetBrains Mono', monospace);
+  --font-subhead:        var(--font-secondary, 'JetBrains Mono', monospace);
+  --font-mono:           var(--font-secondary, 'JetBrains Mono', monospace);
 
   /* Consistent Section Typography across all sections */
   --text-section-title:   clamp(2.5rem, 6vw, 5.5rem);
@@ -119,6 +161,7 @@ main {
 }
 
 a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font-family: inherit; font-size: inherit; }
 button { background: none; border: none; color: inherit; cursor: pointer; }
 img, video { display: block; max-width: 100%; }
 

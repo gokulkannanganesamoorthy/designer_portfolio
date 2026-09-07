@@ -206,7 +206,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${nohemi.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <link
           rel="preload"

@@ -158,9 +158,7 @@ export default function Hero() {
               animate="animate"
               exit="exit"
             >
-              <p className={styles.hookText}>
-                Ready for your next digital experience?
-              </p>
+              <p className={styles.hookText}>Let's make it unforgettable.</p>
             </motion.div>
           )}
 
@@ -173,7 +171,7 @@ export default function Hero() {
               animate="animate"
               exit="exit"
             >
-              <p className={styles.hookText}>Let&rsquo;s begin</p>
+              <p className={styles.hookText}>Can we start?</p>
             </motion.div>
           )}
 
