@@ -210,14 +210,7 @@ export default function Hero() {
       timeoutsRef.current.push(tHandover, tArrowDock);
     }, 7500);
 
-    timeoutsRef.current.push(
-      t1,
-      t2,
-      t3,
-      t4,
-      tArrowPrep,
-      tLaunch,
-    );
+    timeoutsRef.current.push(t1, t2, t3, t4, tArrowPrep, tLaunch);
   };
 
   useEffect(() => {
@@ -395,7 +388,10 @@ export default function Hero() {
                 )}
 
                 <h1 className={styles.title}>
-                  <span ref={gRef} className={styles.gLetter}>G</span>OKUL MAKES
+                  <span ref={gRef} className={styles.gLetter}>
+                    G
+                  </span>
+                  OKUL MAKES
                 </h1>
                 <p className={styles.subtitle}>
                   Turning brands into experiences.
@@ -500,9 +496,9 @@ export default function Hero() {
           whileTap={{ scale: 0.93, y: 1, x: '-50%' }}
           aria-label="Replay Hero Sequence"
           title="Restart cinematic sequence"
-        > */}
+        >
 
-        </motion.button>
+        </div></motion.button>*/}
       </div>
     </section>
   );
