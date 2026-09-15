@@ -5,7 +5,6 @@ import { JetBrains_Mono } from 'next/font/google';
 import Footer from '../components/layout/Footer';
 import SmoothScroll from '../components/layout/SmoothScroll';
 import { ThemeProvider } from '../components/layout/ThemeProvider';
-import BottomHUD from '../components/layout/BottomHUD';
 import './globals.css';
 import Navigation from '@/components/layout/Navigation';
 
@@ -244,7 +243,6 @@ export default function RootLayout({
             {children}
             <Footer />
           </SmoothScroll>
-          <BottomHUD delay={6.5} />
         </ThemeProvider>
       </body>
     </html>

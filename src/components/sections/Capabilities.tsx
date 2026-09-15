@@ -85,33 +85,36 @@ export default function Capabilities() {
     }
   }, [TOTAL_CARDS]);
 
-  const slideToCard = useCallback((targetIdx: number) => {
-    const el = scrollContainerRef.current;
-    if (!el) return;
+  const slideToCard = useCallback(
+    (targetIdx: number) => {
+      const el = scrollContainerRef.current;
+      if (!el) return;
 
-    const firstCard = el.firstElementChild as HTMLElement | null;
-    if (!firstCard) return;
+      const firstCard = el.firstElementChild as HTMLElement | null;
+      if (!firstCard) return;
 
-    const clampedIdx = Math.max(0, Math.min(TOTAL_CARDS - 1, targetIdx));
-    targetIndexRef.current = clampedIdx;
+      const clampedIdx = Math.max(0, Math.min(TOTAL_CARDS - 1, targetIdx));
+      targetIndexRef.current = clampedIdx;
 
-    const cardWidth = firstCard.offsetWidth + 24;
-    const targetScroll = clampedIdx * cardWidth;
+      const cardWidth = firstCard.offsetWidth + 24;
+      const targetScroll = clampedIdx * cardWidth;
 
-    isTweeningRef.current = true;
+      isTweeningRef.current = true;
 
-    // Fast, buttery 120fps glide without layout thrashing
-    gsap.to(el, {
-      scrollLeft: targetScroll,
-      duration: 0.65,
-      ease: 'power3.out',
-      overwrite: 'auto',
-      onComplete: () => {
-        isTweeningRef.current = false;
-        checkScroll();
-      },
-    });
-  }, [TOTAL_CARDS, checkScroll]);
+      // Fast, buttery 120fps glide without layout thrashing
+      gsap.to(el, {
+        scrollLeft: targetScroll,
+        duration: 0.65,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onComplete: () => {
+          isTweeningRef.current = false;
+          checkScroll();
+        },
+      });
+    },
+    [TOTAL_CARDS, checkScroll],
+  );
 
   const scrollTo = (direction: 'left' | 'right') => {
     const nextIdx =
@@ -243,9 +246,10 @@ export default function Capabilities() {
         <div className={styles.header}>
           <div className={styles.headlineRow}>
             <div className={styles.logoRow}>
-              <h2 className={styles.wordmark}>What can i do ?</h2>
+              <h2 className={styles.wordmark}>What Gokul Makes ?</h2>
               <p className={styles.tagline}>
-                Three ways I turn ideas into <br /> useful digital experiences.
+                Three ways Gokul turn ideas into <br /> useful digital
+                experiences.
               </p>
             </div>
 
@@ -302,10 +306,7 @@ export default function Capabilities() {
 
         {/* ─── 3 Large Horizontal / Stacked Panels ─── */}
         <div className={styles.stripWrapper}>
-          <div
-            ref={scrollContainerRef}
-            className={styles.stripTrack}
-          >
+          <div ref={scrollContainerRef} className={styles.stripTrack}>
             {CAPABILITIES.map((item, idx) => (
               <div
                 key={item.num}

@@ -28,7 +28,7 @@
   font-family: var(--font-secondary);
   font-size: clamp(1.8rem, 3.5vw, 3.4rem);
   font-weight: 400;
-  color: var(--fg-dim);
+  color: var(--fg); /* Changed from fg-dim to fg to be black by default */
   line-height: 1.35;
   letter-spacing: -0.02em;
 }
@@ -72,4 +72,41 @@
     height: 180px;
     font-size: var(--text-body);
   }
+}
+
+/* ─── Cinematic Overlay Sequence ─── */
+.fullscreenOverlay {
+  position: fixed; /* Use fixed to cover viewport */
+  top: 0;
+  left: 0;
+  width: 240px; /* Base size matches button */
+  height: 240px;
+  border-radius: 50%;
+  background: var(--bg); /* Match theme */
+  z-index: 40;
+  display: none;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+.closeBtn {
+  position: fixed;
+  top: var(--page-pad);
+  right: var(--page-pad);
+  z-index: 60;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(128, 128, 128, 0.1);
+  transform: scale(1.1);
 }

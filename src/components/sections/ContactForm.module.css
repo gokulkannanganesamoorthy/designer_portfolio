@@ -1,0 +1,93 @@
+.formContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 50;
+}
+
+.stepWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.stepLabel {
+  font-family: var(--font-secondary);
+  font-size: var(--text-h3);
+  color: var(--fg);
+  font-weight: 400;
+}
+
+.inputField {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.2);
+  color: var(--fg);
+  font-family: var(--font-primary);
+  font-size: var(--text-h2);
+  padding: var(--space-sm) 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.inputField:focus {
+  border-color: var(--fg);
+}
+
+.inputField::placeholder {
+  color: rgba(128, 128, 128, 0.4);
+}
+
+.hint {
+  font-family: var(--font-secondary);
+  font-size: var(--text-body);
+  color: rgba(128, 128, 128, 0.8);
+  margin-top: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.enterKey {
+  background: rgba(128, 128, 128, 0.2);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+.nextBtn {
+  margin-top: var(--space-lg);
+  background: var(--fg);
+  color: var(--bg);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 32px;
+  font-family: var(--font-primary);
+  font-size: var(--text-body);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease;
+}
+
+.nextBtn:hover {
+  transform: scale(1.05);
+}
+
+.nextBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
