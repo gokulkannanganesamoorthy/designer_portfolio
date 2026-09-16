@@ -47,6 +47,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
@@ -89,13 +90,20 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
       setIsMobileOpen(false);
     };
 
+    const handleContactOpen = () => setContactOpen(true);
+    const handleContactClose = () => setContactOpen(false);
+
     window.addEventListener('hero-sequence-done', handleSequenceDone);
     window.addEventListener('hero-sequence-reset', handleSequenceReset);
+    window.addEventListener('contact-open', handleContactOpen);
+    window.addEventListener('contact-close', handleContactClose);
 
     return () => {
       window.removeEventListener('resize', checkViewport);
       window.removeEventListener('hero-sequence-done', handleSequenceDone);
       window.removeEventListener('hero-sequence-reset', handleSequenceReset);
+      window.removeEventListener('contact-open', handleContactOpen);
+      window.removeEventListener('contact-close', handleContactClose);
     };
   }, []);
 
@@ -143,7 +151,7 @@ export default function Navigation({ delay = 8 }: NavigationProps) {
       <motion.div
         className={styles.navContainer}
         animate={{
-          y: !isMobile && hidden && !isMobileOpen ? -100 : 0,
+          y: (!isMobile && hidden && !isMobileOpen) || contactOpen ? -100 : 0,
         }}
         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
         style={{

@@ -1,14 +1,25 @@
+.formOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  pointer-events: none;
+}
+
 .formContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: 100%;
   max-width: 800px;
+  padding: 0 var(--page-pad);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  z-index: 50;
+  pointer-events: auto;
 }
 
 .stepWrapper {
@@ -16,6 +27,43 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+}
+
+.progressHeader {
+  position: fixed;
+  bottom: var(--page-pad);
+  right: var(--page-pad);
+  width: 200px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: 60;
+  pointer-events: auto;
+}
+
+.stepCount {
+  font-family: var(--font-secondary);
+  font-size: var(--text-body);
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.progressTrack {
+  flex-grow: 1;
+  height: 2px;
+  background: rgba(128, 128, 128, 0.2);
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--fg);
+  border-radius: 2px;
 }
 
 .stepLabel {
@@ -66,6 +114,7 @@
 }
 
 .nextBtn {
+  align-self: flex-start;
   margin-top: var(--space-lg);
   background: var(--fg);
   color: var(--bg);
@@ -76,7 +125,7 @@
   font-size: var(--text-body);
   font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: transform 0.2s ease;

@@ -2,10 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Gokul Kannan — Digital Experience Designer',
+    name: 'Gokul Makes',
     short_name: 'Gokul Makes',
-    description:
-      'Digital Experience Designer. Designing the Invisible. Building things people remember. Founder, Luno Tech.',
+    description: 'Building things people remember.',
     start_url: '/',
     display: 'standalone',
     background_color: '#FFFFFF',
