@@ -22,11 +22,8 @@ export default function Footer() {
           <div className={styles.col}>
             <span>Social</span>
             <div className={styles.links}>
-              <Link href="https://twitter.com/gokulkannan" target="_blank">
-                Twitter / X
-              </Link>
-              <Link href="https://linkedin.com/in/gokulkannan" target="_blank">
-                LinkedIn
+              <Link href="https://instagram.com/gokulmakes" target="_blank">
+                Instagram
               </Link>
             </div>
           </div>

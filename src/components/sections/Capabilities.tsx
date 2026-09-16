@@ -2,7 +2,10 @@
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Capabilities.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface CapabilityItem {
   num: string;
@@ -14,24 +17,25 @@ interface CapabilityItem {
 const CAPABILITIES: CapabilityItem[] = [
   {
     num: '01',
-    title: 'Digital Experiences',
-    tagline: 'Websites that make a brand feel different.',
+    title: 'Experiences',
+    tagline:
+      'Websites Experiences, Portfolios, that make a brand feel different.',
     description:
-      'Strategy, design, interaction and development — brought together into one experience.',
+      'Strategy, design, interaction and development - brought together into one experience.',
   },
   {
     num: '02',
-    title: 'CRM',
-    tagline: 'Systems built around how your business actually works.',
+    title: 'Systems',
+    tagline: 'CRMs, dashboards and internal business platforms.',
     description:
-      'No generic dashboards. No unnecessary features. Just a CRM shaped around your people, process and growth.',
+      'No generic dashboards. No unnecessary features. Just a CRM shaped around for your people, process and growth.',
   },
   {
     num: '03',
-    title: 'ERP',
-    tagline: 'The operating system behind your business.',
+    title: 'Operations',
+    tagline: 'The operating system, ERP, and automations behind your business.',
     description:
-      'Finance, inventory, operations and workflows unified into a tailored, lightning-fast internal platform built to scale.',
+      'Finance, inventory, operations and workflows unified into a tailored, lightning-fast internal platform built for your business.',
   },
 ];
 
@@ -43,78 +47,80 @@ export default function Capabilities() {
 
   const TOTAL_CARDS = 4;
   const targetIndexRef = useRef(0);
-  const activeIndexRef = useRef(0);
-  const canScrollLeftRef = useRef(false);
-  const canScrollRightRef = useRef(true);
-  const isTweeningRef = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Fast, layout-reflow-free scroll check using mathematical offset calculation
-  const checkScroll = useCallback(() => {
-    const el = scrollContainerRef.current;
-    if (!el) return;
+  useEffect(() => {
+    const section = sectionRef.current;
+    const track = scrollContainerRef.current;
+    if (!section || !track) return;
 
-    const { scrollLeft, scrollWidth, clientWidth } = el;
-
-    const canLeft = scrollLeft > 15;
-    const canRight = scrollLeft < scrollWidth - clientWidth - 15;
-
-    if (canLeft !== canScrollLeftRef.current) {
-      canScrollLeftRef.current = canLeft;
-      setCanScrollLeft(canLeft);
-    }
-    if (canRight !== canScrollRightRef.current) {
-      canScrollRightRef.current = canRight;
-      setCanScrollRight(canRight);
-    }
-
-    const firstCard = el.firstElementChild as HTMLElement | null;
-    if (!firstCard) return;
-
-    const cardWidth = firstCard.offsetWidth + 24; // width + gap
-    const estimatedIndex = Math.min(
-      TOTAL_CARDS - 1,
-      Math.max(0, Math.round(scrollLeft / cardWidth)),
-    );
-
-    if (estimatedIndex !== activeIndexRef.current) {
-      activeIndexRef.current = estimatedIndex;
-      setActiveIndex(estimatedIndex);
-    }
-    if (!isTweeningRef.current) {
-      targetIndexRef.current = estimatedIndex;
-    }
-  }, [TOTAL_CARDS]);
-
-  const slideToCard = useCallback(
-    (targetIdx: number) => {
-      const el = scrollContainerRef.current;
-      if (!el) return;
-
-      const firstCard = el.firstElementChild as HTMLElement | null;
-      if (!firstCard) return;
-
-      const clampedIdx = Math.max(0, Math.min(TOTAL_CARDS - 1, targetIdx));
-      targetIndexRef.current = clampedIdx;
-
-      const cardWidth = firstCard.offsetWidth + 24;
-      const targetScroll = clampedIdx * cardWidth;
-
-      isTweeningRef.current = true;
-
-      // Fast, buttery 120fps glide without layout thrashing
-      gsap.to(el, {
-        scrollLeft: targetScroll,
-        duration: 0.65,
-        ease: 'power3.out',
-        overwrite: 'auto',
-        onComplete: () => {
-          isTweeningRef.current = false;
-          checkScroll();
-        },
+    const ctx = gsap.context(() => {
+      // Force strict CSS on the containers via GSAP to override ANY external stylesheets
+      gsap.set(track, { 
+        display: 'flex', 
+        flexWrap: 'nowrap',
+        width: 'fit-content',
+        overflow: 'visible' 
       });
-    },
-    [TOTAL_CARDS, checkScroll],
-  );
+      
+      const wrapper = track.parentElement;
+      if (wrapper) {
+        gsap.set(wrapper, { overflow: 'hidden', width: '100%' });
+      }
+
+      // Calculate exact distance by summing children, totally avoiding scrollWidth bugs
+      const getScrollAmount = () => {
+        let totalWidth = 0;
+        const children = Array.from(track.children) as HTMLElement[];
+        children.forEach((child) => {
+          totalWidth += child.offsetWidth + 24; // width + gap
+        });
+        
+        // We need to move left by (totalWidth - viewport width) plus a little padding
+        const amount = totalWidth - window.innerWidth + 120;
+        return Math.max(0, amount);
+      };
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          pinSpacing: true,
+          scrub: 1, 
+          // Pin at the top so the title stays perfectly fixed at the top of the screen
+          start: 'top top',
+          end: () => `+=${getScrollAmount()}`,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const estimatedIndex = Math.min(
+              TOTAL_CARDS - 1,
+              Math.max(0, Math.round(progress * (TOTAL_CARDS - 1)))
+            );
+            
+            if (estimatedIndex !== targetIndexRef.current) {
+              setActiveIndex(estimatedIndex);
+              targetIndexRef.current = estimatedIndex;
+            }
+
+            setCanScrollLeft(progress > 0.01);
+            setCanScrollRight(progress < 0.99);
+          }
+        }
+      });
+
+      tl.to(track, {
+        x: () => -getScrollAmount(),
+        ease: 'none'
+      });
+
+      // Crucial: Wait for fonts/images to layout before measuring
+      setTimeout(() => ScrollTrigger.refresh(), 100);
+      
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [TOTAL_CARDS]);
 
   const scrollTo = (direction: 'left' | 'right') => {
     const nextIdx =
@@ -122,125 +128,25 @@ export default function Capabilities() {
         ? Math.min(TOTAL_CARDS - 1, targetIndexRef.current + 1)
         : Math.max(0, targetIndexRef.current - 1);
 
-    slideToCard(nextIdx);
+    const st = ScrollTrigger.getAll().find(
+      (t) => t.trigger === sectionRef.current,
+    );
+    if (st) {
+      const start = st.start;
+      const end = st.end;
+      const progress = nextIdx / (TOTAL_CARDS - 1);
+      const targetY = start + progress * (end - start);
+
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(targetY, { duration: 0.8 });
+      } else {
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
+    }
   };
 
-  useEffect(() => {
-    const el = scrollContainerRef.current;
-    if (!el) return;
-
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          checkScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    el.addEventListener('scroll', onScroll, { passive: true });
-    checkScroll();
-
-    // Damped horizontal wheel / trackpad scrolling for desktop
-    let wheelTarget = el.scrollLeft;
-    let wheelTimeout: NodeJS.Timeout;
-
-    const handleWheel = (e: WheelEvent) => {
-      const isHorizontal =
-        Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey;
-      if (!isHorizontal) return;
-
-      e.preventDefault();
-      const rawDelta = e.shiftKey ? e.deltaY : e.deltaX;
-
-      const sign = Math.sign(rawDelta);
-      const mag = Math.abs(rawDelta);
-      const dampenedDelta = sign * Math.min(mag * 0.7, 120);
-
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      wheelTarget = Math.max(
-        0,
-        Math.min(
-          maxScroll,
-          (isTweeningRef.current ? wheelTarget : el.scrollLeft) + dampenedDelta,
-        ),
-      );
-
-      isTweeningRef.current = true;
-      gsap.to(el, {
-        scrollLeft: wheelTarget,
-        duration: 0.6,
-        ease: 'power2.out',
-        overwrite: 'auto',
-        onComplete: () => {
-          isTweeningRef.current = false;
-          checkScroll();
-        },
-      });
-
-      clearTimeout(wheelTimeout);
-      wheelTimeout = setTimeout(() => {
-        if (!isTweeningRef.current) {
-          slideToCard(targetIndexRef.current);
-        }
-      }, 180);
-    };
-
-    el.addEventListener('wheel', handleWheel, { passive: false });
-
-    // Desktop Mouse Drag (Touch devices use native hardware-accelerated scroll-snap)
-    let isDown = false;
-    let startX = 0;
-    let scrollStart = 0;
-    let hasDragged = false;
-
-    const onPointerDown = (e: PointerEvent) => {
-      // NEVER hijack touch on mobile — let native 120fps hardware scrolling work!
-      if (e.pointerType === 'touch') return;
-      if ((e.target as HTMLElement).closest('a, button')) return;
-
-      isDown = true;
-      startX = e.pageX;
-      scrollStart = el.scrollLeft;
-      hasDragged = false;
-      gsap.killTweensOf(el);
-      isTweeningRef.current = false;
-    };
-
-    const onPointerMove = (e: PointerEvent) => {
-      if (!isDown) return;
-      const x = e.pageX;
-      const walk = (x - startX) * 0.9;
-      if (Math.abs(walk) > 5) hasDragged = true;
-      el.scrollLeft = scrollStart - walk;
-    };
-
-    const onPointerUp = () => {
-      if (!isDown) return;
-      isDown = false;
-      if (hasDragged) {
-        slideToCard(targetIndexRef.current);
-      }
-    };
-
-    el.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-
-    return () => {
-      el.removeEventListener('scroll', onScroll);
-      el.removeEventListener('wheel', handleWheel);
-      el.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      clearTimeout(wheelTimeout);
-    };
-  }, [checkScroll, slideToCard]);
-
   return (
-    <section className={styles.capabilitiesSection} id="capabilities">
+    <section ref={sectionRef} className={styles.capabilitiesSection} id="capabilities">
       <div className={styles.capabilities}>
         {/* ─── Storytelling Narrative Header ─── */}
         <div className={styles.header}>
@@ -248,8 +154,7 @@ export default function Capabilities() {
             <div className={styles.logoRow}>
               <h2 className={styles.wordmark}>What Gokul Makes ?</h2>
               <p className={styles.tagline}>
-                Three ways Gokul turn ideas into <br /> useful digital
-                experiences.
+                Three ways I turn ideas into <br /> useful digital experiences.
               </p>
             </div>
 

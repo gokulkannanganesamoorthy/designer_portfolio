@@ -9,10 +9,10 @@
   background-color: var(--bg);
   color: var(--fg);
   position: relative;
-  overflow-x: hidden;
   border-bottom: 1px solid var(--border);
   transition: background-color 0.3s ease, color 0.3s ease;
-  padding: clamp(80px, 9vw, 140px) var(--page-pad);
+  /* Use a much tighter clamp for vertical padding, and use vh/dvh so it shrinks on tight screens */
+  padding: clamp(40px, 5dvh, 100px) var(--page-pad);
   box-sizing: border-box;
 }
 

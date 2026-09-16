@@ -7,7 +7,7 @@ import styles from './Manifesto.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const MANIFESTO_TEXT = `I don't just design interfaces. I design how things feel when no one is looking. The pause before a click. The silence between transitions. The invisible architecture of attention. Every pixel is a decision. Every whitespace is a statement. I build experiences that make people stop, feel, and remember.`;
+const MANIFESTO_TEXT = `I don't just design interfaces. \n I design the experience around them. \n \n The pause before a click. The silence between transitions. \n The invisible architecture of attention. \n Every pixel is a decision. \n Every whitespace is a statement. \n I build experiences that make people stop, feel, and remember.`;
 
 export default function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -73,15 +73,20 @@ export default function Manifesto() {
           <div className={styles.logoRow}>
             <h2 className={styles.wordmark}>More about me</h2>
             <p className={styles.tagline}>
-              How things feel when <br /> no one is looking.
+              I design what happens <br /> behind the screen, too.
             </p>
           </div>
           <div ref={wordsRef} className={styles.textBlock}>
-            {words.map((word, index) => (
-              <span key={index} className={styles.word}>
-                {word}{' '}
-              </span>
-            ))}
+            {words.map((word, index) => {
+              if (word === '\n') {
+                return <br key={index} />;
+              }
+              return (
+                <span key={index} className={styles.word}>
+                  {word}{' '}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -119,9 +119,15 @@ export default function Work() {
     const minOffset = -55; // max horizontal scroll range in vw
 
     if (direction === 'left') {
-      manualOffsetRef.current = Math.min(maxOffset, manualOffsetRef.current + step);
+      manualOffsetRef.current = Math.min(
+        maxOffset,
+        manualOffsetRef.current + step,
+      );
     } else {
-      manualOffsetRef.current = Math.max(minOffset, manualOffsetRef.current - step);
+      manualOffsetRef.current = Math.max(
+        minOffset,
+        manualOffsetRef.current - step,
+      );
     }
     setCanScrollLeft(manualOffsetRef.current < 0);
     setCanScrollRight(manualOffsetRef.current > minOffset);
@@ -182,7 +188,7 @@ export default function Work() {
             <div className="c-home__logo-row">
               <h2 className="c-home__wordmark">WORKS</h2>
               <p className="c-home__tagline">
-                A few things worth <br /> seeing.
+                Things I’ve built, <br /> shaped and shipped.
               </p>
             </div>
             <div className="c-home__nav-btns">
@@ -259,7 +265,9 @@ export default function Work() {
                           alt={`${item.name} — Design Project by Gokul Kannan`}
                           loading={colIndex < 2 ? 'eager' : 'lazy'}
                           decoding="async"
-                          fetchPriority={colIndex === 0 && itemIndex === 0 ? 'high' : 'auto'}
+                          fetchPriority={
+                            colIndex === 0 && itemIndex === 0 ? 'high' : 'auto'
+                          }
                         />
                       </div>
                       <span className="c-home__gallery-item-name">
