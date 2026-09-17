@@ -438,18 +438,14 @@ export default function Hero() {
                     }}
                   >
                     <div className={styles.ctaAnchorBox}>
-                      <motion.a
-                        ref={buttonRef as any}
+                      <a
+                        ref={buttonRef}
                         href="#contact"
                         className={`${styles.letsStartBtn} ${
                           ctaExpanded ? styles.letsStartBtnExpanded : ''
                         }`}
                         onClick={handleCtaClick}
                         aria-label="Let's Start"
-                        data-magnetic="true"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       >
                         <div className={styles.trackWrapper}>
                           <div className={styles.trackSpacer} />
@@ -473,7 +469,7 @@ export default function Hero() {
                           </div>
                         </div>
                         <span className={styles.buttonLabel}>Let's Start</span>
-                      </motion.a>
+                      </a>
                     </div>
                   </div>
                 </div>

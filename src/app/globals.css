@@ -152,12 +152,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  cursor: none; /* Custom cursor */
-}
-
-/* Ensure inputs and textareas retain native pointer for UX */
-input, textarea, [contenteditable="true"] {
-  cursor: text !important;
 }
 
 main {
@@ -166,9 +160,9 @@ main {
   overflow-x: hidden;
 }
 
-a { color: inherit; text-decoration: none; cursor: none; }
+a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font-family: inherit; font-size: inherit; }
-button { background: none; border: none; color: inherit; cursor: none; }
+button { background: none; border: none; color: inherit; cursor: pointer; }
 img, video { display: block; max-width: 100%; }
 
 /* ─── Utilities ─── */

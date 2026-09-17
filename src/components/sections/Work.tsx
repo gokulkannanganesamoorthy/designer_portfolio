@@ -1,11 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Work.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface WorkItem {
   name: string;
@@ -176,45 +172,6 @@ export default function Work() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     animationFrameId = requestAnimationFrame(tick);
 
-    const items = sectionRef.current?.querySelectorAll('.c-home__gallery-item');
-    if (items) {
-      items.forEach((item) => {
-        const wrap = item.querySelector('.c-home__gallery-media-wrap');
-        const img = item.querySelector('.c-home__gallery-media');
-        
-        if (wrap && img) {
-          gsap.fromTo(
-            wrap,
-            { clipPath: 'inset(100% 0% 0% 0%)' },
-            { 
-              clipPath: 'inset(0% 0% 0% 0%)', 
-              duration: 1.2, 
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: item,
-                start: 'top 90%',
-              }
-            }
-          );
-
-          gsap.fromTo(
-            img,
-            { scale: 1.2, yPercent: -10 },
-            {
-              yPercent: 10,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: item,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true
-              }
-            }
-          );
-        }
-      });
-    }
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
@@ -289,7 +246,7 @@ export default function Work() {
                   data-col={colData.col}
                 >
                   {colData.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="c-home__gallery-item" data-cursor-text="View">
+                    <div key={itemIndex} className="c-home__gallery-item">
                       <div
                         className="c-home__gallery-media-wrap"
                         style={{
