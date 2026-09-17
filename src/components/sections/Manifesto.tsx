@@ -23,27 +23,14 @@ export default function Manifesto() {
       gsap.set(words, { opacity: 0.15, y: 8 });
 
       ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 75%',
-        end: 'center 35%',
+        trigger: sectionRef.current, // Pin the whole section
+        pin: true,
+        pinSpacing: true, // Keep the spacing so the page doesn't jump
+        start: 'center center', // Freeze the section exactly when it hits the center
+        end: '+=100%', // Require the user to scroll 100% of the viewport height to fully reveal the text before it unpins
         scrub: 0.3,
         onUpdate: (self) => {
-          // If already revealed once, keep words fully visible so scrolling back up does NOT un-reveal or dim them
-          if (hasRevealedRef.current) return;
-
           const progress = self.progress;
-
-          if (progress >= 0.95) {
-            hasRevealedRef.current = true;
-            gsap.to(words, {
-              opacity: 1,
-              y: 0,
-              duration: 0.25,
-              stagger: 0.01,
-              overwrite: true,
-            });
-            return;
-          }
 
           words.forEach((word, i) => {
             const wordProgress = (progress - i / words.length) * words.length;
