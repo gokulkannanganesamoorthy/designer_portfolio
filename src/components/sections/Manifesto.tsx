@@ -7,7 +7,7 @@ import styles from './Manifesto.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const MANIFESTO_TEXT = `I don't just design interfaces. \n I design the experience around them. \n \n The pause before a click. The silence between transitions. \n The invisible architecture of attention. \n Every pixel is a decision. \n Every whitespace is a statement. \n I build experiences that make people stop, feel, and remember.`;
+const MANIFESTO_TEXT = `I don't just design interfaces. \n I design the experience around them. \n \n The pause before a click. The silence between transitions. \n The invisible architecture of attention. \n Every pixel is a decision. Every whitespace is a statement. \n I build experiences that make people stop, feel, and remember.`;
 
 export default function Manifesto() {
   const sectionRef = useRef<HTMLElement>(null);

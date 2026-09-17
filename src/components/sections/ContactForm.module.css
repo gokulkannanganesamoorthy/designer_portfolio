@@ -116,7 +116,8 @@
 .backBtn {
   position: absolute;
   top: -60px;
-  left: var(--page-pad);
+  /* Align the button's text exactly with the form text by offsetting its own padding */
+  left: calc(var(--page-pad) - 16px);
   background: transparent;
   color: rgba(128, 128, 128, 0.6);
   border: none;
