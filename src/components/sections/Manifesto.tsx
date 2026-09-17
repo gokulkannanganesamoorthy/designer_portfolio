@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Manifesto.module.css';
+import { RoughNotation } from 'react-rough-notation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,22 +28,37 @@ export default function Manifesto() {
         pin: true,
         pinSpacing: true, // Keep the spacing so the page doesn't jump
         start: 'center center', // Freeze the section exactly when it hits the center
-        end: '+=100%', // Require the user to scroll 100% of the viewport height to fully reveal the text before it unpins
+        end: '+=100%',
         scrub: 0.3,
         onUpdate: (self) => {
           const progress = self.progress;
-
+          
           words.forEach((word, i) => {
             const wordProgress = (progress - i / words.length) * words.length;
-            const clampedProgress = Math.max(
-              0,
-              Math.min(1, wordProgress * 1.4),
-            );
-
+            
+            // Text opacity fades in fast
+            const textRevealProgress = Math.max(0, Math.min(1, wordProgress * 1.4));
+            
             gsap.set(word, {
-              opacity: 0.15 + clampedProgress * 0.85,
-              y: 8 * (1 - clampedProgress),
+              opacity: 0.15 + textRevealProgress * 0.85,
+              y: 8 * (1 - textRevealProgress),
             });
+
+            // Effects take 4x longer to finish so they can be "felt"
+            const effectProgress = Math.max(0, Math.min(1, wordProgress / 4));
+            word.style.setProperty('--effect-progress', effectProgress.toString());
+
+            // Check if text is fully revealed
+            word.setAttribute(
+              'data-revealed',
+              textRevealProgress === 1 ? 'true' : 'false',
+            );
+            
+            // The symbol stays active during the entire widened effect window
+            word.setAttribute(
+              'data-revealing',
+              wordProgress > 0 && effectProgress < 1 ? 'true' : 'false',
+            );
           });
         },
       });
@@ -52,6 +68,71 @@ export default function Manifesto() {
   }, []);
 
   const words = MANIFESTO_TEXT.split(' ');
+
+  // Custom components for specific words
+  const ExperienceWord = ({ word }: { word: string }) => {
+    const ref = useRef<HTMLSpanElement>(null);
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+      if (!ref.current) return;
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((m) => {
+          if (m.attributeName === 'data-revealed') {
+            setShow(ref.current?.getAttribute('data-revealed') === 'true');
+          }
+        });
+      });
+      observer.observe(ref.current, { attributes: true });
+      return () => observer.disconnect();
+    }, []);
+
+    return (
+      <span ref={ref} className={styles.word}>
+        <RoughNotation
+          type="circle"
+          padding={4}
+          show={show}
+          color="var(--fg)"
+          strokeWidth={2}
+          animationDuration={800}
+        >
+          {word}
+        </RoughNotation>
+      </span>
+    );
+  };
+
+  const FeelWord = ({ word }: { word: string }) => {
+    return (
+      <span className={`${styles.word} ${styles.sparkleWord}`}>
+        <span style={{ position: 'relative' }}>
+          {word}
+          <div className={styles.sparkleContainer}>
+            {Array.from({ length: 6 }).map((_, i) => {
+              const angle = (i / 6) * Math.PI * 2;
+              // Use a deterministic pseudo-random distance based on index to avoid SSR hydration mismatch
+              const distance = 15 + ((i * 7) % 15);
+              const tx = (Math.cos(angle) * distance).toFixed(2);
+              const ty = (Math.sin(angle) * distance).toFixed(2);
+              return (
+                <div
+                  key={i}
+                  className={styles.sparkle}
+                  style={
+                    {
+                      '--tx': `${tx}px`,
+                      '--ty': `${ty}px`,
+                    } as React.CSSProperties
+                  }
+                />
+              );
+            })}
+          </div>
+        </span>
+      </span>
+    );
+  };
 
   return (
     <section ref={sectionRef} className={styles.manifesto} id="manifesto">
@@ -68,9 +149,94 @@ export default function Manifesto() {
               if (word === '\n') {
                 return <br key={index} />;
               }
+
+              const cleanWord = word.replace(/[.,]/g, '').toLowerCase();
+
+              if (cleanWord === 'pause') {
+                return (
+                  <span key={index}>
+                    <span className={`${styles.word} ${styles.symbolWord}`} data-revealed="false">
+                      <span className={styles.text}>{word}</span>
+                      <span className={styles.symbol}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="6" y="4" width="4" height="16"></rect>
+                          <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                      </span>
+                    </span>{' '}
+                  </span>
+                );
+              }
+
+              if (cleanWord === 'experience' || cleanWord === 'experiences') {
+                return (
+                  <span key={index}>
+                    <ExperienceWord word={word} />{' '}
+                  </span>
+                );
+              }
+
+              if (cleanWord === 'architecture') {
+                return (
+                  <span key={index}>
+                    <span className={`${styles.word} ${styles.architectureWord}`}>
+                      <span className={styles.inner}>{word}</span>
+                    </span>{' '}
+                  </span>
+                );
+              }
+
+              if (cleanWord === 'pixel') {
+                return (
+                  <span key={index}>
+                    <span className={`${styles.word} ${styles.pixelWord}`}>
+                      {word}
+                    </span>{' '}
+                  </span>
+                );
+              }
+
+              if (cleanWord === 'statement') {
+                // If it ends with a period, separate it
+                const hasPeriod = word.endsWith('.');
+                return (
+                  <span key={index}>
+                    <span className={styles.word}>
+                      {word.replace('.', '')}
+                      {hasPeriod && (
+                        <span className={styles.bouncingPeriod}>.</span>
+                      )}
+                    </span>{' '}
+                  </span>
+                );
+              }
+
+              if (cleanWord === 'stop') {
+                return (
+                  <span key={index}>
+                    <span className={`${styles.word} ${styles.symbolWord}`} data-revealed="false">
+                      <span className={styles.text}>{word}</span>
+                      <span className={styles.symbol}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        </svg>
+                      </span>
+                    </span>{' '}
+                  </span>
+                );
+              }
+
+              if (cleanWord === 'feel') {
+                return (
+                  <span key={index}>
+                    <FeelWord word={word} />{' '}
+                  </span>
+                );
+              }
+
               return (
-                <span key={index} className={styles.word}>
-                  {word}{' '}
+                <span key={index}>
+                  <span className={styles.word}>{word}</span>{' '}
                 </span>
               );
             })}

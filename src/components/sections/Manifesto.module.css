@@ -101,3 +101,107 @@
     line-height: 1.4;
   }
 }
+
+/* Micro-Interactions */
+.word {
+  display: inline-block;
+  will-change: opacity, transform;
+  position: relative;
+}
+
+/* Symbol Swap (Pause / Stop) */
+.symbolWord {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+.symbolWord .text {
+  transition: opacity 0.3s ease;
+}
+.symbolWord .symbol {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--fg);
+}
+.symbolWord[data-revealing="true"] .text,
+.symbolWord:hover .text {
+  opacity: 0;
+}
+.symbolWord[data-revealing="true"] .symbol,
+.symbolWord:hover .symbol {
+  opacity: 1;
+}
+
+/* Architecture Scrolling Reveal */
+.architectureWord {
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.architectureWord .inner {
+  display: inline-block;
+  transform: translateY(calc(100% * (1 - var(--effect-progress, 0))));
+}
+
+/* Pixel Reveal */
+.pixelWord {
+  display: inline-block;
+  filter: blur(calc(6px * (1 - var(--effect-progress, 0))));
+  transition: filter 0.1s;
+}
+
+/* Bouncing Period */
+.bouncingPeriod {
+  display: inline-block;
+  animation: bounce 1.5s infinite ease-in-out;
+  transform-origin: bottom;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-8px) scaleY(1.1); }
+}
+
+/* Sparkles */
+.sparkleContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--fg);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.sparkleWord[data-revealed="true"] .sparkle,
+.sparkleWord:hover .sparkle {
+  animation: scatterAnimation 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+@keyframes scatterAnimation {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0);
+  }
+}
