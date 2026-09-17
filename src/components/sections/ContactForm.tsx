@@ -113,10 +113,12 @@ export default function ContactForm({ onComplete }: ContactFormProps) {
             <motion.button
               className={styles.backBtn}
               onClick={handleBack}
-              initial={{ opacity: 0, x: -15, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, x: -15, filter: 'blur(4px)' }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              data-magnetic="true"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               ← Back
             </motion.button>
@@ -148,15 +150,18 @@ export default function ContactForm({ onComplete }: ContactFormProps) {
             <div className={styles.hint}>
               Press <span className={styles.enterKey}>Enter ↵</span> to continue
             </div>
-            <button
+            <motion.button
               className={styles.nextBtn}
               onClick={handleNext}
               disabled={
                 !formData[STEPS[step].id as keyof typeof formData].trim()
               }
+              data-magnetic="true"
+              whileHover={!formData[STEPS[step].id as keyof typeof formData].trim() ? {} : { scale: 1.05 }}
+              whileTap={!formData[STEPS[step].id as keyof typeof formData].trim() ? {} : { scale: 0.95 }}
             >
               {step === STEPS.length - 1 ? 'Send it' : 'Next'}
-            </button>
+            </motion.button>
           </motion.div>
         </AnimatePresence>
       </div>

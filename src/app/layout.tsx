@@ -7,6 +7,7 @@ import SmoothScroll from '../components/layout/SmoothScroll';
 import { ThemeProvider } from '../components/layout/ThemeProvider';
 import './globals.css';
 import Navigation from '@/components/layout/Navigation';
+import CustomCursor from '@/components/layout/CustomCursor';
 
 const nohemi = localFont({
   src: [
@@ -65,7 +66,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://gokulmakes.in'),
   title: {
-    default: 'Gokul Kannan — Digital Experience Designer & Creative Technologist',
+    default:
+      'Gokul Kannan — Digital Experience Designer & Creative Technologist',
     template: '%s | Gokul Kannan',
   },
   description:
@@ -238,6 +240,7 @@ export default function RootLayout({
               __html: '<!-- Designing the Invisible. -->',
             }}
           />
+          <CustomCursor />
           <Navigation delay={6.5} />
           <SmoothScroll>
             {children}
