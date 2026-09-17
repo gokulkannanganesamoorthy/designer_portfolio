@@ -33,7 +33,8 @@ export default function Manifesto() {
         onUpdate: (self) => {
           const progress = self.progress;
           
-          words.forEach((word, i) => {
+          words.forEach((wordElement, i) => {
+            const word = wordElement as HTMLElement;
             const wordProgress = (progress - i / words.length) * words.length;
             
             // Text opacity fades in fast
