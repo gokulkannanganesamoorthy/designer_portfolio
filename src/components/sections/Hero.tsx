@@ -99,24 +99,26 @@ export default function Hero() {
     // Dispatch reset event for navigation
     window.dispatchEvent(new CustomEvent('hero-sequence-reset'));
 
-    // Sequence of intro hooks with smooth, responsive blur reveal cadence
-    const t1 = setTimeout(() => setPhase(1), 200); // Hook 1
-    const t2 = setTimeout(() => setPhase(2), 2000); // Hook 2
-    const t3 = setTimeout(() => setPhase(3), 4000); // Hook 3: Can we start?
-    const t4 = setTimeout(() => setPhase(4), 6000); // Hook 4: GOKUL MAKES with 2 underscore lines
+    // 0.3s — "What if your digital presence felt different?"
+    const t1 = setTimeout(() => setPhase(1), 300);
+    // 2.4s — Hook fades/blurs away
+    const t1_exit = setTimeout(() => setPhase(0), 2400);
+    // 2.8s — "Let's make it."
+    const t2 = setTimeout(() => setPhase(2), 2800);
+    // 4.2s — Hook disappears
+    const t2_exit = setTimeout(() => setPhase(0), 4200);
+    // 4.4s — GOKUL MAKES reveals
+    const t4 = setTimeout(() => setPhase(4), 4400);
 
-    // At 6800ms: compute exact pixel coordinates and reveal small Arrow Mark on left of "G"
+    // Compute exact pixel coordinates and reveal small Arrow Mark on left of "G"
     const tArrowPrep = setTimeout(() => {
       const gRect = gRef.current?.getBoundingClientRect();
       const circleRect = buttonCircleRef.current?.getBoundingClientRect();
       const blockRect = blockRef.current?.getBoundingClientRect();
 
       if (gRect && circleRect && blockRect) {
-        // Start position: on the left side of "G"
         const startX = gRect.left - blockRect.left - 24;
         const startY = gRect.top - blockRect.top + gRect.height / 2;
-
-        // Target position: exact center of the button's circle at the start (left) of the button
         const targetX = circleRect.left - blockRect.left + circleRect.width / 2;
         const targetY = circleRect.top - blockRect.top + circleRect.height / 2;
 
@@ -135,9 +137,9 @@ export default function Hero() {
         });
       }
       setArrowRevealed(true);
-    }, 6800);
+    }, 4500);
 
-    // At 7500ms: launch BOTH the two underscore lines AND the arrow mark simultaneously
+    // 5.5s — line/arrow animation launch
     const tLaunch = setTimeout(() => {
       const topTarget = document.getElementById('nav-line-top-target');
       const bottomTarget = document.getElementById('nav-line-bottom-target');
@@ -189,28 +191,26 @@ export default function Hero() {
         });
       }
 
-      // Launch both flight animations simultaneously (duration: 1.0s)
       setLinesFlown(true);
       setArrowFlying(true);
 
-      // Exactly when flight completes at 8500ms (1.0s flight duration):
-      // Hand over hamburger lines to Navigation and reveal the docked circle
+      // 6.3s — CTA settles (800ms duration for flight)
       const tHandover = setTimeout(() => {
         window.dispatchEvent(new CustomEvent('hero-sequence-done'));
         setLinesHandedOver(true);
         setCtaVisible(true);
-      }, 1000);
+      }, 800);
 
-      // Arrow locks into the circle; right edge ')' begins its slow, luxurious 1.35s expansion
+      // Arrow locks into the circle; expansion
       const tArrowDock = setTimeout(() => {
         setArrowDocked(true);
         setCtaExpanded(true);
-      }, 1150);
+      }, 950);
 
       timeoutsRef.current.push(tHandover, tArrowDock);
-    }, 7500);
+    }, 5500);
 
-    timeoutsRef.current.push(t1, t2, t3, t4, tArrowPrep, tLaunch);
+    timeoutsRef.current.push(t1, t1_exit, t2, t2_exit, t4, tArrowPrep, tLaunch);
   };
 
   useEffect(() => {
@@ -249,7 +249,7 @@ export default function Hero() {
               exit="exit"
             >
               <p className={styles.hookText}>
-                Ready to elevate your digital presence?
+                What if your digital presence felt different?
               </p>
             </motion.div>
           )}
@@ -263,20 +263,7 @@ export default function Hero() {
               animate="animate"
               exit="exit"
             >
-              <p className={styles.hookText}>Let's make it unforgettable.</p>
-            </motion.div>
-          )}
-
-          {phase === 3 && (
-            <motion.div
-              key="hook3"
-              className={styles.hookContainer}
-              variants={hookVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <p className={styles.hookText}>Can we start?</p>
+              <p className={styles.hookText}>Let's make it.</p>
             </motion.div>
           )}
 
@@ -300,7 +287,7 @@ export default function Hero() {
                 transition={
                   linesFlown
                     ? {
-                        duration: 1.0,
+                        duration: 0.8, // 800ms flight
                         ease: [0.76, 0, 0.24, 1],
                         times: [0, 0.5, 1],
                       }
@@ -364,7 +351,7 @@ export default function Hero() {
                     transition={
                       arrowFlying
                         ? {
-                            duration: 1.0,
+                            duration: 0.8, // 800ms flight
                             ease: [0.76, 0, 0.24, 1],
                             times: [0, 0.5, 1],
                           }
@@ -393,9 +380,16 @@ export default function Hero() {
                   </span>
                   OKUL MAKES
                 </h1>
-                <p className={styles.subtitle}>
+                
+                {/* 5.1s — subtitle appears (Phase 4 starts at 4.4s, so 0.7s delay) */}
+                <motion.p 
+                  className={styles.subtitle}
+                  initial={{ opacity: 0, filter: 'blur(8px)', y: 8 }}
+                  animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                >
                   Turning brands into experiences.
-                </p>
+                </motion.p>
 
                 {/* Bottom line (underscore) — immediately under "Turning brands into experiences." */}
                 <motion.div
@@ -415,7 +409,7 @@ export default function Hero() {
                   transition={
                     linesFlown
                       ? {
-                          duration: 1.0,
+                          duration: 0.8, // 800ms flight
                           ease: [0.76, 0, 0.24, 1],
                           times: [0, 0.5, 1],
                         }
