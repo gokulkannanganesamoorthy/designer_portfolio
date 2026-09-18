@@ -199,20 +199,17 @@ export default function Hero() {
       setLinesFlown(true);
       setArrowFlying(true);
 
-      // 6.3s — CTA settles (800ms duration for flight)
+      // 6.3s — Flight completes (800ms duration)
+      // Hand over lines, reveal CTA, dock the arrow, and start CTA expansion simultaneously.
       const tHandover = setTimeout(() => {
         window.dispatchEvent(new CustomEvent('hero-sequence-done'));
         setLinesHandedOver(true);
         setCtaVisible(true);
-      }, 800);
-
-      // Arrow locks into the circle; expansion
-      const tArrowDock = setTimeout(() => {
         setArrowDocked(true);
         setCtaExpanded(true);
-      }, 950);
+      }, 800);
 
-      timeoutsRef.current.push(tHandover, tArrowDock);
+      timeoutsRef.current.push(tHandover);
     }, 5500);
 
     timeoutsRef.current.push(t1, t1_exit, t2, t2_exit, t4, tArrowPrep, tLaunch);
