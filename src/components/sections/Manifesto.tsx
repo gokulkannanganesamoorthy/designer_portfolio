@@ -80,7 +80,7 @@ export default function Manifesto() {
   const ExperienceWord = ({ word }: { word: string }) => {
     const ref = useRef<HTMLSpanElement>(null);
     const [show, setShow] = useState(false);
-    const [drawKey, setDrawKey] = useState(0);
+    const [isRevealed, setIsRevealed] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
@@ -88,8 +88,9 @@ export default function Manifesto() {
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((m) => {
           if (m.attributeName === 'data-revealed') {
-            const isRevealed = ref.current?.getAttribute('data-revealed') === 'true';
-            if (isRevealed && !show) setShow(true);
+            const revealed = ref.current?.getAttribute('data-revealed') === 'true';
+            setIsRevealed(revealed);
+            if (revealed && !show) setShow(true);
           }
         });
       });
@@ -97,27 +98,28 @@ export default function Manifesto() {
       return () => observer.disconnect();
     }, [show]);
 
-    // Redraw loop on hover
+    // Redraw loop on hover by toggling the show prop
     useEffect(() => {
       let interval: NodeJS.Timeout;
-      if (isHovered && show) {
-        // Force a redraw every 900ms while hovered
+      if (isHovered && isRevealed) {
         interval = setInterval(() => {
-          setDrawKey((k) => k + 1);
-        }, 900);
+          setShow(false);
+          setTimeout(() => setShow(true), 50);
+        }, 1000);
+      } else if (isRevealed) {
+        setShow(true); // ensure it stays on when not hovered
       }
       return () => clearInterval(interval);
-    }, [isHovered, show]);
+    }, [isHovered, isRevealed]);
 
     return (
       <span 
         ref={ref} 
-        className={styles.word}
+        className={`${styles.word} ${styles.experienceWord}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <RoughNotation
-          key={drawKey}
           type="circle"
           padding={4}
           show={show}
@@ -134,13 +136,12 @@ export default function Manifesto() {
   const FeelWord = ({ word }: { word: string }) => {
     return (
       <span className={`${styles.word} ${styles.sparkleWord}`}>
-        <span style={{ position: 'relative' }}>
-          {word}
+        <span style={{ position: 'relative', display: 'inline-block' }}>
+          <span className={styles.blackHoleText}>{word}</span>
           <div className={styles.sparkleContainer}>
-            {Array.from({ length: 6 }).map((_, i) => {
-              const angle = (i / 6) * Math.PI * 2;
-              // Use a deterministic pseudo-random distance based on index to avoid SSR hydration mismatch
-              const distance = 15 + ((i * 7) % 15);
+            {Array.from({ length: 12 }).map((_, i) => {
+              const angle = (i / 12) * Math.PI * 2;
+              const distance = 25 + ((i * 7) % 20);
               const tx = (Math.cos(angle) * distance).toFixed(2);
               const ty = (Math.sin(angle) * distance).toFixed(2);
               return (

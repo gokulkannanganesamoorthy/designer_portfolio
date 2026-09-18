@@ -199,7 +199,7 @@
   50% { transform: translateY(-8px) scaleY(1.1); }
 }
 
-/* Sparkles */
+/* Sparkles (Now Black Hole Suck) */
 .sparkleContainer {
   position: absolute;
   top: 50%;
@@ -220,12 +220,24 @@
   transform: translate(-50%, -50%) scale(0);
 }
 
+.blackHoleText {
+  display: inline-block;
+  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.sparkleWord:hover .blackHoleText {
+  letter-spacing: 0.15em;
+  filter: blur(2px);
+  opacity: 0.2;
+  transform: scale(0.9);
+}
+
 .sparkleWord[data-revealed="true"] .sparkle {
   animation: scatterAnimation 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
 }
 
 .sparkleWord:hover .sparkle {
-  animation: scatterAnimation 0.8s cubic-bezier(0.2, 1, 0.3, 1) infinite;
+  animation: blackHoleSuck 1s cubic-bezier(0.2, 1, 0.3, 1) infinite;
 }
 
 @keyframes scatterAnimation {
@@ -236,5 +248,19 @@
   100% {
     opacity: 0;
     transform: translate(var(--tx), var(--ty)) scale(0);
+  }
+}
+
+@keyframes blackHoleSuck {
+  0% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(1.5);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
   }
 }
