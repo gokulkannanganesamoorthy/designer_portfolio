@@ -80,23 +80,44 @@ export default function Manifesto() {
   const ExperienceWord = ({ word }: { word: string }) => {
     const ref = useRef<HTMLSpanElement>(null);
     const [show, setShow] = useState(false);
+    const [drawKey, setDrawKey] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
       if (!ref.current) return;
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((m) => {
           if (m.attributeName === 'data-revealed') {
-            setShow(ref.current?.getAttribute('data-revealed') === 'true');
+            const isRevealed = ref.current?.getAttribute('data-revealed') === 'true';
+            if (isRevealed && !show) setShow(true);
           }
         });
       });
       observer.observe(ref.current, { attributes: true });
       return () => observer.disconnect();
-    }, []);
+    }, [show]);
+
+    // Redraw loop on hover
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
+      if (isHovered && show) {
+        // Force a redraw every 900ms while hovered
+        interval = setInterval(() => {
+          setDrawKey((k) => k + 1);
+        }, 900);
+      }
+      return () => clearInterval(interval);
+    }, [isHovered, show]);
 
     return (
-      <span ref={ref} className={styles.word}>
+      <span 
+        ref={ref} 
+        className={styles.word}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <RoughNotation
+          key={drawKey}
           type="circle"
           padding={4}
           show={show}

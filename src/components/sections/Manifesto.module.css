@@ -220,9 +220,12 @@
   transform: translate(-50%, -50%) scale(0);
 }
 
-.sparkleWord[data-revealed="true"] .sparkle,
-.sparkleWord:hover .sparkle {
+.sparkleWord[data-revealed="true"] .sparkle {
   animation: scatterAnimation 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+.sparkleWord:hover .sparkle {
+  animation: scatterAnimation 0.8s cubic-bezier(0.2, 1, 0.3, 1) infinite;
 }
 
 @keyframes scatterAnimation {
