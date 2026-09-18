@@ -30,13 +30,13 @@ const CAPABILITIES: CapabilityItem[] = [
     description:
       'No generic dashboards. No unnecessary features. Just a CRM shaped around for your people, process and growth.',
   },
-  {
-    num: '03',
-    title: 'Operations',
-    tagline: 'The operating system, ERP, and automations behind your business.',
-    description:
-      'Finance, inventory, operations and workflows unified into a tailored, lightning-fast internal platform built for your business.',
-  },
+  // {
+  //   num: '03',
+  //   title: 'Operations',
+  //   tagline: 'The operating system, ERP, and automations behind your business.',
+  //   description:
+  //     'Finance, inventory, operations and workflows unified into a tailored, lightning-fast internal platform built for your business.',
+  // },
 ];
 
 export default function Capabilities() {
@@ -45,7 +45,7 @@ export default function Capabilities() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const TOTAL_CARDS = 4;
+  const TOTAL_CARDS = 3;
   const targetIndexRef = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -56,13 +56,13 @@ export default function Capabilities() {
 
     const ctx = gsap.context(() => {
       // Force strict CSS on the containers via GSAP to override ANY external stylesheets
-      gsap.set(track, { 
-        display: 'flex', 
+      gsap.set(track, {
+        display: 'flex',
         flexWrap: 'nowrap',
         width: 'fit-content',
-        overflow: 'visible' 
+        overflow: 'visible',
       });
-      
+
       const wrapper = track.parentElement;
       if (wrapper) {
         gsap.set(wrapper, { overflow: 'hidden', width: '100%' });
@@ -75,7 +75,7 @@ export default function Capabilities() {
         children.forEach((child) => {
           totalWidth += child.offsetWidth + 24; // width + gap
         });
-        
+
         // We need to move left by (totalWidth - viewport width) plus a little padding
         const amount = totalWidth - window.innerWidth + 120;
         return Math.max(0, amount);
@@ -86,7 +86,7 @@ export default function Capabilities() {
           trigger: section,
           pin: true,
           pinSpacing: true,
-          scrub: 1, 
+          scrub: 1,
           // Pin at the top so the title stays perfectly fixed at the top of the screen
           start: 'top top',
           end: () => `+=${getScrollAmount()}`,
@@ -95,9 +95,9 @@ export default function Capabilities() {
             const progress = self.progress;
             const estimatedIndex = Math.min(
               TOTAL_CARDS - 1,
-              Math.max(0, Math.round(progress * (TOTAL_CARDS - 1)))
+              Math.max(0, Math.round(progress * (TOTAL_CARDS - 1))),
             );
-            
+
             if (estimatedIndex !== targetIndexRef.current) {
               setActiveIndex(estimatedIndex);
               targetIndexRef.current = estimatedIndex;
@@ -105,18 +105,17 @@ export default function Capabilities() {
 
             setCanScrollLeft(progress > 0.01);
             setCanScrollRight(progress < 0.99);
-          }
-        }
+          },
+        },
       });
 
       tl.to(track, {
         x: () => -getScrollAmount(),
-        ease: 'none'
+        ease: 'none',
       });
 
       // Crucial: Wait for fonts/images to layout before measuring
       setTimeout(() => ScrollTrigger.refresh(), 100);
-      
     }, sectionRef);
 
     return () => ctx.revert();
@@ -146,7 +145,11 @@ export default function Capabilities() {
   };
 
   return (
-    <section ref={sectionRef} className={styles.capabilitiesSection} id="capabilities">
+    <section
+      ref={sectionRef}
+      className={styles.capabilitiesSection}
+      id="capabilities"
+    >
       <div className={styles.capabilities}>
         {/* ─── Storytelling Narrative Header ─── */}
         <div className={styles.header}>
@@ -154,7 +157,7 @@ export default function Capabilities() {
             <div className={styles.logoRow}>
               <h2 className={styles.wordmark}>What Gokul Makes ?</h2>
               <p className={styles.tagline}>
-                Three ways I turn ideas into <br /> useful digital experiences.
+                Two ways I turn ideas into <br /> useful digital experiences.
               </p>
             </div>
 
@@ -241,7 +244,7 @@ export default function Capabilities() {
               tabIndex={0}
             >
               <div className={styles.cardHeader}>
-                <span className={styles.largeIndex}>04</span>
+                <span className={styles.largeIndex}>03</span>
               </div>
 
               <div className={styles.cardBody}>
