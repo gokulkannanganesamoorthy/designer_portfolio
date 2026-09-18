@@ -121,12 +121,16 @@ export default function Hero() {
         const startY = gRect.top - blockRect.top + gRect.height / 2;
         const targetX = circleRect.left - blockRect.left + circleRect.width / 2;
         const targetY = circleRect.top - blockRect.top + circleRect.height / 2;
+        const dx = targetX - startX;
+        const dy = targetY - startY;
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
         setArrowPath({
           startX,
           startY,
-          dx: targetX - startX,
-          dy: targetY - startY,
+          dx,
+          dy,
+          angle,
         });
       } else {
         setArrowPath({
@@ -134,6 +138,7 @@ export default function Hero() {
           startY: 20,
           dx: 40,
           dy: 100,
+          angle: 45,
         });
       }
       setArrowRevealed(true);
@@ -266,7 +271,10 @@ export default function Hero() {
               <p className={styles.hookText}>Let's make it.</p>
             </motion.div>
           )}
+        </AnimatePresence>
 
+        {/* Final Hero Block (Phase 4) */}
+        <AnimatePresence>
           {phase === 4 && (
             <div key="final" className={styles.finalHero}>
               {/* Top line (underscore) — reveals in-place, then flies right & up */}
@@ -309,53 +317,46 @@ export default function Hero() {
                 animate="animate"
               >
                 {/* Intro Flying Arrow Mark:
-                    Starts on the left side of "G" facing DOWN (90deg) at small scale (0.45),
-                    descends vertically past subtitle, turns RIGHT towards CTA,
-                    grows to full scale (1.0) and rotates from 90deg to 0deg (facing right)
-                    as it lands precisely in the circle at the start (left) of the button */}
+                    Starts on the left side of "G", pops in pointing AT the target,
+                    then flies fluidly straight to the CTA button, rotating to 0deg to dock perfectly. */}
                 {arrowRevealed && !arrowDocked && (
                   <motion.div
                     className={styles.flyingArrowWrap}
                     initial={{
                       opacity: 0,
-                      x: arrowPath.startX,
+                      x: arrowPath.startX - 30, // slide in slightly
                       y: arrowPath.startY,
-                      rotate: 90,
-                      scale: 0.45,
+                      rotate: arrowPath.angle,
+                      scale: 0,
                     }}
                     animate={
                       arrowFlying
                         ? {
                             opacity: 1,
-                            x: [
-                              arrowPath.startX,
-                              arrowPath.startX,
-                              arrowPath.startX + arrowPath.dx,
-                            ],
-                            y: [
-                              arrowPath.startY,
-                              arrowPath.startY + arrowPath.dy,
-                              arrowPath.startY + arrowPath.dy,
-                            ],
-                            rotate: [90, 90, 0],
-                            scale: [0.45, 0.45, 1.0],
+                            x: arrowPath.startX + arrowPath.dx,
+                            y: arrowPath.startY + arrowPath.dy,
+                            rotate: 0, // Docks exactly facing right
+                            scale: 1.0,
                           }
                         : {
                             opacity: 1,
                             x: arrowPath.startX,
                             y: arrowPath.startY,
-                            rotate: 90,
-                            scale: 0.45,
+                            rotate: arrowPath.angle, // Wait, pointing at target
+                            scale: 0.6,
                           }
                     }
                     transition={
                       arrowFlying
                         ? {
-                            duration: 0.8, // 800ms flight
-                            ease: [0.76, 0, 0.24, 1],
-                            times: [0, 0.5, 1],
+                            duration: 0.8,
+                            ease: [0.22, 1, 0.36, 1], // Fluid diagonal sweep instead of rigid L-shape
                           }
-                        : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
+                        : {
+                            type: 'spring',
+                            stiffness: 200,
+                            damping: 15,
+                          }
                     }
                   >
                     <div className={styles.flyingArrowInner}>
@@ -380,13 +381,17 @@ export default function Hero() {
                   </span>
                   OKUL MAKES
                 </h1>
-                
+
                 {/* 5.1s — subtitle appears (Phase 4 starts at 4.4s, so 0.7s delay) */}
-                <motion.p 
+                <motion.p
                   className={styles.subtitle}
                   initial={{ opacity: 0, filter: 'blur(8px)', y: 8 }}
                   animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.7,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   Turning brands into experiences.
                 </motion.p>
