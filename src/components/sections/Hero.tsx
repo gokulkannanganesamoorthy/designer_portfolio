@@ -317,46 +317,53 @@ export default function Hero() {
                 animate="animate"
               >
                 {/* Intro Flying Arrow Mark:
-                    Starts on the left side of "G", pops in pointing AT the target,
-                    then flies fluidly straight to the CTA button, rotating to 0deg to dock perfectly. */}
+                    Starts on the left side of "G" facing DOWN (90deg) at small scale (0.45),
+                    descends vertically past subtitle, turns RIGHT towards CTA,
+                    grows to full scale (1.0) and rotates from 90deg to 0deg (facing right)
+                    as it lands precisely in the circle at the start (left) of the button */}
                 {arrowRevealed && !arrowDocked && (
                   <motion.div
                     className={styles.flyingArrowWrap}
                     initial={{
                       opacity: 0,
-                      x: arrowPath.startX - 30, // slide in slightly
+                      x: arrowPath.startX,
                       y: arrowPath.startY,
-                      rotate: arrowPath.angle,
-                      scale: 0,
+                      rotate: 90,
+                      scale: 0.45,
                     }}
                     animate={
                       arrowFlying
                         ? {
                             opacity: 1,
-                            x: arrowPath.startX + arrowPath.dx,
-                            y: arrowPath.startY + arrowPath.dy,
-                            rotate: 0, // Docks exactly facing right
-                            scale: 1.0,
+                            x: [
+                              arrowPath.startX,
+                              arrowPath.startX,
+                              arrowPath.startX + arrowPath.dx,
+                            ],
+                            y: [
+                              arrowPath.startY,
+                              arrowPath.startY + arrowPath.dy,
+                              arrowPath.startY + arrowPath.dy,
+                            ],
+                            rotate: [90, 90, 0],
+                            scale: [0.45, 0.45, 1.0],
                           }
                         : {
                             opacity: 1,
                             x: arrowPath.startX,
                             y: arrowPath.startY,
-                            rotate: arrowPath.angle, // Wait, pointing at target
-                            scale: 0.6,
+                            rotate: 90,
+                            scale: 0.45,
                           }
                     }
                     transition={
                       arrowFlying
                         ? {
-                            duration: 0.8,
-                            ease: [0.22, 1, 0.36, 1], // Fluid diagonal sweep instead of rigid L-shape
+                            duration: 0.8, // 800ms flight
+                            ease: [0.76, 0, 0.24, 1],
+                            times: [0, 0.5, 1],
                           }
-                        : {
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 15,
-                          }
+                        : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
                     }
                   >
                     <div className={styles.flyingArrowInner}>
