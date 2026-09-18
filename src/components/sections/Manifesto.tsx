@@ -28,37 +28,43 @@ export default function Manifesto() {
         pin: true,
         pinSpacing: true, // Keep the spacing so the page doesn't jump
         start: 'center center', // Freeze the section exactly when it hits the center
-        end: '+=100%',
+        end: '+=100%', // Increased overall scroll distance to give everything more breathing room
         scrub: 0.3,
         onUpdate: (self) => {
           const progress = self.progress;
-          
+
           words.forEach((wordElement, i) => {
             const word = wordElement as HTMLElement;
             const wordProgress = (progress - i / words.length) * words.length;
-            
+
             // Text opacity fades in fast
-            const textRevealProgress = Math.max(0, Math.min(1, wordProgress * 1.4));
-            
+            const textRevealProgress = Math.max(
+              0,
+              Math.min(1, wordProgress * 1.4),
+            );
+
             gsap.set(word, {
               opacity: 0.15 + textRevealProgress * 0.85,
               y: 8 * (1 - textRevealProgress),
             });
 
-            // Effects take 4x longer to finish so they can be "felt"
-            const effectProgress = Math.max(0, Math.min(1, wordProgress / 4));
-            word.style.setProperty('--effect-progress', effectProgress.toString());
+            // Effects take a MASSIVE 15x longer to finish so they are extremely bold and visible
+            const effectProgress = Math.max(0, Math.min(1, wordProgress / 15));
+            word.style.setProperty(
+              '--effect-progress',
+              effectProgress.toString(),
+            );
 
             // Check if text is fully revealed
             word.setAttribute(
               'data-revealed',
               textRevealProgress === 1 ? 'true' : 'false',
             );
-            
-            // The symbol stays active during the entire widened effect window
+
+            // The symbol stays active during the widened effect window, but forces off at the end of the scroll section
             word.setAttribute(
               'data-revealing',
-              wordProgress > 0 && effectProgress < 1 ? 'true' : 'false',
+              wordProgress > 0 && effectProgress < 1 && progress < 0.99 ? 'true' : 'false',
             );
           });
         },
@@ -156,10 +162,22 @@ export default function Manifesto() {
               if (cleanWord === 'pause') {
                 return (
                   <span key={index}>
-                    <span className={`${styles.word} ${styles.symbolWord}`} data-revealed="false">
+                    <span
+                      className={`${styles.word} ${styles.symbolWord}`}
+                      data-revealed="false"
+                    >
                       <span className={styles.text}>{word}</span>
                       <span className={styles.symbol}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <rect x="6" y="4" width="4" height="16"></rect>
                           <rect x="14" y="4" width="4" height="16"></rect>
                         </svg>
@@ -180,7 +198,9 @@ export default function Manifesto() {
               if (cleanWord === 'architecture') {
                 return (
                   <span key={index}>
-                    <span className={`${styles.word} ${styles.architectureWord}`}>
+                    <span
+                      className={`${styles.word} ${styles.architectureWord}`}
+                    >
                       <span className={styles.inner}>{word}</span>
                     </span>{' '}
                   </span>
@@ -215,11 +235,30 @@ export default function Manifesto() {
               if (cleanWord === 'stop') {
                 return (
                   <span key={index}>
-                    <span className={`${styles.word} ${styles.symbolWord}`} data-revealed="false">
+                    <span
+                      className={`${styles.word} ${styles.symbolWord}`}
+                      data-revealed="false"
+                    >
                       <span className={styles.text}>{word}</span>
                       <span className={styles.symbol}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="2"
+                            ry="2"
+                          ></rect>
                         </svg>
                       </span>
                     </span>{' '}

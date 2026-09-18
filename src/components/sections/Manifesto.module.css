@@ -107,6 +107,7 @@
   display: inline-block;
   will-change: opacity, transform;
   position: relative;
+  pointer-events: auto; /* Ensure words can be hovered */
 }
 
 /* Symbol Swap (Pause / Stop) */
@@ -126,6 +127,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
+  pointer-events: none; /* Let hover trigger on the parent container */
   transition: opacity 0.3s ease;
   font-family: monospace;
   font-weight: 700;
@@ -140,15 +142,34 @@
   opacity: 1;
 }
 
+/* Hover loop for Pause (assuming SVG is inside .symbol) */
+@keyframes pulsePause {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.symbolWord:hover .symbol svg {
+  animation: pulsePause 1.2s infinite ease-in-out;
+}
+
 /* Architecture Scrolling Reveal */
 .architectureWord {
   display: inline-flex;
   overflow: hidden;
   vertical-align: bottom;
+  cursor: default;
 }
 .architectureWord .inner {
   display: inline-block;
   transform: translateY(calc(100% * (1 - var(--effect-progress, 0))));
+}
+@keyframes slideArchitecture {
+  0% { transform: translateY(0%); }
+  50% { transform: translateY(-15%); }
+  100% { transform: translateY(0%); }
+}
+.architectureWord:hover .inner {
+  animation: slideArchitecture 2s infinite ease-in-out;
 }
 
 /* Pixel Reveal */
@@ -156,6 +177,15 @@
   display: inline-block;
   filter: blur(calc(6px * (1 - var(--effect-progress, 0))));
   transition: filter 0.1s;
+  cursor: default;
+}
+@keyframes blurPixel {
+  0% { filter: blur(0px); }
+  50% { filter: blur(3px); }
+  100% { filter: blur(0px); }
+}
+.pixelWord:hover {
+  animation: blurPixel 1.5s infinite ease-in-out;
 }
 
 /* Bouncing Period */
