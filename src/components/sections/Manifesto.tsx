@@ -98,14 +98,21 @@ export default function Manifesto() {
       return () => observer.disconnect();
     }, [show]);
 
-    // Redraw loop on hover by toggling the show prop
+    // Redraw loop on hover by toggling the show prop without latency
     useEffect(() => {
       let interval: NodeJS.Timeout;
       if (isHovered && isRevealed) {
-        interval = setInterval(() => {
+        const triggerRedraw = () => {
           setShow(false);
-          setTimeout(() => setShow(true), 50);
-        }, 1000);
+          // 10ms is enough for React to flush the false state to the DOM
+          setTimeout(() => setShow(true), 10);
+        };
+        
+        // Fire instantly on hover so there is zero perceived latency
+        triggerRedraw();
+        
+        // Then loop it
+        interval = setInterval(triggerRedraw, 900);
       } else if (isRevealed) {
         setShow(true); // ensure it stays on when not hovered
       }
