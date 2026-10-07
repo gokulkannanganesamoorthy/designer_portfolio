@@ -178,8 +178,7 @@ export default function PhysicsShapes() {
       bodiesRef.current.forEach((body, index) => {
         const el = elementsRef.current[index];
         if (el) {
-          // Matter.js positions are center-based, we translate by -50% to align
-          el.style.transform = `translate(${body.position.x}px, ${body.position.y}px) rotate(${body.angle}rad) translate(-50%, -50%)`;
+          el.style.transform = `translate(${body.position.x}px, ${body.position.y}px) rotate(${body.angle}rad)`;
         }
       });
       animationFrameId = requestAnimationFrame(updateDOM);
@@ -208,42 +207,48 @@ export default function PhysicsShapes() {
         zIndex: 1, // Behind the content but above background
       }}
     >
-      {SHAPES_CONFIG.map((config, index) => (
-        <div
-          key={config.id}
-          ref={(el) => { elementsRef.current[index] = el; }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            willChange: 'transform',
-            color: 'var(--fg)',
-            opacity: 0.65, // Increased opacity significantly for a bold, darker look
-            width: config.width || config.size,
-            height: config.height || config.size,
-          }}
-        >
-          {config.type === 'text' ? (
-            <span
-              style={{
-                fontFamily: 'var(--font-secondary), serif',
-                fontSize: `${config.size}px`,
-                fontWeight: config.weight,
-                lineHeight: 1,
-              }}
-            >
-              {config.content}
-            </span>
-          ) : (
-            <div style={{ width: '100%', height: '100%' }}>
-              {config.component && <config.component />}
-            </div>
-          )}
-        </div>
-      ))}
+      {SHAPES_CONFIG.map((config, index) => {
+        const w = config.width || config.size;
+        const h = config.height || config.size;
+        return (
+          <div
+            key={config.id}
+            ref={(el) => { elementsRef.current[index] = el; }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              marginLeft: -w / 2,
+              marginTop: -h / 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              willChange: 'transform',
+              color: 'var(--fg)',
+              opacity: 0.65, // Increased opacity significantly for a bold, darker look
+              width: w,
+              height: h,
+            }}
+          >
+            {config.type === 'text' ? (
+              <span
+                style={{
+                  fontFamily: 'var(--font-secondary), serif',
+                  fontSize: `${config.size}px`,
+                  fontWeight: config.weight,
+                  lineHeight: 1,
+                }}
+              >
+                {config.content}
+              </span>
+            ) : (
+              <div style={{ width: '100%', height: '100%' }}>
+                {config.component && <config.component />}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
