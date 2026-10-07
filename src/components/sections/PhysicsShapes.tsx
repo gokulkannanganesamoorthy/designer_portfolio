@@ -45,6 +45,21 @@ const HalfCircleSVG = () => (
   </svg>
 );
 
+const CursorArrowSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
+    <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
+    <path d="M13 13l6 6" />
+  </svg>
+);
+
+const PlusSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
+    <line x1="12" y1="5" x2="12" y2="19" />
+    <line x1="5" y1="12" x2="19" y2="12" />
+  </svg>
+);
+
+// Expanded elements configuration
 const SHAPES_CONFIG = [
   { id: 'amp', type: 'text', content: '&', size: 140, weight: 300, shape: 'circle' as const },
   { id: 'at', type: 'text', content: '@', size: 120, weight: 200, shape: 'circle' as const },
@@ -55,6 +70,11 @@ const SHAPES_CONFIG = [
   { id: 'pill', type: 'svg', component: PillArrowSVG, size: 90, shape: 'rectangle' as const, width: 60, height: 140 },
   { id: 'bracket', type: 'text', content: '{ }', size: 100, weight: 200, shape: 'rectangle' as const, width: 120, height: 80 },
   { id: 'halfcircle', type: 'svg', component: HalfCircleSVG, size: 100, shape: 'circle' as const },
+  // Additional elements for a denser feel
+  { id: 'cursor', type: 'svg', component: CursorArrowSVG, size: 90, shape: 'circle' as const },
+  { id: 'plus', type: 'svg', component: PlusSVG, size: 80, shape: 'circle' as const },
+  { id: 'asterisk', type: 'text', content: '*', size: 160, weight: 200, shape: 'circle' as const },
+  { id: 'hash', type: 'text', content: '#', size: 120, weight: 300, shape: 'rectangle' as const, width: 100, height: 100 },
 ];
 
 export default function PhysicsShapes() {
@@ -92,14 +112,17 @@ export default function PhysicsShapes() {
 
     // Create boundaries (walls + floor)
     const wallOptions = { isStatic: true, render: { visible: false } };
-    const floor = Matter.Bodies.rectangle(width / 2, height + 50, width * 2, 100, wallOptions);
+    
+    // We raise the floor slightly (y = height + 30 instead of height + 50) 
+    // so the elements rest 20px higher and don't visually clip out of bounds at the bottom.
+    const floor = Matter.Bodies.rectangle(width / 2, height + 30, width * 2, 100, wallOptions);
     const leftWall = Matter.Bodies.rectangle(-50, height / 2, 100, height * 2, wallOptions);
     const rightWall = Matter.Bodies.rectangle(width + 50, height / 2, 100, height * 2, wallOptions);
     Matter.World.add(world, [floor, leftWall, rightWall]);
 
     // Create bodies
     const newBodies = SHAPES_CONFIG.map((config, index) => {
-      // Random starting positions above the viewport
+      // Random starting positions above the viewport, spread across the width
       const x = (width / SHAPES_CONFIG.length) * index + Math.random() * 50;
       const y = -100 - Math.random() * 500;
       
@@ -136,11 +159,10 @@ export default function PhysicsShapes() {
 
       bodiesRef.current.forEach((body) => {
         const dist = Matter.Vector.magnitude(Matter.Vector.sub(body.position, mousePos));
-        if (dist < 180) {
-          // Push away from mouse
+        if (dist < 200) {
+          // Push away from mouse slightly stronger
           const forceDir = Matter.Vector.normalise(Matter.Vector.sub(body.position, mousePos));
-          // Apply a significant force dependent on mass and distance
-          const forceMag = (180 - dist) * 0.0003 * body.mass;
+          const forceMag = (200 - dist) * 0.0004 * body.mass;
           Matter.Body.applyForce(body, body.position, Matter.Vector.mult(forceDir, forceMag));
         }
       });
@@ -199,7 +221,7 @@ export default function PhysicsShapes() {
             justifyContent: 'center',
             willChange: 'transform',
             color: 'var(--fg)',
-            opacity: 0.15, // faint wireframe look like the reference
+            opacity: 0.65, // Increased opacity significantly for a bold, darker look
             width: config.width || config.size,
             height: config.height || config.size,
           }}
