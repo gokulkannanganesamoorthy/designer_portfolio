@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Contact.module.css';
 import ContactForm from './ContactForm';
+import PhysicsShapes from './PhysicsShapes';
 
 type Phase =
   | 'IDLE'
@@ -405,6 +406,7 @@ export default function Contact() {
 
   return (
     <section ref={sectionRef} className={styles.contact} id="contact">
+      <PhysicsShapes />
       <div className={styles.container}>
         <h2 ref={titleRef} className={styles.title}>
           <span ref={line1Ref} style={{ display: 'inline-block' }}>
