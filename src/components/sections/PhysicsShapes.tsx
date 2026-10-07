@@ -113,9 +113,9 @@ export default function PhysicsShapes() {
     // Create boundaries (walls + floor)
     const wallOptions = { isStatic: true, render: { visible: false } };
     
-    // We raise the floor slightly (y = height + 30 instead of height + 50) 
-    // so the elements rest 20px higher and don't visually clip out of bounds at the bottom.
-    const floor = Matter.Bodies.rectangle(width / 2, height + 30, width * 2, 100, wallOptions);
+    // We raise the floor significantly (y = height - 50) 
+    // so the elements rest 100px higher and absolutely don't clip out of bounds at the bottom.
+    const floor = Matter.Bodies.rectangle(width / 2, height - 50, width * 2, 100, wallOptions);
     const leftWall = Matter.Bodies.rectangle(-50, height / 2, 100, height * 2, wallOptions);
     const rightWall = Matter.Bodies.rectangle(width + 50, height / 2, 100, height * 2, wallOptions);
     Matter.World.add(world, [floor, leftWall, rightWall]);
