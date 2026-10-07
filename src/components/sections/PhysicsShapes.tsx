@@ -3,21 +3,107 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter from 'matter-js';
 
-// SVG Definitions for the wireframe shapes
+// SVG Definitions for all shapes with perfectly uniform wireframe strokes (strokeWidth="1")
+const AmpersandSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 19.5c-1.3 1.3-3.2 1.8-5 1.2-2.2-.8-3.5-3.1-2.7-5.3.7-1.8 2.3-2.9 3.7-4.3 1.5-1.5 1.8-3.7.6-5.1-1.3-1.5-3.5-1.4-4.6.2-1 1.5-.6 3.4.7 4.7L17 20" />
+    <line x1="8" y1="16" x2="13.5" y2="15" />
+  </svg>
+);
+
+const AtSignSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8" />
+  </svg>
+);
+
+const InfinitySVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18.18 8c5.1 0 5.1 8 0 8-3.06 0-4.97-4-6.18-4-1.2 0-3.12 4-6.18 4-5.1 0-5.1-8 0-8 3.06 0 4.97 4 6.18 4 1.2 0 3.12-4 6.18-4z" />
+  </svg>
+);
+
+const AsteriskSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="3" x2="12" y2="21" />
+    <line x1="4.2" y1="7.5" x2="19.8" y2="16.5" />
+    <line x1="4.2" y1="16.5" x2="19.8" y2="7.5" />
+  </svg>
+);
+
+const HashSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="4" y1="9" x2="20" y2="9" />
+    <line x1="4" y1="15" x2="20" y2="15" />
+    <line x1="10" y1="3" x2="8" y2="21" />
+    <line x1="16" y1="3" x2="14" y2="21" />
+  </svg>
+);
+
+const BracketsSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M8 4c-2 0-3 1-3 3v2c0 1.5-1 2-2 2 1 0 2 .5 2 2v2c0 2 1 3 3 3" />
+    <path d="M16 4c2 0 3 1 3 3v2c0 1.5 1 2 2 2-1 0-2 .5-2 2v2c0 2-1 3-3 3" />
+  </svg>
+);
+
+const QuestionMarkSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9.5 9a3 3 0 0 1 5.5 1.5c0 2-3 2.8-3 4.2" />
+    <circle cx="12" cy="18.5" r="0.75" />
+  </svg>
+);
+
+const SlashesSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="7" y1="20" x2="13" y2="4" />
+    <line x1="12" y1="20" x2="18" y2="4" />
+  </svg>
+);
+
+const SectionSymSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 5.5a3.5 3.5 0 0 0-7 0c0 2.5 3.5 3.5 3.5 5a2.5 2.5 0 0 1-5 0" />
+    <path d="M9 18.5a3.5 3.5 0 0 0 7 0c0-2.5-3.5-3.5-3.5-5a2.5 2.5 0 0 1 5 0" />
+  </svg>
+);
+
+const Num01SVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="8" height="14" rx="4" />
+    <path d="M17 5v14" />
+    <path d="M14 8l3-3" />
+  </svg>
+);
+
+const ArrowSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="19" x2="19" y2="5" />
+    <polyline points="10 5 19 5 19 14" />
+  </svg>
+);
+
+const TildeSVG = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 12c2.5-4 5.5-4 8 0s5.5 4 8 0" />
+  </svg>
+);
+
 const HeartSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
 );
 
 const StarSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
   </svg>
 );
 
 const ConcentricCirclesSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <circle cx="12" cy="12" r="6" />
     <circle cx="12" cy="12" r="2" />
@@ -25,14 +111,14 @@ const ConcentricCirclesSVG = () => (
 );
 
 const DiamondSquareSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <rect x="4" y="4" width="16" height="16" />
     <polygon points="12 4 20 12 12 20 4 12" />
   </svg>
 );
 
 const PillArrowSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <rect x="8" y="2" width="8" height="20" rx="4" />
     <path d="M12 22v-8" />
     <path d="M9 17l3-3 3 3" />
@@ -40,27 +126,27 @@ const PillArrowSVG = () => (
 );
 
 const HalfCircleSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M2 12 A 10 10 0 0 1 22 12 Z" />
   </svg>
 );
 
 const CursorArrowSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
-    <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
-    <path d="M13 13l6 6" />
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4l6.5 16 2.5-6.5 6.5-2.5L4 4z" />
+    <line x1="13" y1="13" x2="19" y2="19" />
   </svg>
 );
 
 const PlusSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="4" x2="12" y2="20" />
+    <line x1="4" y1="12" x2="20" y2="12" />
   </svg>
 );
 
 const GlobeSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <ellipse cx="12" cy="12" rx="4.5" ry="10" />
     <line x1="2" y1="12" x2="22" y2="12" />
@@ -70,24 +156,23 @@ const GlobeSVG = () => (
 );
 
 const EyeSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" />
     <circle cx="12" cy="12" r="3" />
-    <circle cx="12" cy="12" r="1.2" />
   </svg>
 );
 
 const SmileySVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
-    <circle cx="8.5" cy="9.5" r="1" />
-    <circle cx="15.5" cy="9.5" r="1" />
+    <line x1="9" y1="9" x2="9" y2="10" />
+    <line x1="15" y1="9" x2="15" y2="10" />
     <path d="M7.5 14.5a5 5 0 0 0 9 0" />
   </svg>
 );
 
 const PenToolSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2L3 17l4 4 15-9-10-10z" />
     <circle cx="12" cy="11" r="2" />
     <path d="M3 17l3 3" />
@@ -95,7 +180,7 @@ const PenToolSVG = () => (
 );
 
 const Cube3DSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <polygon points="12 2 21 7.2 12 12.4 3 7.2 12 2" />
     <polygon points="3 7.2 12 12.4 12 22 3 16.8 3 7.2" />
     <polygon points="12 12.4 21 7.2 21 16.8 12 22 12 12.4" />
@@ -103,43 +188,42 @@ const Cube3DSVG = () => (
 );
 
 const CrosshairSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="9" />
     <line x1="12" y1="1" x2="12" y2="6" />
     <line x1="12" y1="18" x2="12" y2="23" />
     <line x1="1" y1="12" x2="6" y2="12" />
     <line x1="18" y1="12" x2="23" y2="12" />
-    <circle cx="12" cy="12" r="1.5" />
   </svg>
 );
 
 const FlowerBadgeSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2a4 4 0 0 0-4 4 4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0 4-4 4 4 0 0 0-4-4 4 4 0 0 0-4-4z" />
     <circle cx="12" cy="12" r="2.5" />
   </svg>
 );
 
 const LightningSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <polygon points="13 2 3 14 11 14 10 22 21 9 13 9 13 2" />
   </svg>
 );
 
 const CommandKeySVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M18 9a3 3 0 1 0-3-3v3h-6V6a3 3 0 1 0-3 3h3v6H6a3 3 0 1 0 3 3v-3h6v3a3 3 0 1 0 3-3h-3V9h3z" />
   </svg>
 );
 
 const SparkleSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2C12 7.52 7.52 12 2 12c5.48 0 9.95 4.48 10 10 .05-5.52 4.48-10 10-10-5.52 0-10-4.48-10-10z" />
   </svg>
 );
 
 const TagCodeSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="16 18 22 12 16 6" />
     <polyline points="8 6 2 12 8 18" />
     <line x1="14" y1="4" x2="10" y2="20" />
@@ -147,48 +231,48 @@ const TagCodeSVG = () => (
 );
 
 const SpiralSVG = () => (
-  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 12a1 1 0 0 0 1-1 2 2 0 0 0-2-2 3 3 0 0 0-3 3 4 4 0 0 0 4 4 5 5 0 0 0 5-5 6 6 0 0 0-6-6 7 7 0 0 0-7 7 8 8 0 0 0 8 8" />
   </svg>
 );
 
-// Unified configuration where all elements have a consistent normal weight
+// All 32 shapes are wireframe SVGs with identical strokeWidth="1"
 const SHAPES_CONFIG = [
-  // Primary typographic accents - all unified to normal weight (200)
-  { id: 'amp-1', type: 'text', content: '&', size: 120, weight: 200, shape: 'circle' as const },
-  { id: 'at', type: 'text', content: '@', size: 110, weight: 200, shape: 'circle' as const },
-  { id: 'infinity', type: 'text', content: '∞', size: 100, weight: 200, shape: 'rectangle' as const, width: 110, height: 60 },
-  { id: 'asterisk-1', type: 'text', content: '*', size: 130, weight: 200, shape: 'circle' as const },
-  { id: 'hash', type: 'text', content: '#', size: 95, weight: 200, shape: 'rectangle' as const, width: 90, height: 90 },
-  { id: 'bracket', type: 'text', content: '{ }', size: 90, weight: 200, shape: 'rectangle' as const, width: 110, height: 70 },
-  { id: 'question', type: 'text', content: '?', size: 105, weight: 200, shape: 'circle' as const },
-  { id: 'slashes', type: 'text', content: '//', size: 90, weight: 200, shape: 'rectangle' as const, width: 85, height: 70 },
-  { id: 'section-sym', type: 'text', content: '§', size: 110, weight: 200, shape: 'circle' as const },
-  { id: 'num-01', type: 'text', content: '01', size: 80, weight: 200, shape: 'rectangle' as const, width: 90, height: 60 },
-  { id: 'arrow-glyph', type: 'text', content: '→', size: 100, weight: 200, shape: 'rectangle' as const, width: 100, height: 60 },
-  { id: 'tilde', type: 'text', content: '~', size: 110, weight: 200, shape: 'rectangle' as const, width: 90, height: 50 },
+  // Creative Typographic Wireframe SVGs
+  { id: 'amp-1', component: AmpersandSVG, size: 85, shape: 'circle' as const },
+  { id: 'at', component: AtSignSVG, size: 85, shape: 'circle' as const },
+  { id: 'infinity', component: InfinitySVG, size: 85, shape: 'rectangle' as const, width: 95, height: 60 },
+  { id: 'asterisk-1', component: AsteriskSVG, size: 85, shape: 'circle' as const },
+  { id: 'hash', component: HashSVG, size: 80, shape: 'rectangle' as const, width: 80, height: 80 },
+  { id: 'bracket', component: BracketsSVG, size: 80, shape: 'rectangle' as const, width: 85, height: 70 },
+  { id: 'question', component: QuestionMarkSVG, size: 85, shape: 'circle' as const },
+  { id: 'slashes', component: SlashesSVG, size: 80, shape: 'rectangle' as const, width: 80, height: 70 },
+  { id: 'section-sym', component: SectionSymSVG, size: 85, shape: 'circle' as const },
+  { id: 'num-01', component: Num01SVG, size: 80, shape: 'rectangle' as const, width: 85, height: 65 },
+  { id: 'arrow-glyph', component: ArrowSVG, size: 80, shape: 'rectangle' as const, width: 80, height: 80 },
+  { id: 'tilde', component: TildeSVG, size: 85, shape: 'rectangle' as const, width: 90, height: 50 },
 
-  // Vector wireframes & symbols - all unified to strokeWidth 0.6
-  { id: 'globe', type: 'svg', component: GlobeSVG, size: 105, shape: 'circle' as const },
-  { id: 'heart', type: 'svg', component: HeartSVG, size: 85, shape: 'circle' as const },
-  { id: 'star', type: 'svg', component: StarSVG, size: 90, shape: 'circle' as const },
-  { id: 'eye', type: 'svg', component: EyeSVG, size: 95, shape: 'rectangle' as const, width: 110, height: 75 },
-  { id: 'smiley', type: 'svg', component: SmileySVG, size: 85, shape: 'circle' as const },
-  { id: 'circles', type: 'svg', component: ConcentricCirclesSVG, size: 95, shape: 'circle' as const },
-  { id: 'diamond', type: 'svg', component: DiamondSquareSVG, size: 90, shape: 'rectangle' as const },
-  { id: 'pill', type: 'svg', component: PillArrowSVG, size: 80, shape: 'rectangle' as const, width: 55, height: 120 },
-  { id: 'halfcircle', type: 'svg', component: HalfCircleSVG, size: 90, shape: 'circle' as const },
-  { id: 'cursor', type: 'svg', component: CursorArrowSVG, size: 80, shape: 'circle' as const },
-  { id: 'plus', type: 'svg', component: PlusSVG, size: 75, shape: 'circle' as const },
-  { id: 'pentool', type: 'svg', component: PenToolSVG, size: 85, shape: 'rectangle' as const, width: 85, height: 85 },
-  { id: 'cube', type: 'svg', component: Cube3DSVG, size: 85, shape: 'circle' as const },
-  { id: 'crosshair', type: 'svg', component: CrosshairSVG, size: 85, shape: 'circle' as const },
-  { id: 'flower', type: 'svg', component: FlowerBadgeSVG, size: 85, shape: 'circle' as const },
-  { id: 'lightning', type: 'svg', component: LightningSVG, size: 75, shape: 'rectangle' as const, width: 65, height: 100 },
-  { id: 'cmd', type: 'svg', component: CommandKeySVG, size: 80, shape: 'circle' as const },
-  { id: 'sparkle', type: 'svg', component: SparkleSVG, size: 85, shape: 'circle' as const },
-  { id: 'tagcode', type: 'svg', component: TagCodeSVG, size: 80, shape: 'rectangle' as const, width: 90, height: 70 },
-  { id: 'spiral', type: 'svg', component: SpiralSVG, size: 85, shape: 'circle' as const },
+  // Vector Wireframe Symbols
+  { id: 'globe', component: GlobeSVG, size: 95, shape: 'circle' as const },
+  { id: 'heart', component: HeartSVG, size: 85, shape: 'circle' as const },
+  { id: 'star', component: StarSVG, size: 85, shape: 'circle' as const },
+  { id: 'eye', component: EyeSVG, size: 85, shape: 'rectangle' as const, width: 95, height: 70 },
+  { id: 'smiley', component: SmileySVG, size: 85, shape: 'circle' as const },
+  { id: 'circles', component: ConcentricCirclesSVG, size: 90, shape: 'circle' as const },
+  { id: 'diamond', component: DiamondSquareSVG, size: 85, shape: 'rectangle' as const },
+  { id: 'pill', component: PillArrowSVG, size: 80, shape: 'rectangle' as const, width: 55, height: 110 },
+  { id: 'halfcircle', component: HalfCircleSVG, size: 85, shape: 'circle' as const },
+  { id: 'cursor', component: CursorArrowSVG, size: 80, shape: 'circle' as const },
+  { id: 'plus', component: PlusSVG, size: 75, shape: 'circle' as const },
+  { id: 'pentool', component: PenToolSVG, size: 80, shape: 'rectangle' as const, width: 80, height: 80 },
+  { id: 'cube', component: Cube3DSVG, size: 85, shape: 'circle' as const },
+  { id: 'crosshair', component: CrosshairSVG, size: 85, shape: 'circle' as const },
+  { id: 'flower', component: FlowerBadgeSVG, size: 85, shape: 'circle' as const },
+  { id: 'lightning', component: LightningSVG, size: 80, shape: 'rectangle' as const, width: 65, height: 95 },
+  { id: 'cmd', component: CommandKeySVG, size: 80, shape: 'circle' as const },
+  { id: 'sparkle', component: SparkleSVG, size: 85, shape: 'circle' as const },
+  { id: 'tagcode', component: TagCodeSVG, size: 80, shape: 'rectangle' as const, width: 85, height: 70 },
+  { id: 'spiral', component: SpiralSVG, size: 85, shape: 'circle' as const },
 ];
 
 export default function PhysicsShapes() {
@@ -227,7 +311,7 @@ export default function PhysicsShapes() {
     // Create boundaries (walls + floor)
     const wallOptions = { isStatic: true, render: { visible: false } };
     
-    // We raise the floor (y = height - 50) so the elements rest well above the bottom border
+    // We raise the floor (y = height - 50) so elements rest completely above the container border
     const floor = Matter.Bodies.rectangle(width / 2, height - 50, width * 2, 100, wallOptions);
     const leftWall = Matter.Bodies.rectangle(-50, height / 2 - 300, 100, height * 4, wallOptions);
     const rightWall = Matter.Bodies.rectangle(width + 50, height / 2 - 300, 100, height * 4, wallOptions);
@@ -236,7 +320,7 @@ export default function PhysicsShapes() {
     // Create bodies
     const slotWidth = width / SHAPES_CONFIG.length;
     const newBodies = SHAPES_CONFIG.map((config, index) => {
-      // Spread across the viewport width evenly with slight organic jitter
+      // Spread across viewport width evenly with slight organic jitter
       const x = Math.max(
         40,
         Math.min(width - 40, slotWidth * (index + 0.5) + (Math.random() - 0.5) * (slotWidth * 0.8))
@@ -266,7 +350,6 @@ export default function PhysicsShapes() {
     Matter.World.add(world, newBodies);
 
     // Mouse Interaction
-    // Manually track mouse and apply forces to bodies within a radius
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
@@ -278,7 +361,6 @@ export default function PhysicsShapes() {
       bodiesRef.current.forEach((body) => {
         const dist = Matter.Vector.magnitude(Matter.Vector.sub(body.position, mousePos));
         if (dist < 200) {
-          // Push away from mouse slightly stronger
           const forceDir = Matter.Vector.normalise(Matter.Vector.sub(body.position, mousePos));
           const forceMag = (200 - dist) * 0.0004 * body.mass;
           Matter.Body.applyForce(body, body.position, Matter.Vector.mult(forceDir, forceMag));
@@ -321,13 +403,14 @@ export default function PhysicsShapes() {
         width: '100%',
         height: '100%',
         overflow: 'hidden',
-        pointerEvents: 'none', // Critical so we can still click buttons
-        zIndex: 1, // Behind the content but above background
+        pointerEvents: 'none',
+        zIndex: 1,
       }}
     >
       {SHAPES_CONFIG.map((config, index) => {
         const w = config.width || config.size;
         const h = config.height || config.size;
+        const Component = config.component;
         return (
           <div
             key={config.id}
@@ -343,30 +426,14 @@ export default function PhysicsShapes() {
               justifyContent: 'center',
               willChange: 'transform',
               color: 'var(--fg)',
-              opacity: 0.65, // Increased opacity significantly for a bold, darker look
+              opacity: 0.65,
               width: w,
               height: h,
             }}
           >
-            {config.type === 'text' ? (
-              <span
-                style={{
-                  fontFamily: 'var(--font-secondary), -apple-system, BlinkMacSystemFont, sans-serif',
-                  fontSize: `${config.size}px`,
-                  fontWeight: 200,
-                  lineHeight: 1,
-                  WebkitFontSmoothing: 'antialiased',
-                  MozOsxFontSmoothing: 'grayscale',
-                  userSelect: 'none',
-                }}
-              >
-                {config.content}
-              </span>
-            ) : (
-              <div style={{ width: '100%', height: '100%' }}>
-                {config.component && <config.component />}
-              </div>
-            )}
+            <div style={{ width: '100%', height: '100%' }}>
+              <Component />
+            </div>
           </div>
         );
       })}
