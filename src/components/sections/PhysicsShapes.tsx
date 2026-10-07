@@ -73,15 +73,15 @@ const EyeSVG = () => (
   <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
     <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" />
     <circle cx="12" cy="12" r="3" />
-    <circle cx="12" cy="12" r="1" fill="currentColor" />
+    <circle cx="12" cy="12" r="1.2" />
   </svg>
 );
 
 const SmileySVG = () => (
   <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.6">
     <circle cx="12" cy="12" r="10" />
-    <circle cx="8.5" cy="9.5" r="1" fill="currentColor" />
-    <circle cx="15.5" cy="9.5" r="1" fill="currentColor" />
+    <circle cx="8.5" cy="9.5" r="1" />
+    <circle cx="15.5" cy="9.5" r="1" />
     <path d="M7.5 14.5a5 5 0 0 0 9 0" />
   </svg>
 );
@@ -152,23 +152,23 @@ const SpiralSVG = () => (
   </svg>
 );
 
-// Rich, diverse configuration of 28 interactive elements
+// Unified configuration where all elements have a consistent normal weight
 const SHAPES_CONFIG = [
-  // Primary typographic accents
-  { id: 'amp-1', type: 'text', content: '&', size: 130, weight: 300, shape: 'circle' as const },
+  // Primary typographic accents - all unified to normal weight (200)
+  { id: 'amp-1', type: 'text', content: '&', size: 120, weight: 200, shape: 'circle' as const },
   { id: 'at', type: 'text', content: '@', size: 110, weight: 200, shape: 'circle' as const },
   { id: 'infinity', type: 'text', content: '∞', size: 100, weight: 200, shape: 'rectangle' as const, width: 110, height: 60 },
-  { id: 'asterisk-1', type: 'text', content: '*', size: 140, weight: 200, shape: 'circle' as const },
-  { id: 'hash', type: 'text', content: '#', size: 100, weight: 300, shape: 'rectangle' as const, width: 90, height: 90 },
+  { id: 'asterisk-1', type: 'text', content: '*', size: 130, weight: 200, shape: 'circle' as const },
+  { id: 'hash', type: 'text', content: '#', size: 95, weight: 200, shape: 'rectangle' as const, width: 90, height: 90 },
   { id: 'bracket', type: 'text', content: '{ }', size: 90, weight: 200, shape: 'rectangle' as const, width: 110, height: 70 },
-  { id: 'question', type: 'text', content: '?', size: 110, weight: 300, shape: 'circle' as const },
-  { id: 'slashes', type: 'text', content: '//', size: 95, weight: 300, shape: 'rectangle' as const, width: 85, height: 70 },
+  { id: 'question', type: 'text', content: '?', size: 105, weight: 200, shape: 'circle' as const },
+  { id: 'slashes', type: 'text', content: '//', size: 90, weight: 200, shape: 'rectangle' as const, width: 85, height: 70 },
   { id: 'section-sym', type: 'text', content: '§', size: 110, weight: 200, shape: 'circle' as const },
-  { id: 'num-01', type: 'text', content: '01', size: 80, weight: 300, shape: 'rectangle' as const, width: 90, height: 60 },
+  { id: 'num-01', type: 'text', content: '01', size: 80, weight: 200, shape: 'rectangle' as const, width: 90, height: 60 },
   { id: 'arrow-glyph', type: 'text', content: '→', size: 100, weight: 200, shape: 'rectangle' as const, width: 100, height: 60 },
-  { id: 'tilde', type: 'text', content: '~', size: 120, weight: 200, shape: 'rectangle' as const, width: 90, height: 50 },
+  { id: 'tilde', type: 'text', content: '~', size: 110, weight: 200, shape: 'rectangle' as const, width: 90, height: 50 },
 
-  // Vector wireframes & symbols
+  // Vector wireframes & symbols - all unified to strokeWidth 0.6
   { id: 'globe', type: 'svg', component: GlobeSVG, size: 105, shape: 'circle' as const },
   { id: 'heart', type: 'svg', component: HeartSVG, size: 85, shape: 'circle' as const },
   { id: 'star', type: 'svg', component: StarSVG, size: 90, shape: 'circle' as const },
@@ -351,10 +351,13 @@ export default function PhysicsShapes() {
             {config.type === 'text' ? (
               <span
                 style={{
-                  fontFamily: 'var(--font-secondary), serif',
+                  fontFamily: 'var(--font-secondary), -apple-system, BlinkMacSystemFont, sans-serif',
                   fontSize: `${config.size}px`,
-                  fontWeight: config.weight,
+                  fontWeight: 200,
                   lineHeight: 1,
+                  WebkitFontSmoothing: 'antialiased',
+                  MozOsxFontSmoothing: 'grayscale',
+                  userSelect: 'none',
                 }}
               >
                 {config.content}
