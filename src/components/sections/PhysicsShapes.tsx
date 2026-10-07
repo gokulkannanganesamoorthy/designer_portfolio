@@ -128,9 +128,9 @@ export default function PhysicsShapes() {
       
       let body;
       const options = {
-        restitution: 0.6, // Bounciness
-        friction: 0.1,
-        frictionAir: 0.01,
+        restitution: 0.2, // Gentle soft bounce instead of high elasticity
+        friction: 0.2,
+        frictionAir: 0.045, // Soft fluid-like air damping to prevent runaway speed
         angle: Math.random() * Math.PI * 2,
       };
 
@@ -147,27 +147,67 @@ export default function PhysicsShapes() {
     bodiesRef.current = newBodies;
     Matter.World.add(world, newBodies);
 
-    // Mouse Interaction
-    // Manually track mouse and apply forces to bodies within a radius
-    const handleMouseMove = (e: MouseEvent) => {
+    // Engine settings: Gentle gravity
+    world.gravity.y = 0.8;
+
+    // Speed limiter to completely eliminate the "bomb blast" explosion effect on fast swipes
+    const MAX_SPEED = 5;
+    const MAX_ANGULAR_SPEED = 0.04;
+
+    const handleBeforeUpdate = () => {
+      bodiesRef.current.forEach((body) => {
+        const currentSpeed = Matter.Vector.magnitude(body.velocity);
+        if (currentSpeed > MAX_SPEED) {
+          const clamped = Matter.Vector.mult(
+            Matter.Vector.normalise(body.velocity),
+            MAX_SPEED
+          );
+          Matter.Body.setVelocity(body, clamped);
+        }
+        if (Math.abs(body.angularVelocity) > MAX_ANGULAR_SPEED) {
+          Matter.Body.setAngularVelocity(
+            body,
+            Math.sign(body.angularVelocity) * MAX_ANGULAR_SPEED
+          );
+        }
+      });
+    };
+    Matter.Events.on(engine, 'beforeUpdate', handleBeforeUpdate);
+
+    // Mouse & Touch Interaction (Smooth, low-intensity push)
+    const applyPointerForce = (clientX: number, clientY: number) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      const mousePos = { x: mouseX, y: mouseY };
+      const posX = clientX - rect.left;
+      const posY = clientY - rect.top;
+      const pointerPos = { x: posX, y: posY };
+      const radius = 140;
 
       bodiesRef.current.forEach((body) => {
-        const dist = Matter.Vector.magnitude(Matter.Vector.sub(body.position, mousePos));
-        if (dist < 200) {
-          // Push away from mouse slightly stronger
-          const forceDir = Matter.Vector.normalise(Matter.Vector.sub(body.position, mousePos));
-          const forceMag = (200 - dist) * 0.0004 * body.mass;
+        const diff = Matter.Vector.sub(body.position, pointerPos);
+        const dist = Matter.Vector.magnitude(diff);
+        if (dist < radius && dist > 2) {
+          // Smooth falloff: close proximity doesn't cause massive spikes
+          const falloff = Math.pow((radius - dist) / radius, 1.5);
+          const forceDir = Matter.Vector.normalise(diff);
+          const forceMag = falloff * 0.00007 * body.mass;
           Matter.Body.applyForce(body, body.position, Matter.Vector.mult(forceDir, forceMag));
         }
       });
     };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      applyPointerForce(e.clientX, e.clientY);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        applyPointerForce(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     // Run Engine & Sync to DOM
     let animationFrameId: number;
@@ -187,6 +227,8 @@ export default function PhysicsShapes() {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      Matter.Events.off(engine, 'beforeUpdate', handleBeforeUpdate);
       Matter.Runner.stop(runner);
       Matter.Engine.clear(engine);
       cancelAnimationFrame(animationFrameId);
