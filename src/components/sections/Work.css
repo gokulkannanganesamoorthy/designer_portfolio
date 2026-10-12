@@ -9,7 +9,6 @@
   color: var(--fg);
   overflow-x: hidden;
   padding: clamp(60px, 8vw, 120px) 0;
-  border-top: 1px solid var(--border);
   font-family: var(--font-secondary), 'JetBrains Mono', monospace;
   transition: background-color 0.3s ease, color 0.3s ease;
   box-sizing: border-box;
