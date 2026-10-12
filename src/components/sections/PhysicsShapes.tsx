@@ -308,11 +308,13 @@ export default function PhysicsShapes() {
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
 
-    // Create boundaries (walls + floor)
+    // Create boundaries (walls + floor + ceiling)
     const wallOptions = { isStatic: true, render: { visible: false } };
     
-    // We raise the floor (y = height - 50) so elements rest completely above the container border
+    // We raise the floor (y = height - 50) so elements rest completely above the container bottom border
     const floor = Matter.Bodies.rectangle(width / 2, height - 50, width * 2, 100, wallOptions);
+    // Ceiling with bottom edge at y = 10 so elements bounce right beneath the top border of the section
+    const ceiling = Matter.Bodies.rectangle(width / 2, -40, width * 2, 100, wallOptions);
     const leftWall = Matter.Bodies.rectangle(-50, height / 2 - 300, 100, height * 4, wallOptions);
     const rightWall = Matter.Bodies.rectangle(width + 50, height / 2 - 300, 100, height * 4, wallOptions);
     Matter.World.add(world, [floor, leftWall, rightWall]);
@@ -325,7 +327,7 @@ export default function PhysicsShapes() {
         40,
         Math.min(width - 40, slotWidth * (index + 0.5) + (Math.random() - 0.5) * (slotWidth * 0.8))
       );
-      // Stagger drop heights rhythmically so they shower down gracefully
+      // Stagger drop heights rhythmically so they shower down gracefully into the room
       const y = -100 - (index % 6) * 70 - Math.random() * 500;
       
       let body;
@@ -349,6 +351,30 @@ export default function PhysicsShapes() {
     bodiesRef.current = newBodies;
     Matter.World.add(world, newBodies);
 
+    // Track which bodies have dropped into the room (y > 60)
+    const hasEntered = new Array(newBodies.length).fill(false);
+    let ceilingAdded = false;
+
+    const addCeiling = () => {
+      if (ceilingAdded) return;
+      ceilingAdded = true;
+      Matter.World.add(world, ceiling);
+    };
+
+    // Safety net: after 1.8s, ensure all bodies are inside the room and seal the ceiling
+    const ceilingTimeout = setTimeout(() => {
+      if (!ceilingAdded) {
+        bodiesRef.current.forEach((body, idx) => {
+          hasEntered[idx] = true;
+          if (body.position.y < 60) {
+            Matter.Body.setPosition(body, { x: body.position.x, y: 70 });
+            Matter.Body.setVelocity(body, { x: body.velocity.x, y: Math.max(3, body.velocity.y) });
+          }
+        });
+        addCeiling();
+      }
+    }, 1800);
+
     // Mouse Interaction
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
@@ -369,6 +395,19 @@ export default function PhysicsShapes() {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
+    // Handle viewport resize to keep room boundaries in place
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      const w = containerRef.current.clientWidth;
+      const h = containerRef.current.clientHeight;
+
+      Matter.Body.setPosition(floor, { x: w / 2, y: h - 50 });
+      Matter.Body.setPosition(ceiling, { x: w / 2, y: -40 });
+      Matter.Body.setPosition(rightWall, { x: w + 50, y: h / 2 });
+      Matter.Body.setPosition(leftWall, { x: -50, y: h / 2 });
+    };
+    window.addEventListener('resize', handleResize);
+
     // Run Engine & Sync to DOM
     let animationFrameId: number;
     const runner = Matter.Runner.create();
@@ -380,12 +419,31 @@ export default function PhysicsShapes() {
         if (el) {
           el.style.transform = `translate(${body.position.x}px, ${body.position.y}px) rotate(${body.angle}rad)`;
         }
+
+        // Once a body drops past y = 60, mark it as entered
+        if (body.position.y > 60) {
+          hasEntered[index] = true;
+        }
+
+        // Enforce top ceiling containment: if any entered body tries to fly above the ceiling, bounce it back down
+        if (hasEntered[index] && body.position.y < 50 && body.velocity.y < 0) {
+          Matter.Body.setPosition(body, { x: body.position.x, y: 50 });
+          Matter.Body.setVelocity(body, { x: body.velocity.x, y: Math.abs(body.velocity.y) * 0.5 });
+        }
       });
+
+      // When all bodies have fallen into the room, permanently seal the physical ceiling
+      if (!ceilingAdded && hasEntered.every(Boolean)) {
+        addCeiling();
+      }
+
       animationFrameId = requestAnimationFrame(updateDOM);
     };
     updateDOM();
 
     return () => {
+      clearTimeout(ceilingTimeout);
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       Matter.Runner.stop(runner);
       Matter.Engine.clear(engine);
